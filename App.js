@@ -1,22 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+import AppLoading from "expo-app-loading";
+import { useFonts } from "expo-font";
+
+import Login from "./src/screens/Login";
+import ForgottenPassword from "./src/screens/ForgottenPassword";
+import SignUp from "./src/screens/SignUp";
+
+const Stack = createStackNavigator();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Hello world!
-      </Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  let [fontsLoaded] = useFonts({
+    "lato-thin": require("./assets/fonts/Lato-Thin.ttf"),
+    "lato-light": require("./assets/fonts/Lato-Light.ttf"),
+    "lato-regular": require("./assets/fonts/Lato-Regular.ttf"),
+    "lato-bold": require("./assets/fonts/Lato-Bold.ttf"),
+    "lato-black": require("./assets/fonts/Lato-Black.ttf"),
+  });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen
+            name="Forgotten Password"
+            component={ForgottenPassword}
+          />
+          <Stack.Screen name="Sign Up" component={SignUp} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+}
