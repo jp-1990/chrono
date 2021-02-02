@@ -13,7 +13,7 @@ const base = {
     headingPrimary: "#705E57",
     headingSecondary: "#EBEBEB",
   },
-  mainInput: {
+  authInput: {
     backgroundColor: "#EBEBEB",
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -21,7 +21,7 @@ const base = {
     width: "70%",
     fontSize: 18,
     fontFamily: "lato-regular",
-    color: "#454851",
+    color: "#705E57",
   },
 };
 

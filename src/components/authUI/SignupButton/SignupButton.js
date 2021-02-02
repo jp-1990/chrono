@@ -29,7 +29,12 @@ const SignupButton = ({ labelColor, buttonColor, ripple, onPress }) => {
 export default SignupButton;
 
 const styles = StyleSheet.create({
-  signupBox: { justifyContent: "center", alignItems: "center", marginTop: 72 },
+  signupBox: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 72,
+    marginBottom: 36,
+  },
   signupText: {
     fontSize: 18,
   },

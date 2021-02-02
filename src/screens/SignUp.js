@@ -1,50 +1,46 @@
 import React from "react";
-import { View, TextInput, StyleSheet, StatusBar } from "react-native";
-import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+import { View, TextInput, StyleSheet, ScrollView } from "react-native";
 
 import base from "../styles/base";
 
 import Header from "../components/common/Header/Header";
-import MainButton from "../components/common/MainButton/MainButton";
 import TextButton from "../components/common/TextButton/TextButton";
 import AppTitle from "../components/authUI/AppTitle/AppTitle";
+import AuthForm from "../components/authUI/AuthForm/AuthForm";
 
 const { colors } = base;
-const { mainInput } = base;
 
 const SignUp = ({ navigation }) => {
   return (
     <View style={styles.screen}>
       <Header statusbar="light" />
-      <View style={styles.contentWrapper}>
-        <AppTitle
-          title1="chrono"
-          title2="focus"
-          subtitle="Optimise your time"
-        />
-        <View style={styles.inputBox}>
-          <TextInput placeholder="Username" style={mainInput}></TextInput>
-          <TextInput placeholder="Email" style={mainInput}></TextInput>
-          <TextInput placeholder="Password" style={mainInput}></TextInput>
-          <TextInput
-            placeholder="Confirm Password"
-            style={mainInput}
-          ></TextInput>
-          <MainButton
-            label="Log in"
-            width="50%"
-            colorBG={colors.buttonPrimary}
-            colorText={colors.buttonText}
-            ripple={colors.buttonPrimaryRipple}
+      <ScrollView>
+        <View style={styles.contentWrapper}>
+          <AppTitle
+            title1="chrono"
+            title2="focus"
+            subtitle="Optimise your time"
           />
-          <TextButton
-            onPress={() => navigation.navigate("Login")}
-            label="Return to log in"
-            color={colors.textSecondary}
-            ripple={colors.buttonTextRipple}
-          />
+          <View style={styles.inputBox}>
+            <AuthForm
+              inputLabels={[
+                "Username",
+                "Email",
+                "Password",
+                "Confirm Password",
+              ]}
+              submitLabel={"Sign up"}
+              onSubmit={null}
+            />
+            <TextButton
+              onPress={() => navigation.navigate("Login")}
+              label="Return to log in"
+              color={colors.textSecondary}
+              ripple={colors.buttonTextRipple}
+            />
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -54,11 +50,13 @@ export default SignUp;
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    backgroundColor: "#fff",
   },
   contentWrapper: {
     flex: 1,
     alignItems: "center",
     backgroundColor: "#fff",
+    paddingBottom: 32,
   },
   inputBox: { alignItems: "center", width: "100%" },
 });

@@ -1,7 +1,7 @@
 import React from "react";
 import { Pressable, Text } from "react-native";
 
-const MainButton = ({ width, colorBG, colorText, label, ripple }) => {
+const MainButton = ({ width, colorBG, colorText, label, ripple, onPress }) => {
   return (
     <Pressable
       style={{
@@ -17,6 +17,7 @@ const MainButton = ({ width, colorBG, colorText, label, ripple }) => {
         borderless: false,
         radius: 150,
       }}
+      onPress={onPress ? () => onPress() : null}
     >
       <Text
         style={{
