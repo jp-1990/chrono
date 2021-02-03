@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TextButton /> renders correctly 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "marginVertical": 9,
+      "paddingHorizontal": 12,
+      "paddingVertical": 3,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": undefined,
+      }
+    }
+  >
+    testing
+  </Text>
+</View>
+`;
