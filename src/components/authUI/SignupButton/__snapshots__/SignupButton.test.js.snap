@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SignupButton /> renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "justifyContent": "center",
+      "marginBottom": 36,
+      "marginTop": 72,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#454851",
+        "fontSize": 18,
+      }
+    }
+  >
+    Don't have an account?
+  </Text>
+  <View
+    accessible={true}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "marginVertical": 6,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#5484CB",
+          "fontFamily": "lato-bold",
+          "fontSize": 18,
+          "paddingHorizontal": 18,
+          "paddingVertical": 6,
+        }
+      }
+    >
+      Sign up
+    </Text>
+  </View>
+</View>
+`;
