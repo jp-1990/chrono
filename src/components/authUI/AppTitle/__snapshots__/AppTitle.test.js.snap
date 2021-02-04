@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AppTitle /> renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "padding": 54,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#705E57",
+        "fontFamily": "lato-light",
+        "fontSize": 42,
+        "textTransform": "uppercase",
+      }
+    }
+  >
+    title1
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#705E57",
+        "fontFamily": "lato-light",
+        "fontSize": 42,
+        "textTransform": "uppercase",
+      }
+    }
+  >
+    title2
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#818CA0",
+        "fontFamily": "lato-light",
+        "fontSize": 18,
+      }
+    }
+  >
+    subtitle
+  </Text>
+</View>
+`;
