@@ -44,6 +44,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.menuPrimary,
     alignItems: "center",
     justifyContent: "center",
+    position: "absolute",
+    left: 0,
+    top: 0,
+    zIndex: 1000,
   },
   image: {
     height: 56,
