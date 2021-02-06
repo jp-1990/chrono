@@ -9,6 +9,7 @@ import DateRange from "../components/Dashboard/DateRange/DateRange";
 import TopActivities from "../components/Dashboard/TopActivities/TopActivities";
 import TotalTime from "../components/Dashboard/TotalTime/TotalTime";
 import MainButton from "../components/common/MainButton/MainButton";
+import BottomNav from "../components/Dashboard/BottomNav/BottomNav";
 
 import base from "../styles/base";
 
@@ -20,7 +21,7 @@ const Dashboard = () => {
   return (
     <View style={screen}>
       <Header statusbar="light" />
-      <ScrollView>
+      <ScrollView style={styles.scrollZindex}>
         <View style={({ ...contentWrapper }, styles.containerPadding)}>
           <View style={styles.titleBox}>
             <Title text="last 7 days" />
@@ -63,6 +64,7 @@ const Dashboard = () => {
           </View>
         </View>
       </ScrollView>
+      <BottomNav />
     </View>
   );
 };
@@ -72,9 +74,10 @@ export default Dashboard;
 const styles = StyleSheet.create({
   containerPadding: {
     paddingHorizontal: 30,
-    paddingBottom: 50,
+    paddingBottom: 45,
     paddingTop: 29,
   },
+  scrollZindex: { position: "relative", zIndex: -100 },
   titleBox: {
     width: "100%",
     alignItems: "flex-end",
