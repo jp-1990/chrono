@@ -11,7 +11,9 @@ const base = {
     textPrimary: "#454851",
     textSecondary: "#818CA0",
     headingPrimary: "#705E57",
-    headingSecondary: "#EBEBEB",
+    headingSecondary: "#B7B7B7",
+    backgroundColor: "#fff",
+    transparent: "transparent",
   },
   authInput: {
     backgroundColor: "#EBEBEB",
@@ -22,6 +24,15 @@ const base = {
     fontSize: 18,
     fontFamily: "lato-regular",
     color: "#705E57",
+  },
+  screen: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  contentWrapper: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
 };
 
