@@ -27,7 +27,7 @@ const Login = ({ navigation }) => {
             <AuthForm
               inputLabels={["Email", "Password"]}
               submitLabel={"Log in"}
-              onSubmit={null}
+              onSubmit={() => navigation.navigate("Dashboard")}
             />
             <TextButton
               onPress={() => navigation.navigate("Forgotten Password")}
