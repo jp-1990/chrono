@@ -28,7 +28,7 @@ const Dashboard = () => {
           </View>
           <DataChart />
           <View style={styles.subtitleBox}>
-            <View style={styles.subtitlePadding}>
+            <View>
               <Subtitle text="top activities" />
             </View>
             <DateRange
@@ -87,9 +87,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  subtitlePadding: {
-    paddingTop: 5,
-  },
+
   center: {
     alignItems: "center",
   },
