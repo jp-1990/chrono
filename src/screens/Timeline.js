@@ -1,13 +1,12 @@
 import React from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 
 import Header from "../components/common/Header/Header";
 import Title from "../components/common/Title/Title";
 import DataChart from "../components/common/DataChart/DataChart";
 import Subtitle from "../components/common/Subtitle/Subtitle";
-import SelectedMonth from "../components/Timeline/SelectedMonth/SelectedMonth";
-import ActivitiesKey from "../components/Timeline/ActivitiesKey/ActivitiesKey";
+import SelectedMonth from "../components/common/SelectedMonth/SelectedMonth";
+import ActivitiesKey from "../components/common/ActivitiesKey/ActivitiesKey";
 import MainButton from "../components/common/MainButton/MainButton";
 import BottomNav from "../components/common/BottomNav/BottomNav";
 
@@ -72,39 +71,17 @@ const Timeline = () => {
     <View style={screen}>
       <Header statusbar="light" />
       <ScrollView style={styles.scrollZindex}>
-        <View style={{ ...contentWrapper, ...styles.titleBox }}>
-          <View style={styles.monthContainer}>
-            <View>
-              <MaterialIcons
-                name="arrow-left"
-                size={24}
-                color={colors.headingSecondary}
-              />
-              <MaterialIcons
-                name="arrow-left"
-                size={24}
-                color={colors.headingSecondary}
-              />
-            </View>
-            <SelectedMonth month="january" year={2021} />
-            <View>
-              <MaterialIcons
-                name="arrow-right"
-                size={24}
-                color={colors.headingSecondary}
-              />
-              <MaterialIcons
-                name="arrow-right"
-                size={24}
-                color={colors.headingSecondary}
-              />
-            </View>
-          </View>
-          <View style={styles.titleMargin}>
-            <Title text="timeline" />
-          </View>
-        </View>
         <View style={({ ...contentWrapper }, styles.containerPadding)}>
+          <View style={styles.titleWrapper}>
+            <View style={styles.titleBox}>
+              <View style={styles.titleContainer}>
+                <Title text="timeline" />
+              </View>
+              <View style={styles.monthContainer}>
+                <SelectedMonth month="january" year={2021} />
+              </View>
+            </View>
+          </View>
           <View style={styles.chartContainer}>
             <DataChart data={testData} start={null} num={null} />
           </View>
@@ -155,28 +132,24 @@ const styles = StyleSheet.create({
   containerPadding: {
     paddingHorizontal: 30,
     paddingBottom: 45,
+    paddingTop: 29,
   },
   scrollZindex: { position: "relative", zIndex: -100 },
-  titleBox: {
-    paddingTop: 29,
-    paddingHorizontal: 10,
+  titleWrapper: {
     width: "100%",
-    justifyContent: "flex-start",
     alignItems: "flex-end",
-    flexDirection: "row-reverse",
-    marginTop: 5,
-    marginBottom: 10,
   },
-  titleMargin: {
-    marginHorizontal: 30,
-  },
-  monthContainer: {
-    flexDirection: "row",
+  titleBox: {
+    justifyContent: "center",
     alignItems: "center",
+    marginBottom: 6,
+  },
+  titleContainer: {
+    marginBottom: 4,
   },
   subtitleBox: {
     width: "100%",
-    marginBottom: 20,
+    marginBottom: 15,
   },
 
   center: {

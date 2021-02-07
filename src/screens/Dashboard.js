@@ -78,13 +78,7 @@ const Dashboard = () => {
           </View>
           <DataChart data={testData} start={27} num={7} />
           <View style={styles.subtitleBox}>
-            <View>
-              <Subtitle text="top activities" />
-            </View>
-            <DateRange
-              start={{ month: "january", date: "27th" }}
-              end={{ month: "february", date: "2nd" }}
-            />
+            <Subtitle text="top activities" />
           </View>
           <View>
             <TopActivities
@@ -136,7 +130,8 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
+    marginTop: 5,
+    marginBottom: 12,
   },
 
   center: {
