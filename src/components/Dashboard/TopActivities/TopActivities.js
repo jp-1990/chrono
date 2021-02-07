@@ -14,7 +14,13 @@ const TopActivities = ({ activities }) => {
   // build array to be rendered
   const renderedActivities = activities.map((e, i) => {
     return (
-      <ActivityTotal key={i} color={e.color} title={e.title} total={e.total} />
+      <ActivityTotal
+        key={i}
+        color={e.color}
+        title={e.title}
+        total={e.total}
+        totalVisible={true}
+      />
     );
   });
 
