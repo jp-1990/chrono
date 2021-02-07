@@ -1,22 +1,78 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import base from "../../../styles/base";
 const { colors } = base;
 
 const BottomNav = () => {
+  // useNavigation hook works with react context in the background and provides the navigation object from the current screen
+  const navigation = useNavigation();
+  // useRoute provides route object from current screen
+  const route = useRoute();
+
   return (
     <View style={styles.container}>
-      <View style={styles.iconBox}>
-        <MaterialCommunityIcons name="view-dashboard" size={35} color="white" />
-      </View>
-      <View style={styles.iconBox}>
-        <MaterialCommunityIcons name="chart-timeline" size={35} color="white" />
-      </View>
-      <View style={styles.iconBox}>
-        <MaterialIcons name="analytics" size={35} color="white" />
-      </View>
+      <Pressable
+        android_ripple={{
+          color: colors.buttonTextRipple,
+          borderless: false,
+          radius: 150,
+        }}
+        onPress={() => navigation.navigate("Dashboard")}
+        style={{
+          ...styles.iconBox,
+          backgroundColor:
+            route.name === "Dashboard" ? colors.buttonSecondary : null,
+        }}
+      >
+        <View>
+          <MaterialCommunityIcons
+            name="view-dashboard"
+            size={35}
+            color="white"
+          />
+        </View>
+      </Pressable>
+      <Pressable
+        android_ripple={{
+          color: colors.buttonTextRipple,
+          borderless: false,
+          radius: 150,
+        }}
+        onPress={() => navigation.navigate("Timeline")}
+        style={{
+          ...styles.iconBox,
+          backgroundColor:
+            route.name === "Timeline" ? colors.buttonSecondary : null,
+        }}
+      >
+        <View>
+          <MaterialCommunityIcons
+            name="chart-timeline"
+            size={35}
+            color="white"
+          />
+        </View>
+      </Pressable>
+      <Pressable
+        android_ripple={{
+          color: colors.buttonTextRipple,
+          borderless: false,
+          radius: 150,
+        }}
+        onPress={() => navigation.navigate("Login")}
+        style={{
+          ...styles.iconBox,
+          backgroundColor:
+            route.name === "Analysis" ? colors.buttonSecondary : null,
+        }}
+      >
+        <View>
+          <MaterialIcons name="analytics" size={35} color="white" />
+        </View>
+      </Pressable>
     </View>
   );
 };
@@ -33,7 +89,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3,
   },
   iconBox: {
-    backgroundColor: colors.menuPrimary,
     height: 44,
     width: "31.5%",
     alignItems: "center",
