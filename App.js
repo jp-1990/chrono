@@ -11,6 +11,7 @@ import ForgottenPassword from "./src/screens/ForgottenPassword";
 import SignUp from "./src/screens/SignUp";
 import Dashboard from "./src/screens/Dashboard";
 import Timeline from "./src/screens/Timeline";
+import Reports from "./src/screens/Reports";
 
 const Stack = createStackNavigator();
 
@@ -37,6 +38,7 @@ export default function App() {
           <Stack.Screen name="Sign Up" component={SignUp} />
           <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="Timeline" component={Timeline} />
+          <Stack.Screen name="Reports" component={Reports} />
         </Stack.Navigator>
       </NavigationContainer>
     );

@@ -62,11 +62,11 @@ const BottomNav = () => {
           borderless: false,
           radius: 150,
         }}
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => navigation.navigate("Reports")}
         style={{
           ...styles.iconBox,
           backgroundColor:
-            route.name === "Analysis" ? colors.buttonSecondary : null,
+            route.name === "Reports" ? colors.buttonSecondary : null,
         }}
       >
         <View>
