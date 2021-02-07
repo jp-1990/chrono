@@ -5,7 +5,7 @@ import base from "../../../styles/base";
 const { colors } = base;
 
 // basic summary of activity containing title, color and total hours
-const ActivityTotal = ({ color, title, total }) => {
+const ActivityTotal = ({ color, title, total, totalVisible }) => {
   let renderTitle;
   if (title.length > 10) {
     renderTitle = `${title.substring(0, 7)}...`;
@@ -16,7 +16,9 @@ const ActivityTotal = ({ color, title, total }) => {
     <View style={styles.container}>
       <View style={{ ...styles.color, backgroundColor: color }}></View>
       <Text style={styles.title}>{renderTitle}</Text>
-      <Text style={styles.total}>[ {total} hours ]</Text>
+      {totalVisible ? (
+        <Text style={styles.total}>[ {total} hours ]</Text>
+      ) : null}
     </View>
   );
 };
