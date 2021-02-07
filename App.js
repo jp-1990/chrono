@@ -10,6 +10,7 @@ import Login from "./src/screens/Login";
 import ForgottenPassword from "./src/screens/ForgottenPassword";
 import SignUp from "./src/screens/SignUp";
 import Dashboard from "./src/screens/Dashboard";
+import Timeline from "./src/screens/Timeline";
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,7 @@ export default function App() {
           />
           <Stack.Screen name="Sign Up" component={SignUp} />
           <Stack.Screen name="Dashboard" component={Dashboard} />
+          <Stack.Screen name="Timeline" component={Timeline} />
         </Stack.Navigator>
       </NavigationContainer>
     );
