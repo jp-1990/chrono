@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView } from "react-native";
 
 import base from "../styles/base";
 
-import Header from "../components/common/Header/Header";
+import AuthHeader from "../components/authUI/AuthHeader/AuthHeader";
 import TextButton from "../components/common/TextButton/TextButton";
 import AppTitle from "../components/authUI/AppTitle/AppTitle";
 import AuthForm from "../components/authUI/AuthForm/AuthForm";
@@ -14,7 +14,7 @@ const { colors } = base;
 const ForgottenPassword = ({ navigation }) => {
   return (
     <View style={styles.screen}>
-      <Header statusbar="light" />
+      <AuthHeader statusbar="light" />
       <ScrollView>
         <View style={styles.contentWrapper}>
           <AppTitle

@@ -8,11 +8,11 @@ const DateRange = ({ start, end }) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.dateBox}>
-        <Text style={styles.month}>{start.month.substring(0, 3)}</Text>
+        <Text style={styles.month}>{start.month.substring(0, 3)} </Text>
         <Text style={styles.date}>{start.date}</Text>
       </View>
       <View style={styles.dateBox}>
-        <Text style={styles.month}>{end.month.substring(0, 3)}</Text>
+        <Text style={styles.month}>{end.month.substring(0, 3)} </Text>
         <Text style={styles.date}>{end.date}</Text>
       </View>
     </View>
@@ -22,7 +22,7 @@ const DateRange = ({ start, end }) => {
 export default DateRange;
 
 const styles = StyleSheet.create({
-  wrapper: { width: 82, height: 61, justifyContent: "space-between" },
+  wrapper: { width: 66, height: 53, justifyContent: "space-between" },
   dateBox: {
     width: "100%",
     flexDirection: "row",
@@ -33,13 +33,13 @@ const styles = StyleSheet.create({
   },
   month: {
     fontFamily: "lato-bold",
-    fontSize: 15,
+    fontSize: 12,
     color: colors.backgroundColor,
     textTransform: "uppercase",
   },
   date: {
     fontFamily: "lato-light",
-    fontSize: 15,
+    fontSize: 12,
     color: colors.backgroundColor,
   },
 });

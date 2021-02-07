@@ -13,7 +13,7 @@ export default Title;
 const styles = StyleSheet.create({
   text: {
     fontFamily: "lato-light",
-    fontSize: 40,
+    fontSize: 38,
     color: colors.headingSecondary,
     textTransform: "uppercase",
   },

@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { color } from "react-native-reanimated";
 
 import base from "../../../styles/base";
 const { colors } = base;

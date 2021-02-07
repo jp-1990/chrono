@@ -1,15 +1,15 @@
 import React from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 
-import Header from "../components/Dashboard/Header/Header";
-import Title from "../components/Dashboard/Title/Title";
+import Header from "../components/common/Header/Header";
+import Title from "../components/common/Title/Title";
 import DataChart from "../components/Dashboard/DataChart/DataChart";
-import Subtitle from "../components/Dashboard/Subtitle/Subtitle";
+import Subtitle from "../components/common/Subtitle/Subtitle";
 import DateRange from "../components/Dashboard/DateRange/DateRange";
 import TopActivities from "../components/Dashboard/TopActivities/TopActivities";
 import TotalTime from "../components/Dashboard/TotalTime/TotalTime";
 import MainButton from "../components/common/MainButton/MainButton";
-import BottomNav from "../components/Dashboard/BottomNav/BottomNav";
+import BottomNav from "../components/common/BottomNav/BottomNav";
 
 import base from "../styles/base";
 

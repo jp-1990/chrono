@@ -15,7 +15,7 @@ const base = {
     backgroundColor: "#fff",
     transparent: "transparent",
   },
-  authInput: {
+  defaultInput: {
     backgroundColor: "#EBEBEB",
     paddingVertical: 8,
     paddingHorizontal: 16,
