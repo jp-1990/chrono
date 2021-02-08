@@ -5,11 +5,15 @@ import Header from "../components/common/Header/Header";
 import Title from "../components/common/Title/Title";
 import SelectedMonth from "../components/common/SelectedMonth/SelectedMonth";
 import BarChart from "../components/Reports/BarChart/BarChart";
+import TotalTimeSummary from "../components/Reports/TotalTimeSummary/TotalTimeSummary";
 import Subtitle from "../components/common/Subtitle/Subtitle";
 import ActivitiesKey from "../components/common/ActivitiesKey/ActivitiesKey";
+import AveragesKey from "../components/Reports/AveragesKey/AveragesKey";
+import Comparison from "../components/Reports/Comparison/Comparison";
 import BottomNav from "../components/common/BottomNav/BottomNav";
 
 import base from "../styles/base";
+import { act } from "react-test-renderer";
 
 const { colors } = base;
 const { screen } = base;
@@ -37,8 +41,8 @@ const activities = [
 const testinfo = [
   [
     { color: "blue", height: "14%" },
-    { color: "green", height: "35%" },
-    { color: "blue", height: "10%" },
+    { color: "deeppink", height: "35%" },
+    { color: "deepskyblue", height: "10%" },
   ],
   [
     { color: "blue", height: "12%" },
@@ -48,13 +52,13 @@ const testinfo = [
   [
     { color: "blue", height: "14%" },
     { color: "green", height: "35%" },
-    { color: "red", height: "25%" },
-    { color: "blue", height: "10%" },
+    { color: "gold", height: "25%" },
+    { color: "darkmagenta", height: "10%" },
   ],
   [
     { color: "blue", height: "35%" },
     { color: "red", height: "28%" },
-    { color: "blue", height: "10%" },
+    { color: "deepskyblue", height: "10%" },
   ],
   [
     { color: "blue", height: "35%" },
@@ -63,15 +67,15 @@ const testinfo = [
     { color: "blue", height: "2%" },
   ],
   [
-    { color: "blue", height: "12%" },
+    { color: "darkmagenta", height: "12%" },
     { color: "green", height: "35%" },
     { color: "blue", height: "13%" },
   ],
   [
     { color: "blue", height: "35%" },
     { color: "red", height: "20%" },
-    { color: "red", height: "28%" },
-    { color: "blue", height: "2%" },
+    { color: "gold", height: "28%" },
+    { color: "deeppink", height: "2%" },
   ],
 ];
 
@@ -87,10 +91,10 @@ const Timeline = () => {
   return (
     <View style={screen}>
       <Header statusbar="light" />
-      <ScrollView style={styles.scrollZindex}>
+      <ScrollView style={styles.scrollZindex} fadingEdgeLength={50}>
         <View style={({ ...contentWrapper }, styles.containerPadding)}>
           <View style={styles.titleWrapper}>
-            <View style={styles.titleBox}>
+            <View style={styles.titleInnerWrapper}>
               <View style={styles.titleContainer}>
                 <Title text="reports" />
               </View>
@@ -107,6 +111,19 @@ const Timeline = () => {
           </View>
           <View>
             <ActivitiesKey activities={activities} />
+          </View>
+          <View style={styles.totalTimeSummaryContainer}>
+            <TotalTimeSummary title="Total recorded time" time={160} />
+            <TotalTimeSummary title="Total available time" time={210} />
+          </View>
+          <View style={styles.pieSubtitleBox}>
+            <Subtitle text="activities" />
+          </View>
+          <View style={styles.averagesContainer}>
+            <AveragesKey activities={activities} />
+          </View>
+          <View style={styles.comparisonContainer}>
+            <Comparison activities={activities} />
           </View>
         </View>
       </ScrollView>
@@ -128,19 +145,33 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "flex-end",
   },
-  titleBox: {
+  titleInnerWrapper: {
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-end",
     marginBottom: 6,
   },
   titleContainer: {
-    marginBottom: 4,
+    marginBottom: 8,
+    marginRight: 10,
   },
   subtitleBox: {
     width: "100%",
     marginBottom: 15,
   },
-
+  totalTimeSummaryContainer: {
+    marginVertical: 14,
+  },
+  pieSubtitleBox: {
+    width: "100%",
+    marginTop: 26,
+    alignItems: "center",
+  },
+  averagesContainer: {
+    marginTop: 26,
+  },
+  comparisonContainer: {
+    marginTop: 26,
+  },
   center: {
     alignItems: "center",
   },
