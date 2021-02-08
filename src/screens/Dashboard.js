@@ -5,7 +5,6 @@ import Header from "../components/common/Header/Header";
 import Title from "../components/common/Title/Title";
 import DataChart from "../components/common/DataChart/DataChart";
 import Subtitle from "../components/common/Subtitle/Subtitle";
-import DateRange from "../components/Dashboard/DateRange/DateRange";
 import TopActivities from "../components/Dashboard/TopActivities/TopActivities";
 import TotalTime from "../components/Dashboard/TotalTime/TotalTime";
 import MainButton from "../components/common/MainButton/MainButton";
@@ -71,7 +70,7 @@ const Dashboard = () => {
   return (
     <View style={screen}>
       <Header statusbar="light" />
-      <ScrollView style={styles.scrollZindex}>
+      <ScrollView style={styles.scrollZindex} fadingEdgeLength={50}>
         <View style={({ ...contentWrapper }, styles.containerPadding)}>
           <View style={styles.titleBox}>
             <Title text="last 7 days" />
