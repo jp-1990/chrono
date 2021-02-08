@@ -14,6 +14,8 @@ const base = {
     headingSecondary: "#B7B7B7",
     backgroundColor: "#fff",
     transparent: "transparent",
+    positive: "#00C31F",
+    negative: "#C90000",
   },
   defaultInput: {
     backgroundColor: "#EBEBEB",
