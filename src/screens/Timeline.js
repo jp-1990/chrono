@@ -70,7 +70,7 @@ const Timeline = () => {
   return (
     <View style={screen}>
       <Header statusbar="light" />
-      <ScrollView style={styles.scrollZindex}>
+      <ScrollView style={styles.scrollZindex} fadingEdgeLength={50}>
         <View style={({ ...contentWrapper }, styles.containerPadding)}>
           <View style={styles.titleWrapper}>
             <View style={styles.titleBox}>
@@ -138,14 +138,16 @@ const styles = StyleSheet.create({
   titleWrapper: {
     width: "100%",
     alignItems: "flex-end",
+    marginBottom: 4,
   },
   titleBox: {
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-end",
     marginBottom: 6,
   },
   titleContainer: {
-    marginBottom: 4,
+    marginBottom: 8,
+    marginRight: 10,
   },
   subtitleBox: {
     width: "100%",
