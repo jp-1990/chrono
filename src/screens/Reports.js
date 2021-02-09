@@ -5,6 +5,7 @@ import Header from "../components/common/Header/Header";
 import Title from "../components/common/Title/Title";
 import SelectedMonth from "../components/common/SelectedMonth/SelectedMonth";
 import BarChart from "../components/Reports/BarChart/BarChart";
+import PieChart from "../components/Reports/PieChart/PieChart";
 import TotalTimeSummary from "../components/Reports/TotalTimeSummary/TotalTimeSummary";
 import Subtitle from "../components/common/Subtitle/Subtitle";
 import ActivitiesKey from "../components/common/ActivitiesKey/ActivitiesKey";
@@ -12,8 +13,9 @@ import AveragesKey from "../components/Reports/AveragesKey/AveragesKey";
 import Comparison from "../components/Reports/Comparison/Comparison";
 import BottomNav from "../components/common/BottomNav/BottomNav";
 
+import VictoryPieChart from "../components/Reports/VictoryPieChart/VictoryPieChart";
+
 import base from "../styles/base";
-import { act } from "react-test-renderer";
 
 const { colors } = base;
 const { screen } = base;
@@ -24,7 +26,7 @@ const activities = [
   {
     color: "blue",
     title: "Sleep",
-    total: 56,
+    total: 30,
   },
   { color: "green", title: "work", total: 38 },
   { color: "gold", title: "coding", total: 20 },
@@ -34,8 +36,8 @@ const activities = [
     total: 56,
   },
   { color: "deepskyblue", title: "work", total: 38 },
-  { color: "red", title: "coding", total: 20 },
-  { color: "deeppink", title: "coding", total: 20 },
+  { color: "rgb(255,0,0)", title: "coding", total: 10 },
+  { color: "deeppink", title: "coding", total: 6 },
 ];
 
 const testinfo = [
@@ -119,6 +121,9 @@ const Timeline = () => {
           <View style={styles.pieSubtitleBox}>
             <Subtitle text="activities" />
           </View>
+          <View style={styles.pieChartContainer}>
+            <VictoryPieChart activities={activities} />
+          </View>
           <View style={styles.averagesContainer}>
             <AveragesKey activities={activities} />
           </View>
@@ -166,8 +171,11 @@ const styles = StyleSheet.create({
     marginTop: 26,
     alignItems: "center",
   },
+  pieChartContainer: {
+    marginTop: 0,
+  },
   averagesContainer: {
-    marginTop: 26,
+    marginTop: 0,
   },
   comparisonContainer: {
     marginTop: 26,
