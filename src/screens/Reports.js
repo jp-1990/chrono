@@ -105,6 +105,9 @@ const Timeline = () => {
               </View>
             </View>
           </View>
+          <View style={styles.activitiesTitleBox}>
+            <Title text="activities" />
+          </View>
           <View style={styles.chartContainer}>
             <BarChart data={testData} />
           </View>
@@ -118,8 +121,8 @@ const Timeline = () => {
             <TotalTimeSummary title="Total recorded time" time={160} />
             <TotalTimeSummary title="Total available time" time={210} />
           </View>
-          <View style={styles.pieSubtitleBox}>
-            <Title text="activities" />
+          <View style={styles.pieTitleBox}>
+            <Title text="categories" />
           </View>
           <View style={styles.pieChartContainer}>
             <VictoryPieChart activities={activities} />
@@ -164,9 +167,14 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   totalTimeSummaryContainer: {
-    marginVertical: 14,
+    marginVertical: 26,
   },
-  pieSubtitleBox: {
+  activitiesTitleBox: {
+    width: "100%",
+    marginTop: 26,
+    alignItems: "center",
+  },
+  pieTitleBox: {
     width: "100%",
     marginTop: 26,
     alignItems: "center",
