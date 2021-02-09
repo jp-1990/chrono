@@ -1,5 +1,5 @@
-import React from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { ScrollView, View, StyleSheet, Modal } from "react-native";
 
 import Header from "../components/common/Header/Header";
 import Title from "../components/common/Title/Title";
@@ -9,6 +9,7 @@ import TopActivities from "../components/Dashboard/TopActivities/TopActivities";
 import TotalTime from "../components/Dashboard/TotalTime/TotalTime";
 import MainButton from "../components/common/MainButton/MainButton";
 import BottomNav from "../components/common/BottomNav/BottomNav";
+import NewActivity from "../components/common/NewActivity/NewActivity";
 
 import base from "../styles/base";
 
@@ -67,17 +68,38 @@ for (let i = 1; i <= 31; i++) {
 }
 
 const Dashboard = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [colorPickerVisible, setColorPickerVisible] = useState(false);
+
   return (
     <View style={screen}>
       <Header statusbar="light" />
       <ScrollView style={styles.scrollZindex} fadingEdgeLength={50}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(false);
+            setColorPickerVisible(false);
+          }}
+        >
+          <NewActivity
+            onSubmit={null}
+            colorPicker={{
+              setColorPickerVisible: () =>
+                setColorPickerVisible((prev) => !prev),
+              colorPickerVisible: colorPickerVisible,
+            }}
+          />
+        </Modal>
         <View style={({ ...contentWrapper }, styles.containerPadding)}>
           <View style={styles.titleBox}>
             <Title text="last 7 days" />
           </View>
           <DataChart data={testData} start={27} num={7} />
           <View style={styles.subtitleBox}>
-            <Subtitle text="top activities" />
+            <Subtitle text="top categories" />
           </View>
           <View>
             <TopActivities
@@ -102,7 +124,7 @@ const Dashboard = () => {
               colorBG={colors.buttonPrimary}
               colorText={colors.buttonText}
               ripple={colors.buttonPrimaryRipple}
-              onPress={null}
+              onPress={() => setModalVisible(true)}
             />
           </View>
         </View>
