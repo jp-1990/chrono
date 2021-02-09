@@ -1,7 +1,15 @@
 import React from "react";
 import { Pressable, Text } from "react-native";
 
-const MainButton = ({ width, colorBG, colorText, label, ripple, onPress }) => {
+const MainButton = ({
+  width,
+  colorBG,
+  colorText,
+  label,
+  ripple,
+  onPress,
+  marginTop,
+}) => {
   return (
     <Pressable
       style={{
@@ -10,7 +18,7 @@ const MainButton = ({ width, colorBG, colorText, label, ripple, onPress }) => {
         justifyContent: "center",
         alignItems: "center",
         height: 42,
-        marginTop: 36,
+        marginTop: marginTop || 36,
       }}
       android_ripple={{
         color: ripple,
