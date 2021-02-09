@@ -119,7 +119,7 @@ const Timeline = () => {
             <TotalTimeSummary title="Total available time" time={210} />
           </View>
           <View style={styles.pieSubtitleBox}>
-            <Subtitle text="activities" />
+            <Title text="activities" />
           </View>
           <View style={styles.pieChartContainer}>
             <VictoryPieChart activities={activities} />
