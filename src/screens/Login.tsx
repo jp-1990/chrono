@@ -3,12 +3,12 @@ import { View, TextInput, StyleSheet, ScrollView } from "react-native";
 
 import base from "../styles/base";
 
-import AuthHeader from "../components/authUI/AuthHeader/AuthHeader";
-import TextButton from "../components/common/TextButton/TextButton";
+import AuthHeader from "../Components/AuthUI/AuthHeader/AuthHeader";
+import TextButton from "../Components/Common/TextButton/TextButton";
 
-import AppTitle from "../components/authUI/AppTitle/AppTitle";
-import AuthForm from "../components/authUI/AuthForm/AuthForm";
-import SignupButton from "../components/authUI/SignupButton/SignupButton";
+import AppTitle from "../Components/AuthUI/AppTitle/AppTitle";
+import AuthForm from "../Components/AuthUI/AuthForm/AuthForm";
+import SignupButton from "../Components/AuthUI/SignupButton/SignupButton";
 
 const { colors } = base;
 

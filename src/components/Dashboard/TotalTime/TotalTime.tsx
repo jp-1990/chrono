@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import Subtitle from "../../common/Subtitle/Subtitle";
+import Subtitle from "../../Common/Subtitle/Subtitle";
 
 import base from "../../../styles/base";
 const { colors } = base;

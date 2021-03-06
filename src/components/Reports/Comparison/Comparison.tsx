@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import Subtitle from "../../common/Subtitle/Subtitle";
-import ActivityTotal from "../../common/ActivityTotal/ActivityTotal";
+import Subtitle from "../../Common/Subtitle/Subtitle";
+import ActivityTotal from "../../Common/ActivityTotal/ActivityTotal";
 
 import base from "../../../styles/base";
 const { colors } = base;

@@ -1,19 +1,19 @@
 import React from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 
-import Header from "../components/common/Header/Header";
-import Title from "../components/common/Title/Title";
-import SelectedMonth from "../components/common/SelectedMonth/SelectedMonth";
-import BarChart from "../components/Reports/BarChart/BarChart";
-import PieChart from "../components/Reports/PieChart/PieChart";
-import TotalTimeSummary from "../components/Reports/TotalTimeSummary/TotalTimeSummary";
-import Subtitle from "../components/common/Subtitle/Subtitle";
-import ActivitiesKey from "../components/common/ActivitiesKey/ActivitiesKey";
-import AveragesKey from "../components/Reports/AveragesKey/AveragesKey";
-import Comparison from "../components/Reports/Comparison/Comparison";
-import BottomNav from "../components/common/BottomNav/BottomNav";
+import Header from "../Components/Common/Header/Header";
+import Title from "../Components/Common/Title/Title";
+import SelectedMonth from "../Components/Common/SelectedMonth/SelectedMonth";
+import BarChart from "../Components/Reports/BarChart/BarChart";
+import PieChart from "../Components/Reports/PieChart/PieChart";
+import TotalTimeSummary from "../Components/Reports/TotalTimeSummary/TotalTimeSummary";
+import Subtitle from "../Components/Common/Subtitle/Subtitle";
+import ActivitiesKey from "../Components/Common/ActivitiesKey/ActivitiesKey";
+import AveragesKey from "../Components/Reports/AveragesKey/AveragesKey";
+import Comparison from "../Components/Reports/Comparison/Comparison";
+import BottomNav from "../Components/Common/BottomNav/BottomNav";
 
-import VictoryPieChart from "../components/Reports/VictoryPieChart/VictoryPieChart";
+import VictoryPieChart from "../Components/Reports/VictoryPieChart/VictoryPieChart";
 
 import base from "../styles/base";
 

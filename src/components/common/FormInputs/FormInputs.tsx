@@ -4,7 +4,11 @@ import { TextInput, View, StyleSheet } from "react-native";
 import base from "../../../styles/base";
 const { defaultInput } = base;
 
-const FormInputs = ({ inputLabels }) => {
+interface Props {
+  inputLabels: string[];
+}
+
+const FormInputs: React.FC<Props> = ({ inputLabels }) => {
   const inputFields = inputLabels.map((e, i) => {
     return <TextInput key={i} placeholder={e} style={defaultInput}></TextInput>;
   });

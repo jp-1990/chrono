@@ -1,14 +1,14 @@
 import React from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 
-import Header from "../components/common/Header/Header";
-import Title from "../components/common/Title/Title";
-import DataChart from "../components/common/DataChart/DataChart";
-import Subtitle from "../components/common/Subtitle/Subtitle";
-import SelectedMonth from "../components/common/SelectedMonth/SelectedMonth";
-import ActivitiesKey from "../components/common/ActivitiesKey/ActivitiesKey";
-import MainButton from "../components/common/MainButton/MainButton";
-import BottomNav from "../components/common/BottomNav/BottomNav";
+import Header from "../Components/Common/Header/Header";
+import Title from "../Components/Common/Title/Title";
+import DataChart from "../Components/Common/DataChart/DataChart";
+import Subtitle from "../Components/Common/Subtitle/Subtitle";
+import SelectedMonth from "../Components/Common/SelectedMonth/SelectedMonth";
+import ActivitiesKey from "../Components/Common/ActivitiesKey/ActivitiesKey";
+import MainButton from "../Components/Common/MainButton/MainButton";
+import BottomNav from "../Components/Common/BottomNav/BottomNav";
 
 import base from "../styles/base";
 

@@ -1,7 +1,17 @@
 import React from "react";
 import { Pressable, Text } from "react-native";
 
-const MainButton = ({
+interface Props {
+  onPress(): void;
+  label: string;
+  width: number | string;
+  ripple: string;
+  colorBG: string;
+  colorText: string;
+  marginTop?: number;
+}
+
+const MainButton: React.FC<Props> = ({
   width,
   colorBG,
   colorText,

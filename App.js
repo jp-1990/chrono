@@ -6,12 +6,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 
-import Login from "./src/screens/Login";
-import ForgottenPassword from "./src/screens/ForgottenPassword";
-import SignUp from "./src/screens/SignUp";
-import Dashboard from "./src/screens/Dashboard";
-import Timeline from "./src/screens/Timeline";
-import Reports from "./src/screens/Reports";
+import Login from "./src/Screens/Login";
+import ForgottenPassword from "./src/Screens/ForgottenPassword";
+import SignUp from "./src/Screens/SignUp";
+import Dashboard from "./src/Screens/Dashboard";
+import Timeline from "./src/Screens/Timeline";
+import Reports from "./src/Screens/Reports";
 
 const Stack = createStackNavigator();
 
