@@ -3,7 +3,13 @@ import { View, Text, StyleSheet } from "react-native";
 
 import base from "../../../styles/base";
 
-const AppTitle = ({ title1, title2, subtitle }) => {
+interface Props {
+  title1:string
+  title2?:string
+  subtitle:string
+}
+
+const AppTitle:React.FC<Props> = ({ title1, title2, subtitle }) => {
   return (
     <View style={styles.titleBox}>
       <Text style={styles.title}>{title1}</Text>

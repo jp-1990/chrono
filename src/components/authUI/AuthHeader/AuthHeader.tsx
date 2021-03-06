@@ -6,11 +6,15 @@ import base from "../../../styles/base";
 
 const { colors } = base;
 
-const AuthHeader = ({ statusbar }) => {
+interface Props {
+  statusBar: "auto" | "inverted" | "light" | "dark" | undefined;
+}
+
+const AuthHeader: React.FC<Props> = ({ statusBar }) => {
   return (
     <>
-      <ExpoStatusBar style={statusbar} />
-      <View style={styles.statusbar}></View>
+      <ExpoStatusBar style={statusBar} />
+      <View style={styles.statusBar}></View>
       <View style={styles.header}></View>
     </>
   );
@@ -19,7 +23,7 @@ const AuthHeader = ({ statusbar }) => {
 export default AuthHeader;
 
 const styles = StyleSheet.create({
-  statusbar: {
+  statusBar: {
     height: StatusBar.currentHeight,
     backgroundColor: colors.menuSecondary,
   },

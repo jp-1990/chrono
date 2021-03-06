@@ -1,13 +1,18 @@
 import React from "react";
-import { TextInput, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
-import FormInputs from "../../common/FormInputs/FormInputs";
-import MainButton from "../../common/MainButton/MainButton";
+import { FormInputs, MainButton } from "../../Common/index";
 
 import base from "../../../styles/base";
 const { colors } = base;
 
-const AuthForm = ({ inputLabels, submitLabel, onSubmit }) => {
+interface Props {
+  inputLabels: string[];
+  submitLabel: string;
+  onSubmit(): void;
+}
+
+const AuthForm: React.FC<Props> = ({ inputLabels, submitLabel, onSubmit }) => {
   return (
     <View style={styles.container}>
       <FormInputs inputLabels={inputLabels} />

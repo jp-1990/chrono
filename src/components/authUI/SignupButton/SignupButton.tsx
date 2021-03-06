@@ -1,7 +1,19 @@
 import React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 
-const SignupButton = ({ labelColor, buttonColor, ripple, onPress }) => {
+interface Props {
+  labelColor?: string;
+  buttonColor?: string;
+  ripple?: string;
+  onPress(): void;
+}
+
+const SignupButton: React.FC<Props> = ({
+  labelColor,
+  buttonColor,
+  ripple,
+  onPress,
+}) => {
   return (
     <View style={styles.signupBox}>
       <Text style={{ ...styles.signupText, color: labelColor || "#454851" }}>
