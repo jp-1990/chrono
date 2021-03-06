@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 
-import ActivityTotal from "../../common/ActivityTotal/ActivityTotal";
+import ActivityTotal from "../ActivityTotal/ActivityTotal";
 
 const ActivitiesKey = ({ activities }) => {
   // activities contains array of items with color, title and total
