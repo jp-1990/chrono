@@ -3,8 +3,12 @@ import { View, StyleSheet } from "react-native";
 
 import ActivityTotal from "../ActivityTotal/ActivityTotal";
 
-const ActivitiesKey = ({ activities }) => {
-  // activities contains array of items with color, title and total
+interface Props {
+  activities: { color: string; title: string; total: number }[];
+}
+
+const ActivitiesKey: React.FC<Props> = ({ activities }) => {
+  // activities contains array of objects with color, title and total
 
   // build arrays to be rendered
   const leftCol = [];

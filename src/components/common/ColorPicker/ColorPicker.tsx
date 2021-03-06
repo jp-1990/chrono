@@ -4,7 +4,19 @@ import { View, StyleSheet, Text, Pressable } from "react-native";
 import base from "../../../styles/base";
 const { colors } = base;
 
-const ColorPicker = ({ color, setColor, display }) => {
+export interface Display {
+  setColorPickerVisible(): void;
+  colorPickerVisible: boolean;
+}
+
+interface Props {
+  color: string;
+  setColor: React.Dispatch<React.SetStateAction<string>>;
+  display: Display;
+}
+
+// provides a color picker which supports 21 colors
+const ColorPicker: React.FC<Props> = ({ color, setColor, display }) => {
   const colorSelection = [
     "navy",
     "steelblue",

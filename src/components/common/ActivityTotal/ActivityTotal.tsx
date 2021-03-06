@@ -4,18 +4,26 @@ import { View, Text, StyleSheet } from "react-native";
 import base from "../../../styles/base";
 const { colors } = base;
 
+interface Props {
+  color: string;
+  title: string;
+  total: number;
+  totalVisible?: boolean;
+}
+
 // basic summary of activity containing title, color and total hours
-const ActivityTotal = ({ color, title, total, totalVisible }) => {
-  let renderTitle;
-  if (title.length > 10) {
-    renderTitle = `${title.substring(0, 7)}...`;
-  } else {
-    renderTitle = title;
-  }
+const ActivityTotal: React.FC<Props> = ({
+  color,
+  title,
+  total,
+  totalVisible,
+}) => {
   return (
     <View style={styles.container}>
       <View style={{ ...styles.color, backgroundColor: color }}></View>
-      <Text style={styles.title}>{renderTitle}</Text>
+      <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+        {title}
+      </Text>
       {totalVisible ? (
         <Text style={styles.total}>[ {total} hours ]</Text>
       ) : null}

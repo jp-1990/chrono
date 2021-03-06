@@ -1,12 +1,19 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 
-const DataBar = ({ color, data }) => {
+import { DataTypes } from "../../../../types/data";
+
+interface Props {
+  data: DataTypes;
+}
+
+// renders an individual bar within the the data chart
+const DataBar: React.FC<Props> = ({ data }) => {
   return (
     <View
       style={{
         ...styles.dataBar,
-        backgroundColor: color,
+        backgroundColor: data.color,
         width: data.width,
         marginLeft: data.margin ? data.margin : 0,
       }}

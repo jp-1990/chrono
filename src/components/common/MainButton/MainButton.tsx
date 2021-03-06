@@ -4,10 +4,10 @@ import { Pressable, Text } from "react-native";
 interface Props {
   onPress(): void;
   label: string;
-  width: number | string;
-  ripple: string;
-  colorBG: string;
-  colorText: string;
+  width?: number | string;
+  ripple?: string;
+  colorBG?: string;
+  colorText?: string;
   marginTop?: number;
 }
 
@@ -23,15 +23,15 @@ const MainButton: React.FC<Props> = ({
   return (
     <Pressable
       style={{
-        backgroundColor: colorBG,
-        width: width,
+        backgroundColor: colorBG || undefined,
+        width: width || undefined,
         justifyContent: "center",
         alignItems: "center",
         height: 42,
         marginTop: marginTop || 36,
       }}
       android_ripple={{
-        color: ripple,
+        color: ripple || undefined,
         borderless: false,
         radius: 150,
       }}
@@ -39,7 +39,7 @@ const MainButton: React.FC<Props> = ({
     >
       <Text
         style={{
-          color: colorText,
+          color: colorText || undefined,
           fontFamily: "lato-regular",
           fontSize: 18,
         }}

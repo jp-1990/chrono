@@ -3,10 +3,17 @@ import { View, Text, StyleSheet } from "react-native";
 
 import ChartRow from "./ChartRow/ChartRow";
 
+import { DataTypes } from "../../../types/data";
 import base from "../../../styles/base";
 const { colors } = base;
 
-const DataChart = ({ data, start, num }) => {
+interface Props {
+  start: number;
+  num: number;
+  data: { [name: number]: DataTypes[] }[];
+}
+
+const DataChart: React.FC<Props> = ({ data, start, num }) => {
   let date = start || 1;
   const iterations = num || data.length;
 

@@ -24,7 +24,7 @@ const BottomNav = () => {
         style={{
           ...styles.iconBox,
           backgroundColor:
-            route.name === "Dashboard" ? colors.buttonSecondary : null,
+            route.name === "Dashboard" ? colors.buttonSecondary : undefined,
         }}
       >
         <View>
@@ -45,7 +45,7 @@ const BottomNav = () => {
         style={{
           ...styles.iconBox,
           backgroundColor:
-            route.name === "Timeline" ? colors.buttonSecondary : null,
+            route.name === "Timeline" ? colors.buttonSecondary : undefined,
         }}
       >
         <View>
@@ -66,7 +66,7 @@ const BottomNav = () => {
         style={{
           ...styles.iconBox,
           backgroundColor:
-            route.name === "Reports" ? colors.buttonSecondary : null,
+            route.name === "Reports" ? colors.buttonSecondary : undefined,
         }}
       >
         <View>

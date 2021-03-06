@@ -5,7 +5,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import base from "../../../styles/base";
 const { colors } = base;
 
-const MonthSelector = ({ Left, Right }) => {
+interface Props {
+  Left: React.ReactNode;
+  Right: React.ReactNode;
+}
+
+const MonthSelector: React.FC<Props> = ({ Left, Right }) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>

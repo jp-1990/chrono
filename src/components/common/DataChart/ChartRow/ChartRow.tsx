@@ -4,16 +4,20 @@ import { View, Text, StyleSheet } from "react-native";
 import DataBar from "./DataBar";
 
 import base from "../../../../styles/base";
+import { DataArray } from "../../../../types/data";
 const { colors } = base;
 
-// expects data containing at least a width and marginLeft as percentages
-const ChartRow = ({ date, data }) => {
+interface Props extends DataArray {
+  date: number;
+}
+
+// expects width, marginLeft and color for each item to be rendered on the chart row
+const ChartRow: React.FC<Props> = ({ date, data }) => {
   const renderedBars = data?.map((e, i) => {
     return (
       <DataBar
         key={i}
-        color={e.color}
-        data={{ width: e.width, margin: e.margin }}
+        data={{ color: e.color, width: e.width, margin: e.margin }}
       />
     );
   });

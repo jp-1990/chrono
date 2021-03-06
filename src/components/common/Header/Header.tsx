@@ -6,10 +6,14 @@ import base from "../../../styles/base";
 
 const { colors } = base;
 
-const Header = ({ statusbar }) => {
+interface Props {
+  statusBar: "auto" | "inverted" | "light" | "dark" | undefined;
+}
+
+const Header: React.FC<Props> = ({ statusBar }) => {
   return (
     <>
-      <ExpoStatusBar style={statusbar} />
+      <ExpoStatusBar style={statusBar} />
       <View style={styles.statusbar}></View>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
