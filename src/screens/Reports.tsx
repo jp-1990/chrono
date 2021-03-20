@@ -21,7 +21,6 @@ import {
 
 import { base } from "../styles";
 const { screen } = base;
-const { contentWrapper } = base;
 
 // test data
 const activities = [
@@ -96,7 +95,7 @@ const Timeline = () => {
     <View style={screen}>
       <Header statusBar="light" />
       <ScrollView style={styles.scrollZindex} fadingEdgeLength={50}>
-        <View style={[contentWrapper, styles.containerPadding]}>
+        <View style={styles.containerPadding}>
           <View style={styles.titleWrapper}>
             <View style={styles.titleInnerWrapper}>
               <View style={styles.titleContainer}>
