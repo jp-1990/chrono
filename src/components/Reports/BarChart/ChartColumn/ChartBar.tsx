@@ -1,6 +1,9 @@
 import React from "react";
 import { View } from "react-native";
-const ChartBar = ({ color, height }) => {
+
+import { BarChartTypes } from "../../../../types";
+
+const ChartBar: React.FC<BarChartTypes["chartBar"]> = ({ color, height }) => {
   return (
     <View
       style={{ backgroundColor: color, height: height, width: "100%" }}

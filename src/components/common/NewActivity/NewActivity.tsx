@@ -1,26 +1,50 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker, { Event } from "@react-native-community/datetimepicker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import FormInputs from "../FormInputs/FormInputs";
-import ColorPicker from "../ColorPicker/ColorPicker";
+import ColorPicker, {
+  Display as DisplayColorPickerProps,
+} from "../ColorPicker/ColorPicker";
 import MainButton from "../MainButton/MainButton";
 
-import base from "../../../styles/base";
+import { base } from "../../../styles";
 const { colors } = base;
 const { defaultInput } = base;
 
-const NewActivity = ({ onSubmit, close, colorPicker }) => {
-  const [date, setDate] = useState({ now: new Date(Date.now()) });
+interface DateTimePickerTypes {
+  mode: "date" | "time" | "datetime" | "countdown" | undefined;
+  target: "startTime" | "endTime" | "startDate" | "endDate";
+  dateObject: {
+    now: Date;
+    startTime?: Date;
+    endTime?: Date;
+    startDate?: Date;
+    endDate?: Date;
+  };
+}
+
+interface Props {
+  onSubmit(): void;
+  close(): void;
+  colorPicker: DisplayColorPickerProps;
+}
+
+const NewActivity: React.FC<Props> = ({ onSubmit, close, colorPicker }) => {
+  const [date, setDate] = useState<DateTimePickerTypes["dateObject"]>({
+    now: new Date(Date.now()),
+  });
   const [color, setColor] = useState(colors.menuPrimary);
-  const [mode, setMode] = useState("date");
+  const [mode, setMode] = useState<DateTimePickerTypes["mode"]>("date");
   const [show, setShow] = useState(false);
-  const [target, setTarget] = useState();
+  const [target, setTarget] = useState<DateTimePickerTypes["target"]>(
+    "startTime"
+  );
 
   //export to utils?
-  const ukDate = (dateObj) => {
+  const ukDate = (dateObj: Date) => {
     const year = dateObj.getFullYear();
     const month =
       dateObj.getMonth() + 1 < 10
@@ -31,7 +55,7 @@ const NewActivity = ({ onSubmit, close, colorPicker }) => {
     return `${date}/${month}/${year.toString().substring(0, 2)}`;
   };
 
-  const onChange = (event, selectedDate) => {
+  const onChange = (event: Event, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || undefined;
     setShow(false);
     setDate((prev) => {
@@ -39,17 +63,17 @@ const NewActivity = ({ onSubmit, close, colorPicker }) => {
     });
   };
 
-  const showMode = (currentMode) => {
+  const showMode = (currentMode: DateTimePickerTypes["mode"]) => {
     setShow(true);
     setMode(currentMode);
   };
 
-  const showDatepicker = (target) => {
+  const showDatepicker = (target: DateTimePickerTypes["target"]) => {
     setTarget(target);
     showMode("date");
   };
 
-  const showTimepicker = (target) => {
+  const showTimepicker = (target: DateTimePickerTypes["target"]) => {
     setTarget(target);
     showMode("time");
   };
@@ -129,6 +153,7 @@ const NewActivity = ({ onSubmit, close, colorPicker }) => {
                 testID="dateTimePicker"
                 value={date.now}
                 mode={mode}
+                // @ts-expect-error something within DateTimePicker types
                 is24Hour={true}
                 display="default"
                 onChange={onChange}
@@ -145,7 +170,7 @@ const NewActivity = ({ onSubmit, close, colorPicker }) => {
             colorText={colors.buttonText}
             ripple={colors.buttonPrimaryRipple}
             marginTop={24}
-            onPress={null}
+            onPress={onSubmit}
           />
         </View>
       </View>

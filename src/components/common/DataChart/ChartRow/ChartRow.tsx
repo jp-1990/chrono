@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 
 import DataBar from "./DataBar";
 
-import base from "../../../../styles/base";
+import { base } from "../../../../styles";
 import { DataArray } from "../../../../types/data";
 const { colors } = base;
 

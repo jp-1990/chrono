@@ -1,4 +1,13 @@
-const base = {
+import { StyleProp, ViewStyle, TextStyle } from "react-native";
+
+interface StyleTypes {
+  colors: { [name: string]: string };
+  defaultInput: StyleProp<TextStyle>;
+  screen: StyleProp<ViewStyle>;
+  contentWrapper: StyleProp<ViewStyle>;
+}
+
+export const base: StyleTypes = {
   colors: {
     menuPrimary: "#818CA0",
     menuSecondary: "#454851",
@@ -39,5 +48,3 @@ const base = {
     backgroundColor: "#fff",
   },
 };
-
-export default base;

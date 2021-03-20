@@ -3,7 +3,7 @@ import { View, StyleSheet, Pressable } from "react-native";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-import base from "../../../styles/base";
+import { base } from "../../../styles";
 const { colors } = base;
 
 const BottomNav = () => {

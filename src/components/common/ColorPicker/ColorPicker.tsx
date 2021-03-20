@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
 
-import base from "../../../styles/base";
+import { base } from "../../../styles";
 const { colors } = base;
 
 export interface Display {

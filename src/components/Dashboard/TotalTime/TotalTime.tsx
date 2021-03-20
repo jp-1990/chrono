@@ -3,10 +3,14 @@ import { View, Text, StyleSheet } from "react-native";
 
 import Subtitle from "../../Common/Subtitle/Subtitle";
 
-import base from "../../../styles/base";
+import { base } from "../../../styles";
 const { colors } = base;
 
-const TotalTime = ({ total }) => {
+interface Props {
+  total: number;
+}
+
+const TotalTime: React.FC<Props> = ({ total }) => {
   return (
     <View style={styles.container}>
       <Subtitle text="total" />

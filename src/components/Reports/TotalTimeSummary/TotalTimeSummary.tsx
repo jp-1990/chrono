@@ -1,10 +1,15 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import base from "../../../styles/base";
+import { base } from "../../../styles";
 const { colors } = base;
 
-const TotalTimeSummary = ({ title, time }) => {
+interface Props {
+  title: string;
+  time: number;
+}
+
+const TotalTimeSummary: React.FC<Props> = ({ title, time }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>

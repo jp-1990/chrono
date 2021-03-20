@@ -1,13 +1,17 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import Subtitle from "../../Common/Subtitle/Subtitle";
-import ActivityTotal from "../../Common/ActivityTotal/ActivityTotal";
+import { ActivityTotal, Subtitle } from "../../Common";
+import { ActivityTypes } from "../../../types";
 
-import base from "../../../styles/base";
+import { base } from "../../../styles";
 const { colors } = base;
 
-const Comparison = ({ activities }) => {
+interface Props {
+  activities: ActivityTypes["activity"][];
+}
+
+const Comparison: React.FC<Props> = ({ activities }) => {
   // activities contains array of items with color, title and total
 
   // activity items to render
@@ -24,7 +28,7 @@ const Comparison = ({ activities }) => {
     renderedItems.push(
       <View key={i} style={styles.row}>
         <ActivityTotal
-          color={activities[i].color}
+          color={activities[i].color || colors.textPrimary}
           title={activities[i].title}
           total={activities[i].total}
           totalVisible={false}

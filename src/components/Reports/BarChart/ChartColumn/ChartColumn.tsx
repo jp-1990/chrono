@@ -2,11 +2,19 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 import ChartBar from "./ChartBar";
+import { BarChartTypes } from "../../../../types";
 
-import base from "../../../../styles/base";
+import { base } from "../../../../styles";
 const { colors } = base;
 
-const ChartColumn = ({ data, width, date, max }) => {
+interface Props {
+  data: BarChartTypes["chartBar"][];
+  width: number;
+  date: number;
+  max: number;
+}
+
+const ChartColumn: React.FC<Props> = ({ data, width, date, max }) => {
   const column = data.map((e, i) => {
     return <ChartBar key={i} color={e.color} height={e.height} />;
   });

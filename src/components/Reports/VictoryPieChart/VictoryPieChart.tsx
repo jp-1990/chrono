@@ -3,10 +3,15 @@ import { StyleSheet, View, Pressable } from "react-native";
 import { VictoryPie, Slice, VictoryLabel } from "victory-native";
 import Svg from "react-native-svg";
 
-import base from "../../../styles/base";
+import { ActivityTypes } from "../../../types";
+import { base } from "../../../styles";
 const { colors } = base;
 
-const VictoryPieChart = ({ activities }) => {
+interface Props {
+  activities: ActivityTypes["activity"][];
+}
+
+const VictoryPieChart: React.FC<Props> = ({ activities }) => {
   ////////////////////////////////////////////////
 
   // TASKS:
@@ -52,6 +57,7 @@ const VictoryPieChart = ({ activities }) => {
           standalone={false}
           height={300}
           width={300}
+          // @ts-expect-error VictoryPie types
           colorScale={colorScale}
           data={data}
           labelRadius={120}
@@ -83,6 +89,7 @@ const VictoryPieChart = ({ activities }) => {
                       target: "data",
                       mutation: (props) => {
                         // Selected data
+                        // @ts-expect-error VictoryPie internal types
                         alert(props.style.fill);
                       },
                     },

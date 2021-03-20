@@ -3,10 +3,15 @@ import { Text, StyleSheet } from "react-native";
 
 import MonthSelector from "../MonthSelector/MonthSelector";
 
-import base from "../../../styles/base";
+import { base } from "../../../styles";
 const { colors } = base;
 
-const SelectedMonth = ({ month, year }) => {
+interface Props {
+  month: string;
+  year: number;
+}
+
+const SelectedMonth: React.FC<Props> = ({ month, year }) => {
   const Left = () => {
     return <Text style={styles.month}>{month.substring(0, 3)} </Text>;
   };
@@ -15,9 +20,7 @@ const SelectedMonth = ({ month, year }) => {
     return <Text style={styles.year}>{year}</Text>;
   };
 
-  return (
-    <MonthSelector Left={<Left />} Right={<Right />} flexDirection="row" />
-  );
+  return <MonthSelector Left={<Left />} Right={<Right />} />;
 };
 
 export default SelectedMonth;

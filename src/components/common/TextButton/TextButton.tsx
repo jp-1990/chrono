@@ -1,7 +1,14 @@
 import React from "react";
 import { Pressable, Text } from "react-native";
 
-const TextButton = ({ color, label, ripple, onPress }) => {
+interface Props {
+  color?: string;
+  label: string;
+  ripple?: string;
+  onPress(): void;
+}
+
+const TextButton: React.FC<Props> = ({ color, label, ripple, onPress }) => {
   return (
     <Pressable
       style={{

@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 
 import { FormInputs, MainButton } from "../../Common/index";
 
-import base from "../../../styles/base";
+import { base } from "../../../styles";
 const { colors } = base;
 
 interface Props {

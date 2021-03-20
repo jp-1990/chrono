@@ -10,11 +10,10 @@ import ActivitiesKey from "../Components/Common/ActivitiesKey/ActivitiesKey";
 import MainButton from "../Components/Common/MainButton/MainButton";
 import BottomNav from "../Components/Common/BottomNav/BottomNav";
 
-import base from "../styles/base";
+import { base } from "../styles/base";
 
 const { colors } = base;
 const { screen } = base;
-const { contentWrapper } = base;
 
 // test data
 const testinfo = [
@@ -58,7 +57,7 @@ const testinfo = [
   ],
 ];
 
-const testData = [];
+const testData: any = [];
 let j = 0;
 for (let i = 1; i <= 31; i++) {
   if (j === testinfo.length) j = 0;
@@ -69,21 +68,21 @@ for (let i = 1; i <= 31; i++) {
 const Timeline = () => {
   return (
     <View style={screen}>
-      <Header statusbar="light" />
+      <Header statusBar="light" />
       <ScrollView style={styles.scrollZindex} fadingEdgeLength={50}>
-        <View style={({ ...contentWrapper }, styles.containerPadding)}>
+        <View style={styles.containerPadding}>
           <View style={styles.titleWrapper}>
             <View style={styles.titleBox}>
               <View style={styles.titleContainer}>
                 <Title text="timeline" />
               </View>
-              <View style={styles.monthContainer}>
+              <View>
                 <SelectedMonth month="january" year={2021} />
               </View>
             </View>
           </View>
-          <View style={styles.chartContainer}>
-            <DataChart data={testData} start={null} num={null} />
+          <View>
+            <DataChart data={testData} start={0} num={0} />
           </View>
           <View style={styles.subtitleBox}>
             <Subtitle text="key" />
@@ -116,7 +115,7 @@ const Timeline = () => {
               colorBG={colors.buttonPrimary}
               colorText={colors.buttonText}
               ripple={colors.buttonPrimaryRipple}
-              onPress={null}
+              onPress={() => {}}
             />
           </View>
         </View>

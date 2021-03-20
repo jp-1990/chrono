@@ -13,7 +13,19 @@ import Dashboard from "./src/Screens/Dashboard";
 import Timeline from "./src/Screens/Timeline";
 import Reports from "./src/Screens/Reports";
 
-const Stack = createStackNavigator();
+type RouteParams = {
+  id: string;
+};
+export type StackParams = {
+  Login?: RouteParams;
+  "Forgotten Password"?: RouteParams;
+  "Sign Up"?: RouteParams;
+  Dashboard?: RouteParams;
+  Timeline?: RouteParams;
+  Reports?: RouteParams;
+};
+
+const Stack = createStackNavigator<StackParams>();
 
 export default function App() {
   let [fontsLoaded] = useFonts({

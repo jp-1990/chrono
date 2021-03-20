@@ -2,11 +2,16 @@ import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 
 import ChartColumn from "./ChartColumn/ChartColumn";
+import { BarChartTypes } from "../../../types";
 
-import base from "../../../styles/base";
+import { base } from "../../../styles";
 const { colors } = base;
 
-const BarChart = ({ data }) => {
+interface Props {
+  data: { [name: string]: BarChartTypes["chartBar"][] }[];
+}
+
+const BarChart: React.FC<Props> = ({ data }) => {
   const width = 100 / data.length;
 
   const chartColumns = [];

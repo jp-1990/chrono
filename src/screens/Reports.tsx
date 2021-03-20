@@ -1,23 +1,25 @@
 import React from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 
-import Header from "../Components/Common/Header/Header";
-import Title from "../Components/Common/Title/Title";
-import SelectedMonth from "../Components/Common/SelectedMonth/SelectedMonth";
-import BarChart from "../Components/Reports/BarChart/BarChart";
-import PieChart from "../Components/Reports/PieChart/PieChart";
-import TotalTimeSummary from "../Components/Reports/TotalTimeSummary/TotalTimeSummary";
-import Subtitle from "../Components/Common/Subtitle/Subtitle";
-import ActivitiesKey from "../Components/Common/ActivitiesKey/ActivitiesKey";
-import AveragesKey from "../Components/Reports/AveragesKey/AveragesKey";
-import Comparison from "../Components/Reports/Comparison/Comparison";
-import BottomNav from "../Components/Common/BottomNav/BottomNav";
+import {
+  Header,
+  Title,
+  Subtitle,
+  SelectedMonth,
+  BottomNav,
+  ActivitiesKey,
+} from "../Components/Common";
 
-import VictoryPieChart from "../Components/Reports/VictoryPieChart/VictoryPieChart";
+import {
+  BarChart,
+  PieChart,
+  TotalTimeSummary,
+  AveragesKey,
+  Comparison,
+  VictoryPieChart,
+} from "../Components/Reports";
 
-import base from "../styles/base";
-
-const { colors } = base;
+import { base } from "../styles";
 const { screen } = base;
 const { contentWrapper } = base;
 
@@ -81,7 +83,7 @@ const testinfo = [
   ],
 ];
 
-const testData = [];
+const testData: any = [];
 let j = 0;
 for (let i = 1; i <= 31; i++) {
   if (j === testinfo.length) j = 0;
@@ -92,15 +94,15 @@ for (let i = 1; i <= 31; i++) {
 const Timeline = () => {
   return (
     <View style={screen}>
-      <Header statusbar="light" />
+      <Header statusBar="light" />
       <ScrollView style={styles.scrollZindex} fadingEdgeLength={50}>
-        <View style={({ ...contentWrapper }, styles.containerPadding)}>
+        <View style={[contentWrapper, styles.containerPadding]}>
           <View style={styles.titleWrapper}>
             <View style={styles.titleInnerWrapper}>
               <View style={styles.titleContainer}>
                 <Title text="reports" />
               </View>
-              <View style={styles.monthContainer}>
+              <View>
                 <SelectedMonth month="january" year={2021} />
               </View>
             </View>
@@ -108,7 +110,7 @@ const Timeline = () => {
           <View style={styles.activitiesTitleBox}>
             <Title text="activities" />
           </View>
-          <View style={styles.chartContainer}>
+          <View>
             <BarChart data={testData} />
           </View>
           <View style={styles.subtitleBox}>

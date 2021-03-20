@@ -1,19 +1,27 @@
 import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { StackParams } from "../../App";
 
-import base from "../styles/base";
-
-import AuthHeader from "../Components/AuthUI/AuthHeader/AuthHeader";
 import TextButton from "../Components/Common/TextButton/TextButton";
-import AppTitle from "../Components/AuthUI/AppTitle/AppTitle";
-import AuthForm from "../Components/AuthUI/AuthForm/AuthForm";
+import { AuthHeader, AppTitle, AuthForm } from "../Components/AuthUI";
 
+import { base } from "../styles";
 const { colors } = base;
 
-const SignUp = ({ navigation }) => {
+type ForgottenPasswordNavigationProp = StackNavigationProp<
+  StackParams,
+  "Sign Up"
+>;
+
+interface Props {
+  navigation: ForgottenPasswordNavigationProp;
+}
+
+const SignUp: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.screen}>
-      <AuthHeader statusbar="light" />
+      <AuthHeader statusBar="light" />
       <ScrollView>
         <View style={styles.contentWrapper}>
           <AppTitle
@@ -30,7 +38,7 @@ const SignUp = ({ navigation }) => {
                 "Confirm Password",
               ]}
               submitLabel={"Sign up"}
-              onSubmit={null}
+              onSubmit={() => {}}
             />
             <TextButton
               onPress={() => navigation.navigate("Login")}

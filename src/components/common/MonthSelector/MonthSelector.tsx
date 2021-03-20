@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-import base from "../../../styles/base";
+import { base } from "../../../styles";
 const { colors } = base;
 
 interface Props {

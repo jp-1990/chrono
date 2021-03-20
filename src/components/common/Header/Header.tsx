@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, StatusBar, Image } from "react-native";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 
-import base from "../../../styles/base";
+import { base } from "../../../styles";
 
 const { colors } = base;
 

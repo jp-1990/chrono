@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { ScrollView, View, StyleSheet, Modal } from "react-native";
 
-import Header from "../Components/Common/Header/Header";
-import Title from "../Components/Common/Title/Title";
-import DataChart from "../Components/Common/DataChart/DataChart";
-import Subtitle from "../Components/Common/Subtitle/Subtitle";
-import TopActivities from "../Components/Dashboard/TopActivities/TopActivities";
-import TotalTime from "../Components/Dashboard/TotalTime/TotalTime";
-import MainButton from "../Components/Common/MainButton/MainButton";
-import BottomNav from "../Components/Common/BottomNav/BottomNav";
-import NewActivity from "../Components/Common/NewActivity/NewActivity";
+import {
+  Header,
+  Title,
+  DataChart,
+  Subtitle,
+  MainButton,
+  BottomNav,
+  NewActivity,
+} from "../Components/Common";
+import { TopActivities, TotalTime } from "../Components/Dashboard";
 
-import base from "../styles/base";
+import { base } from "../styles";
 
 const { colors } = base;
 const { screen } = base;
-const { contentWrapper } = base;
 
 // test data
 const testinfo = [
@@ -59,7 +59,7 @@ const testinfo = [
   ],
 ];
 
-const testData = [];
+const testData: any = [];
 let j = 0;
 for (let i = 1; i <= 31; i++) {
   if (j === testinfo.length) j = 0;
@@ -73,7 +73,7 @@ const Dashboard = () => {
 
   return (
     <View style={screen}>
-      <Header statusbar="light" />
+      <Header statusBar="light" />
       <ScrollView style={styles.scrollZindex} fadingEdgeLength={50}>
         <Modal
           animationType="slide"
@@ -85,7 +85,8 @@ const Dashboard = () => {
           }}
         >
           <NewActivity
-            onSubmit={null}
+            onSubmit={() => {}}
+            close={() => {}}
             colorPicker={{
               setColorPickerVisible: () =>
                 setColorPickerVisible((prev) => !prev),
@@ -93,7 +94,7 @@ const Dashboard = () => {
             }}
           />
         </Modal>
-        <View style={({ ...contentWrapper }, styles.containerPadding)}>
+        <View style={styles.containerPadding}>
           <View style={styles.titleBox}>
             <Title text="last 7 days" />
           </View>

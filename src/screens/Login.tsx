@@ -1,21 +1,32 @@
 import React from "react";
-import { View, TextInput, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { StackParams } from "../../App";
 
-import base from "../styles/base";
-
-import AuthHeader from "../Components/AuthUI/AuthHeader/AuthHeader";
+import {
+  AuthHeader,
+  AppTitle,
+  AuthForm,
+  SignUpButton,
+} from "../Components/AuthUI";
 import TextButton from "../Components/Common/TextButton/TextButton";
 
-import AppTitle from "../Components/AuthUI/AppTitle/AppTitle";
-import AuthForm from "../Components/AuthUI/AuthForm/AuthForm";
-import SignupButton from "../Components/AuthUI/SignupButton/SignupButton";
-
+import { base } from "../styles";
 const { colors } = base;
 
-const Login = ({ navigation }) => {
+type ForgottenPasswordNavigationProp = StackNavigationProp<
+  StackParams,
+  "Login"
+>;
+
+interface Props {
+  navigation: ForgottenPasswordNavigationProp;
+}
+
+const Login: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.screen}>
-      <AuthHeader statusbar="light" />
+      <AuthHeader statusBar="light" />
       <ScrollView>
         <View style={styles.contentWrapper}>
           <AppTitle
@@ -36,7 +47,7 @@ const Login = ({ navigation }) => {
               ripple={colors.buttonTextRipple}
             />
           </View>
-          <SignupButton
+          <SignUpButton
             onPress={() => navigation.navigate("Sign Up")}
             labelColor={colors.textPrimary}
             buttonColor={colors.buttonSecondary}

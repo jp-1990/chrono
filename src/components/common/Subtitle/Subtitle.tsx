@@ -1,10 +1,14 @@
 import React from "react";
 import { Text, StyleSheet } from "react-native";
 
-import base from "../../../styles/base";
+import { base } from "../../../styles";
 const { colors } = base;
 
-const Subtitle = ({ text }) => {
+interface Props {
+  text: string;
+}
+
+const Subtitle: React.FC<Props> = ({ text }) => {
   return <Text style={styles.text}>{text}</Text>;
 };
 
