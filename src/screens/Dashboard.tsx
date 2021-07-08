@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ScrollView, View, StyleSheet, Modal } from "react-native";
+import { useQuery, gql } from "@apollo/client";
 
 import {
   Header,
@@ -70,6 +71,22 @@ for (let i = 1; i <= 31; i++) {
 const Dashboard = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [colorPickerVisible, setColorPickerVisible] = useState(false);
+
+  const { data, loading } = useQuery(
+    gql`
+      query {
+        tasks {
+          id
+          title
+        }
+      }
+    `,
+    {
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
 
   return (
     <View style={screen}>

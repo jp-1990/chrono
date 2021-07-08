@@ -1,5 +1,8 @@
 import React from "react";
 
+import { AppRegistry } from "react-native";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -25,6 +28,17 @@ export type StackParams = {
   Reports?: RouteParams;
 };
 
+// Initialize Apollo Client
+const client = new ApolloClient({
+  uri: "http://192.168.0.17:4000/graphql",
+  cache: new InMemoryCache(),
+  headers: {
+    authorization:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjI1YTE3YjgxZmFkOTQ0MzA4MjBmMzgiLCJpYXQiOjE2MjUxNjI3OTEsImV4cCI6MTYzMjkzODc5MX0.vpKgq_awHYI1k0uQvdVNZO-1Cqc07f3lm2XTXT1T7ao",
+  },
+});
+AppRegistry.registerComponent("MyApplication", () => App);
+
 const Stack = createStackNavigator<StackParams>();
 
 export default function App() {
@@ -40,19 +54,21 @@ export default function App() {
     return <AppLoading />;
   } else {
     return (
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen
-            name="Forgotten Password"
-            component={ForgottenPassword}
-          />
-          <Stack.Screen name="Sign Up" component={SignUp} />
-          <Stack.Screen name="Dashboard" component={Dashboard} />
-          <Stack.Screen name="Timeline" component={Timeline} />
-          <Stack.Screen name="Reports" component={Reports} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ApolloProvider client={client}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen
+              name="Forgotten Password"
+              component={ForgottenPassword}
+            />
+            <Stack.Screen name="Sign Up" component={SignUp} />
+            <Stack.Screen name="Dashboard" component={Dashboard} />
+            <Stack.Screen name="Timeline" component={Timeline} />
+            <Stack.Screen name="Reports" component={Reports} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ApolloProvider>
     );
   }
 }
