@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { StackParams } from "../../App";
+import { useLazyQuery } from "@apollo/client";
 
+import { LoginQuery, LoginQueryArgs, LoginQueryRes } from "../graphql/queries";
 import {
   AuthHeader,
   AppTitle,
@@ -10,6 +12,8 @@ import {
   SignUpButton,
 } from "../Components/AuthUI";
 import TextButton from "../Components/Common/TextButton/TextButton";
+
+import { useStoreActions, useStoreState } from "../global-store";
 
 import { base } from "../styles";
 const { colors } = base;
@@ -24,6 +28,34 @@ interface Props {
 }
 
 const Login: React.FC<Props> = ({ navigation }) => {
+  const [values, setValues] = useState<{ [key: string]: string }>({});
+  const { setAuth } = useStoreActions((actions) => actions);
+  const { auth } = useStoreState((state) => state);
+
+  console.log("auth:", auth);
+
+  const [requestLogin, { data, loading }] = useLazyQuery<
+    LoginQueryRes,
+    LoginQueryArgs
+  >(LoginQuery, {
+    onError: (err) => {
+      console.log(err);
+    },
+    onCompleted: (res) => {
+      console.log(res);
+      setAuth({
+        token: res.signIn.token,
+        tokenExpires: res.signIn.tokenExpires,
+      });
+    },
+  });
+
+  const handleLogin = () => {
+    requestLogin({
+      variables: { email: values.Email || "", password: values.Password || "" },
+    });
+  };
+
   return (
     <View style={styles.screen}>
       <AuthHeader statusBar="light" />
@@ -36,9 +68,11 @@ const Login: React.FC<Props> = ({ navigation }) => {
           />
           <View style={styles.inputBox}>
             <AuthForm
+              values={values}
+              setValues={setValues}
               inputLabels={["Email", "Password"]}
               submitLabel={"Log in"}
-              onSubmit={() => navigation.navigate("Dashboard")}
+              onSubmit={handleLogin}
             />
             <TextButton
               onPress={() => navigation.navigate("Forgotten Password")}

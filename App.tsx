@@ -1,5 +1,8 @@
 import React from "react";
 
+import { StoreProvider } from "easy-peasy";
+import { store } from "./src/global-store";
+
 import { AppRegistry } from "react-native";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
@@ -55,19 +58,21 @@ export default function App() {
   } else {
     return (
       <ApolloProvider client={client}>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen
-              name="Forgotten Password"
-              component={ForgottenPassword}
-            />
-            <Stack.Screen name="Sign Up" component={SignUp} />
-            <Stack.Screen name="Dashboard" component={Dashboard} />
-            <Stack.Screen name="Timeline" component={Timeline} />
-            <Stack.Screen name="Reports" component={Reports} />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <StoreProvider store={store}>
+          <NavigationContainer>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen
+                name="Forgotten Password"
+                component={ForgottenPassword}
+              />
+              <Stack.Screen name="Sign Up" component={SignUp} />
+              <Stack.Screen name="Dashboard" component={Dashboard} />
+              <Stack.Screen name="Timeline" component={Timeline} />
+              <Stack.Screen name="Reports" component={Reports} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </StoreProvider>
       </ApolloProvider>
     );
   }
