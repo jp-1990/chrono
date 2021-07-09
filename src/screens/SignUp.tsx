@@ -11,7 +11,7 @@ const { colors } = base;
 
 type ForgottenPasswordNavigationProp = StackNavigationProp<
   StackParams,
-  "Sign Up"
+  "SignUp"
 >;
 
 interface Props {

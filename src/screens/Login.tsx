@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { StackParams } from "../../App";
+import { StackParams } from "../Navigation";
 import { useLazyQuery } from "@apollo/client";
 
 import { LoginQuery, LoginQueryArgs, LoginQueryRes } from "../graphql/queries";
@@ -75,14 +75,14 @@ const Login: React.FC<Props> = ({ navigation }) => {
               onSubmit={handleLogin}
             />
             <TextButton
-              onPress={() => navigation.navigate("Forgotten Password")}
+              onPress={() => navigation.navigate("ForgottenPassword")}
               label="Forgotten password?"
               color={colors.textSecondary}
               ripple={colors.buttonTextRipple}
             />
           </View>
           <SignUpButton
-            onPress={() => navigation.navigate("Sign Up")}
+            onPress={() => navigation.navigate("SignUp")}
             labelColor={colors.textPrimary}
             buttonColor={colors.buttonSecondary}
             ripple={colors.buttonSecondaryRipple}

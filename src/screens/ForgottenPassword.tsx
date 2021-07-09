@@ -16,7 +16,7 @@ const { colors } = base;
 
 type ForgottenPasswordNavigationProp = StackNavigationProp<
   StackParams,
-  "Forgotten Password"
+  "ForgottenPassword"
 >;
 
 interface Props {
@@ -48,7 +48,7 @@ const ForgottenPassword: React.FC<Props> = ({ navigation }) => {
             />
           </View>
           <SignUpButton
-            onPress={() => navigation.navigate("Sign Up")}
+            onPress={() => navigation.navigate("SignUp")}
             labelColor={colors.textPrimary}
             buttonColor={colors.buttonSecondary}
             ripple={colors.buttonSecondaryRipple}

@@ -88,6 +88,8 @@ const Dashboard = () => {
     }
   );
 
+  console.log(data);
+
   return (
     <View style={screen}>
       <Header statusBar="light" />
