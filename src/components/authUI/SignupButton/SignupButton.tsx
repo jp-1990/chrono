@@ -44,17 +44,17 @@ const styles = StyleSheet.create({
   signupBox: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 72,
-    marginBottom: 36,
+    marginTop: 56,
+    marginBottom: 18,
   },
   signupText: {
-    fontSize: 18,
+    fontSize: 16,
   },
   signupPressBox: {
-    marginVertical: 6,
+    marginVertical: 4,
   },
   signupPress: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: "lato-bold",
     paddingHorizontal: 18,
     paddingVertical: 6,

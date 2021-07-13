@@ -16,7 +16,7 @@ import TextButton from "../Components/Common/TextButton/TextButton";
 import { useStoreActions, useStoreState } from "../global-store";
 
 import { base } from "../styles";
-const { colors } = base;
+const { colors, screen, contentWrapper } = base;
 
 type ForgottenPasswordNavigationProp = StackNavigationProp<
   StackParams,
@@ -29,6 +29,7 @@ interface Props {
 
 const Login: React.FC<Props> = ({ navigation }) => {
   const [values, setValues] = useState<{ [key: string]: string }>({});
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const { setAuth } = useStoreActions((actions) => actions);
   const { auth } = useStoreState((state) => state);
 
@@ -39,7 +40,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
     LoginQueryArgs
   >(LoginQuery, {
     onError: (err) => {
-      console.log(err);
+      setErrorMessage(err.message);
     },
     onCompleted: (res) => {
       console.log(res);
@@ -66,13 +67,14 @@ const Login: React.FC<Props> = ({ navigation }) => {
             title2="focus"
             subtitle="Optimise your time"
           />
-          <View style={styles.inputBox}>
+          <View style={styles.inputContainer}>
             <AuthForm
               values={values}
               setValues={setValues}
               inputLabels={["Email", "Password"]}
               submitLabel={"Log in"}
               onSubmit={handleLogin}
+              errorMessage={errorMessage}
             />
             <TextButton
               onPress={() => navigation.navigate("ForgottenPassword")}
@@ -96,14 +98,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
 export default Login;
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  contentWrapper: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#fff",
-  },
-  inputBox: { alignItems: "center", width: "100%" },
+  screen: screen,
+  contentWrapper: contentWrapper,
+  inputContainer: { alignItems: "center", width: "100%" },
 });

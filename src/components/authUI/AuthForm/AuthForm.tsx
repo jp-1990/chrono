@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 
 import { FormInputs, MainButton } from "../../Common/index";
 
@@ -12,6 +12,7 @@ interface Props {
   onSubmit(): void;
   values: { [key: string]: string };
   setValues: Dispatch<SetStateAction<{ [key: string]: string }>>;
+  errorMessage?: string;
 }
 
 const AuthForm: React.FC<Props> = ({
@@ -20,6 +21,7 @@ const AuthForm: React.FC<Props> = ({
   onSubmit,
   values,
   setValues,
+  errorMessage,
 }) => {
   return (
     <View style={styles.container}>
@@ -28,6 +30,7 @@ const AuthForm: React.FC<Props> = ({
         setValues={setValues}
         values={values}
       />
+      <Text style={styles.errorText}>{errorMessage && errorMessage}</Text>
       <MainButton
         label={submitLabel}
         width="50%"
@@ -44,4 +47,7 @@ export default AuthForm;
 
 const styles = StyleSheet.create({
   container: { alignItems: "center", width: "100%" },
+  errorText: {
+    color: colors.textPrimary,
+  },
 });

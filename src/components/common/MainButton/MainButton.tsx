@@ -1,5 +1,8 @@
 import React from "react";
-import { Pressable, Text } from "react-native";
+import { Pressable, Text, StyleSheet } from "react-native";
+import { base } from "../../../styles";
+
+const { border } = base;
 
 interface Props {
   onPress(): void;
@@ -22,14 +25,14 @@ const MainButton: React.FC<Props> = ({
 }) => {
   return (
     <Pressable
-      style={{
-        backgroundColor: colorBG || undefined,
-        width: width || undefined,
-        justifyContent: "center",
-        alignItems: "center",
-        height: 42,
-        marginTop: marginTop || 36,
-      }}
+      style={[
+        styles.container,
+        {
+          backgroundColor: colorBG || undefined,
+          width: width || undefined,
+          marginTop: marginTop || 36,
+        },
+      ]}
       android_ripple={{
         color: ripple || undefined,
         borderless: false,
@@ -51,3 +54,12 @@ const MainButton: React.FC<Props> = ({
 };
 
 export default MainButton;
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: 42,
+    borderRadius: border.borderRadius,
+  },
+});

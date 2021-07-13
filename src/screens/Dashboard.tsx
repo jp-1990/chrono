@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { ScrollView, View, StyleSheet, Modal } from "react-native";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import moment from "moment";
 
+import {
+  FindTasksQuery,
+  FindTasksRes,
+  FindTasksArgs,
+} from "../graphql/queries";
 import {
   Header,
   Title,
@@ -14,6 +20,7 @@ import {
 import { TopActivities, TotalTime } from "../Components/Dashboard";
 
 import { base } from "../styles";
+import { add } from "react-native-reanimated";
 
 const { colors } = base;
 const { screen } = base;
@@ -72,28 +79,84 @@ const Dashboard = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [colorPickerVisible, setColorPickerVisible] = useState(false);
 
-  const { data, loading } = useQuery(
-    gql`
-      query {
-        tasks {
-          id
-          title
-        }
-      }
-    `,
+  const { data, loading } = useQuery<FindTasksRes, FindTasksArgs>(
+    FindTasksQuery,
     {
+      variables: {
+        scope: 10,
+      },
       onError: (err) => {
         console.log(err);
       },
     }
   );
 
-  console.log(data);
+  const convertDateToMidnightUnixString = (date: number | string) => {
+    return moment(moment(Number(date)).format("YYYY-MM-DD")).format("x");
+  };
+  const addDay = (date: number | string) => {
+    return moment(
+      moment(Number(date)).add(1, "days").format("YYYY-MM-DD")
+    ).format("x");
+  };
+
+  const taskData: { [key: string]: {}[] } = {};
+
+  data?.findTasks.forEach((el) => {
+    const taskStartKey = convertDateToMidnightUnixString(el.start);
+    const taskEndKey = convertDateToMidnightUnixString(el.end);
+
+    if (taskData[taskStartKey] === undefined) taskData[taskStartKey] = [];
+
+    if (taskStartKey !== taskEndKey) {
+      if (taskData[taskEndKey] === undefined) taskData[taskEndKey] = [];
+      taskData[taskStartKey].push({
+        id: el.id,
+        title: el.title,
+        group: el.group,
+        percentageTimes: { ...el.percentageTimes, endPercentage: 100 },
+        colour: el.colour,
+      });
+      let keyTracker = addDay(taskStartKey);
+      while (taskEndKey !== keyTracker) {
+        if (taskData[keyTracker] === undefined) taskData[keyTracker] = [];
+
+        taskData[keyTracker].push({
+          id: el.id,
+          title: el.title,
+          group: el.group,
+          percentageTimes: {
+            ...el.percentageTimes,
+            startPercentage: 0,
+            endPercentage: 100,
+          },
+          colour: el.colour,
+        });
+      }
+      taskData[taskEndKey].push({
+        id: el.id,
+        title: el.title,
+        group: el.group,
+        percentageTimes: { ...el.percentageTimes, startPercentage: 0 },
+        colour: el.colour,
+      });
+    } else {
+      taskData[taskStartKey].push({
+        id: el.id,
+        title: el.title,
+        group: el.group,
+        percentageTimes: { ...el.percentageTimes },
+        colour: el.colour,
+      });
+    }
+  });
+  console.log("=======================================");
+  console.log(taskData, Object.keys(taskData).length);
 
   return (
     <View style={screen}>
       <Header statusBar="light" />
-      <ScrollView style={styles.scrollZindex} fadingEdgeLength={50}>
+      <ScrollView style={styles.scrollZindex}>
         <Modal
           animationType="slide"
           transparent={true}

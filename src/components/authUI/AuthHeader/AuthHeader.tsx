@@ -15,7 +15,6 @@ const AuthHeader: React.FC<Props> = ({ statusBar }) => {
     <>
       <ExpoStatusBar style={statusBar} />
       <View style={styles.statusBar}></View>
-      <View style={styles.header}></View>
     </>
   );
 };

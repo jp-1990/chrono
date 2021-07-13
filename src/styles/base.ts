@@ -2,9 +2,10 @@ import { StyleProp, ViewStyle, TextStyle } from "react-native";
 
 interface StyleTypes {
   colors: { [name: string]: string };
-  defaultInput: StyleProp<TextStyle>;
-  screen: StyleProp<ViewStyle>;
-  contentWrapper: StyleProp<ViewStyle>;
+  defaultInput: TextStyle;
+  screen: ViewStyle;
+  contentWrapper: ViewStyle;
+  border: ViewStyle;
 }
 
 export const base: StyleTypes = {
@@ -37,6 +38,7 @@ export const base: StyleTypes = {
     fontSize: 18,
     fontFamily: "lato-regular",
     color: "#705E57",
+    borderRadius: 3,
   },
   screen: {
     flex: 1,
@@ -46,5 +48,8 @@ export const base: StyleTypes = {
     flex: 1,
     alignItems: "center",
     backgroundColor: "#fff",
+  },
+  border: {
+    borderRadius: 3,
   },
 };
