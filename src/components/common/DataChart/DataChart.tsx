@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import moment from "moment";
 
 import ChartRow from "./ChartRow/ChartRow";
 
@@ -8,22 +9,42 @@ import { base } from "../../../styles";
 const { colors } = base;
 
 interface Props {
-  start: number;
-  num: number;
+  start: string;
+  end: string;
   data: { [name: number]: DataTypes[] }[];
 }
 
-const DataChart: React.FC<Props> = ({ data, start, num }) => {
-  let date = start || 1;
-  const iterations = num || data.length;
+const DataChart: React.FC<Props> = ({ data, start, end }) => {
+  // let date = 8 || 1;
+  // const iterations = 7 || data.length;
 
+  // const chartRows = [];
+  // for (let i = 0; i < iterations; i++) {
+  //   if (date === 32) date = 1;
+  //   chartRows.push(
+  //     <ChartRow key={i} date={date} data={data[date - 1][date]} />
+  //   );
+  //   date++;
+  // }
+
+  const addDayUnixString = (date: number | string) => {
+    return moment(
+      moment(Number(date)).add(1, "days").format("YYYY-MM-DD")
+    ).format("x");
+  };
+
+  // // start as unix
+  // // data = taskData
   const chartRows = [];
-  for (let i = 0; i < iterations; i++) {
-    if (date === 32) date = 1;
-    chartRows.push(
-      <ChartRow key={i} date={date} data={data[date - 1][date]} />
-    );
-    date++;
+  let unixDay = start;
+  let safety = 0;
+  while (safety < 100 && unixDay !== end) {
+    const date = moment(Number(unixDay)).date();
+
+    const rowData = data && data[unixDay];
+    chartRows.push(<ChartRow key={safety} date={date} data={rowData} />);
+    unixDay = addDayUnixString(unixDay);
+    safety++;
   }
 
   return (

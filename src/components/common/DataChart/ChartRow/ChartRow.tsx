@@ -17,7 +17,7 @@ const ChartRow: React.FC<Props> = ({ date, data }) => {
     return (
       <DataBar
         key={i}
-        data={{ color: e.color, width: e.width, margin: e.margin }}
+        data={{ color: e.color, width: e.width, margin: e.marginLeft }}
       />
     );
   });
