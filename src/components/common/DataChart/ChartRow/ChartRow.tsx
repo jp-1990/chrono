@@ -4,22 +4,18 @@ import { View, Text, StyleSheet } from "react-native";
 import DataBar from "./DataBar";
 
 import { base } from "../../../../styles";
-import { DataArray } from "../../../../types/data";
+import { TaskDataWithMarginAndWidth } from "../../../../types/data";
 const { colors } = base;
 
-interface Props extends DataArray {
+interface Props {
   date: number;
+  data: TaskDataWithMarginAndWidth[] | undefined;
 }
 
-// expects width, marginLeft and color for each item to be rendered on the chart row
 const ChartRow: React.FC<Props> = ({ date, data }) => {
-  const renderedBars = data?.map((e, i) => {
-    return (
-      <DataBar
-        key={i}
-        data={{ color: e.color, width: e.width, margin: e.marginLeft }}
-      />
-    );
+  // create array of databars to render in row
+  const renderedBars = data?.map((el, i) => {
+    return <DataBar key={i} data={el} />;
   });
 
   return (

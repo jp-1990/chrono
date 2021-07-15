@@ -1,13 +1,3 @@
-export type DataTypes = {
-  color: string;
-  width: string;
-  margin: string | undefined;
-};
-
-export type DataArray = {
-  data: { color: string; width: string; margin: string | undefined }[];
-};
-
 export type ActivityTypes = {
   activity: { color?: string; title: string; total: number };
 };
@@ -17,4 +7,30 @@ export type BarChartTypes = {
     color: string;
     height: number | string;
   };
+};
+
+export type TaskDataStructure = {
+  color: string;
+  group?: string;
+  id: string;
+  percentageTimes: {
+    endPercentage: number;
+    startPercentage: number;
+  };
+  title: string;
+  start: number;
+  end: number;
+};
+
+export type TasksDataStructure = {
+  [key: string]: TaskDataStructure[];
+};
+
+export type TaskDataWithMarginAndWidth = TaskDataStructure & {
+  width: string;
+  marginLeft: string;
+};
+
+export type TasksDataWithMarginAndWidth = {
+  [key: string]: TaskDataWithMarginAndWidth[];
 };

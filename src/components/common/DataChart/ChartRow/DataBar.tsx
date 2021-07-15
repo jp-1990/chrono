@@ -1,10 +1,10 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 
-import { DataTypes } from "../../../../types/data";
+import { TaskDataWithMarginAndWidth } from "../../../../types/data";
 
 interface Props {
-  data: DataTypes;
+  data: TaskDataWithMarginAndWidth | undefined;
 }
 
 // renders an individual bar within the the data chart
@@ -13,9 +13,9 @@ const DataBar: React.FC<Props> = ({ data }) => {
     <View
       style={{
         ...styles.dataBar,
-        backgroundColor: data.color,
-        width: data.width,
-        marginLeft: data.margin ? data.margin : 0,
+        backgroundColor: data?.color,
+        width: data?.width,
+        marginLeft: data?.marginLeft ? data.marginLeft : 0,
       }}
     ></View>
   );
