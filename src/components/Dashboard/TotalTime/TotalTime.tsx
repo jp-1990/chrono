@@ -7,14 +7,18 @@ import { base } from "../../../styles";
 const { colors } = base;
 
 interface Props {
-  total: number;
+  total: {
+    hours: number;
+    minutes: number;
+  };
 }
 
 const TotalTime: React.FC<Props> = ({ total }) => {
   return (
     <View style={styles.container}>
       <Subtitle text="total" />
-      <Text style={styles.total}>[ {total} hours ]</Text>
+      <Text style={styles.total}>[ {total.hours} hours ]</Text>
+      <Text style={styles.total}> + {total.minutes} mins ]</Text>
     </View>
   );
 };

@@ -2,29 +2,33 @@ import React from "react";
 import { View } from "react-native";
 
 import ActivityTotal from "../../Common/ActivityTotal/ActivityTotal";
-import { ActivityTypes } from "../../../types";
+import { GroupSummaryWithName } from "../../../types";
+import { hoursToHoursAndMinutes } from "../../../utils";
 import { base } from "../../../styles";
 
 const { colors } = base;
 
 interface Props {
-  activities: ActivityTypes["activity"][];
+  activities: GroupSummaryWithName[] | undefined;
 }
 
 const TopActivities: React.FC<Props> = ({ activities }) => {
   // build array to be rendered
-  const renderedActivities = [];
+  const renderedActivities: React.ReactNode[] = [];
   // enforce only 3 items to be rendered
-  for (let i = 0; i < 3; i++) {
-    renderedActivities.push(
-      <ActivityTotal
-        key={i}
-        color={activities[i].color || colors.textPrimary}
-        title={activities[i].title}
-        total={activities[i].total}
-        totalVisible={true}
-      />
-    );
+  if (activities) {
+    for (let i = 0; i < 3; i++) {
+      const totalTime = hoursToHoursAndMinutes(activities[i].totalTime);
+      renderedActivities.push(
+        <ActivityTotal
+          key={i}
+          color={activities[i].color || colors.textPrimary}
+          title={activities[i].group}
+          total={totalTime}
+          totalVisible={true}
+        />
+      );
+    }
   }
 
   return <View>{renderedActivities}</View>;

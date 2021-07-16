@@ -34,3 +34,18 @@ export type TaskDataWithMarginAndWidth = TaskDataStructure & {
 export type TasksDataWithMarginAndWidth = {
   [key: string]: TaskDataWithMarginAndWidth[];
 };
+
+export type TaskSummary = {
+  totalTime: number;
+  totalAsPercentage: number;
+  averagePerWeek: number;
+};
+
+export type GroupSummary = TaskSummary & {
+  color: string;
+  tasks: { [key: string]: TaskSummary };
+};
+
+export type GroupSummaryWithName = GroupSummary & {
+  group: string;
+};

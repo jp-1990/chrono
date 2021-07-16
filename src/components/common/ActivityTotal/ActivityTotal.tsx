@@ -7,7 +7,7 @@ const { colors } = base;
 interface Props {
   color: string;
   title: string;
-  total: number;
+  total: { hours: number; minutes: number };
   totalVisible?: boolean;
 }
 
@@ -25,7 +25,9 @@ const ActivityTotal: React.FC<Props> = ({
         {title}
       </Text>
       {totalVisible ? (
-        <Text style={styles.total}>[ {total} hours ]</Text>
+        <Text style={styles.total}>
+          [ {total.hours} hours {total.minutes} mins ]
+        </Text>
       ) : null}
     </View>
   );

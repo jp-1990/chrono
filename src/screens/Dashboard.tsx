@@ -12,6 +12,7 @@ import {
 } from "../Components/Common";
 import { TopActivities, TotalTime } from "../Components/Dashboard";
 import { useDashboard } from "../hooks";
+import { hoursToHoursAndMinutes } from "../utils";
 
 import { base } from "../styles";
 const { colors, screen } = base;
@@ -21,7 +22,10 @@ const Dashboard = () => {
   const [colorPickerVisible, setColorPickerVisible] = useState(false);
 
   const { tasks, startDate, endDate } = useDashboard();
-
+  // get top 3 activities
+  const topActivities = tasks.summary?.slice(0, 3);
+  // get total as hours and mins
+  const total = hoursToHoursAndMinutes(tasks?.totalTime);
   return (
     <View style={screen}>
       <Header statusBar="light" />
@@ -54,20 +58,10 @@ const Dashboard = () => {
             <Subtitle text="top categories" />
           </View>
           <View>
-            <TopActivities
-              activities={[
-                {
-                  color: "blue",
-                  title: "Sleep",
-                  total: 56,
-                },
-                { color: "green", title: "work", total: 38 },
-                { color: "red", title: "coding", total: 20 },
-              ]}
-            />
+            <TopActivities activities={topActivities} />
           </View>
           <View>
-            <TotalTime total={114} />
+            <TotalTime total={total} />
           </View>
           <View style={styles.center}>
             <MainButton
