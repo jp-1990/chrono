@@ -1,7 +1,6 @@
-import { StyleProp, ViewStyle, TextStyle } from "react-native";
+import { ViewStyle, TextStyle, Dimensions } from "react-native";
 
 interface StyleTypes {
-  colors: { [name: string]: string };
   defaultInput: TextStyle;
   screen: ViewStyle;
   contentWrapper: ViewStyle;
@@ -9,26 +8,6 @@ interface StyleTypes {
 }
 
 export const base: StyleTypes = {
-  colors: {
-    menuPrimary: "#818CA0",
-    menuSecondary: "#454851",
-    buttonPrimary: "#3DB6F9",
-    buttonSecondary: "#5484CB",
-    buttonText: "#F5F5F5",
-    buttonPrimaryRipple: "#99D9FD",
-    buttonSecondaryRipple: "#B5D2FD",
-    buttonTextRipple: "#EBEBEB",
-    textPrimary: "#454851",
-    textSecondary: "#818CA0",
-    headingPrimary: "#705E57",
-    headingSecondary: "#B7B7B7",
-    backgroundColor: "#fff",
-    transparent: "transparent",
-    positive: "#00C31F",
-    negative: "#C90000",
-    modalBackground: "rgba(69,72,81,0.9)",
-    newActivityBackground: "rgba(218,218,218,1)",
-  },
   defaultInput: {
     backgroundColor: "#EBEBEB",
     paddingVertical: 8,
@@ -51,5 +30,70 @@ export const base: StyleTypes = {
   },
   border: {
     borderRadius: 3,
+  },
+};
+
+export const screenSize = {
+  width: Dimensions.get("screen").width,
+  height: Dimensions.get("screen").height,
+};
+
+export const colors = {
+  accentPrimary: "#818CA0",
+  menuPrimary: "#818CA0",
+  menuSecondary: "#454851",
+  buttonPrimary: "#3DB6F9",
+  buttonSecondary: "#5484CB",
+  buttonText: "#F5F5F5",
+  buttonPrimaryRipple: "#99D9FD",
+  buttonSecondaryRipple: "#B5D2FD",
+  buttonTextRipple: "#EBEBEB",
+  textPrimary: "#454851",
+  textSecondary: "#818CA0",
+  headingPrimary: "#705E57",
+  headingSecondary: "#B7B7B7",
+  backgroundColor: "#fff",
+  transparent: "transparent",
+  positive: "#00C31F",
+  negative: "#C90000",
+  modalBackground: "rgba(69,72,81,0.9)",
+  newActivityBackground: "rgba(218,218,218,1)",
+};
+
+export const text = {
+  h1: {
+    fontSize: 34,
+    fontFamily: "lato-light",
+    color: colors.headingPrimary,
+  },
+  h2: {
+    fontSize: 27,
+    fontFamily: "lato-light",
+    color: colors.headingPrimary,
+  },
+  h3: {
+    fontSize: 22,
+    fontFamily: "lato-light",
+    color: colors.headingPrimary,
+  },
+  h4: {
+    fontSize: 18,
+    fontFamily: "lato-light",
+    color: colors.headingSecondary,
+  },
+  main: {
+    fontSize: 14,
+    fontFamily: "lato-regular",
+    color: colors.textPrimary,
+  },
+  sp: {
+    fontSize: 12,
+    fontFamily: "lato-regular",
+    color: colors.headingSecondary,
+  },
+  ssp: {
+    fontSize: 10,
+    fontFamily: "lato-regular",
+    color: colors.headingSecondary,
   },
 };

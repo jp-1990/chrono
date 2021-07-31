@@ -4,8 +4,7 @@ import { VictoryPie, Slice, VictoryLabel } from "victory-native";
 import Svg from "react-native-svg";
 
 import { ActivityTypes } from "../../../types";
-import { base } from "../../../styles";
-const { colors } = base;
+import { colors } from "../../../styles";
 
 interface Props {
   activities: ActivityTypes["activity"][];

@@ -10,6 +10,7 @@ import MonthSelector from "./MonthSelector/MonthSelector";
 import NewActivity from "./NewActivity/NewActivity";
 import SelectedMonth from "./SelectedMonth/SelectedMonth";
 import Subtitle from "./Subtitle/Subtitle";
+import Text from "./Text/Text";
 import TextButton from "./TextButton/TextButton";
 import Title from "./Title/Title";
 
@@ -26,6 +27,7 @@ export {
   NewActivity,
   SelectedMonth,
   Subtitle,
+  Text,
   TextButton,
   Title,
 };

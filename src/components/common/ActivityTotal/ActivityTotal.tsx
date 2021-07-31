@@ -1,31 +1,30 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
-import { base } from "../../../styles";
-const { colors } = base;
+import Text from "../Text/Text";
+import { colors } from "../../../styles";
 
 interface Props {
   color: string;
   title: string;
-  total: { hours: number; minutes: number };
-  totalVisible?: boolean;
+  total?: { hours: number; minutes: number };
 }
 
 // basic summary of activity containing title, color and total hours
-const ActivityTotal: React.FC<Props> = ({
-  color,
-  title,
-  total,
-  totalVisible,
-}) => {
+const ActivityTotal: React.FC<Props> = ({ color, title, total }) => {
   return (
     <View style={styles.container}>
       <View style={{ ...styles.color, backgroundColor: color }}></View>
-      <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+      <Text
+        variant="sp"
+        style={styles.title}
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
         {title}
       </Text>
-      {totalVisible ? (
-        <Text style={styles.total}>
+      {total ? (
+        <Text variant="sp" style={styles.total}>
           [ {total.hours} hours {total.minutes} mins ]
         </Text>
       ) : null}
@@ -38,15 +37,16 @@ export default ActivityTotal;
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    marginVertical: 4,
+    marginVertical: 3,
+    alignItems: "center",
   },
   color: {
-    width: 22,
-    height: 22,
+    width: 20,
+    height: 20,
   },
   title: {
     textTransform: "capitalize",
-    width: 80,
+    width: 74,
     marginHorizontal: 10,
     color: colors.textPrimary,
   },

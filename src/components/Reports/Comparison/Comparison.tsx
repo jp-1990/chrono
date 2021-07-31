@@ -4,8 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { ActivityTotal, Subtitle } from "../../Common";
 import { ActivityTypes } from "../../../types";
 
-import { base } from "../../../styles";
-const { colors } = base;
+import { colors } from "../../../styles";
 
 interface Props {
   activities: ActivityTypes["activity"][];

@@ -1,18 +1,18 @@
 import React from "react";
-import { View } from "react-native";
+import { StyleSheet, View, ViewStyle } from "react-native";
 
-import ActivityTotal from "../../Common/ActivityTotal/ActivityTotal";
+import { ActivityTotal, Text } from "../../Common";
 import { GroupSummaryWithName } from "../../../types";
 import { hoursToHoursAndMinutes } from "../../../utils";
-import { base } from "../../../styles";
-
-const { colors } = base;
+import { colors } from "../../../styles";
 
 interface Props {
   activities: GroupSummaryWithName[] | undefined;
+  title: string;
+  style?: ViewStyle;
 }
 
-const TopActivities: React.FC<Props> = ({ activities }) => {
+const TopActivities: React.FC<Props> = ({ activities, title, style }) => {
   // build array to be rendered
   const renderedActivities: React.ReactNode[] = [];
   // enforce only 3 items to be rendered
@@ -25,13 +25,19 @@ const TopActivities: React.FC<Props> = ({ activities }) => {
           color={activities[i].color || colors.textPrimary}
           title={activities[i].group}
           total={totalTime}
-          totalVisible={true}
         />
       );
     }
   }
 
-  return <View>{renderedActivities}</View>;
+  return (
+    <View style={style}>
+      <Text variant="h3" style={{ marginBottom: 8 }}>
+        {title}
+      </Text>
+      {renderedActivities}
+    </View>
+  );
 };
 
 export default TopActivities;

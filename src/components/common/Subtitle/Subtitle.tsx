@@ -1,8 +1,7 @@
 import React from "react";
 import { Text, StyleSheet } from "react-native";
 
-import { base } from "../../../styles";
-const { colors } = base;
+import { colors } from "../../../styles";
 
 interface Props {
   text: string;

@@ -1,8 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
 
-import { base } from "../../../../styles";
-const { colors } = base;
+import { colors } from "../../../../styles";
 
 const Segment = ({ percentage, color, rotation }) => {
   // export to seperate file?

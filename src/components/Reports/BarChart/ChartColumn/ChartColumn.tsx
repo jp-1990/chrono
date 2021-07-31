@@ -4,8 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 import ChartBar from "./ChartBar";
 import { BarChartTypes } from "../../../../types";
 
-import { base } from "../../../../styles";
-const { colors } = base;
+import { colors } from "../../../../styles";
 
 interface Props {
   data: BarChartTypes["chartBar"][];

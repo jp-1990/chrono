@@ -3,8 +3,7 @@ import { View, StyleSheet, Pressable } from "react-native";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-import { base } from "../../../styles";
-const { colors } = base;
+import { colors } from "../../../styles";
 
 const BottomNav = () => {
   // useNavigation hook works with react context in the background and provides the navigation object from the current screen

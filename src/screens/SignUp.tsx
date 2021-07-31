@@ -3,11 +3,10 @@ import { View, StyleSheet, ScrollView } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { StackParams } from "../../App";
 
-import TextButton from "../Components/Common/TextButton/TextButton";
-import { AuthHeader, AppTitle, AuthForm } from "../Components/AuthUI";
+import { TextButton, Header } from "../Components/Common";
+import { AppTitle, AuthForm } from "../Components/AuthUI";
 
-import { base } from "../styles";
-const { colors } = base;
+import { base, colors } from "../styles";
 
 type ForgottenPasswordNavigationProp = StackNavigationProp<
   StackParams,
@@ -21,7 +20,7 @@ interface Props {
 const SignUp: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.screen}>
-      <AuthHeader statusBar="light" />
+      <Header statusBar="light" />
       <ScrollView>
         <View style={styles.contentWrapper}>
           <AppTitle

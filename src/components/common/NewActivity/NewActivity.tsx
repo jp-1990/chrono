@@ -10,8 +10,7 @@ import ColorPicker, {
 } from "../ColorPicker/ColorPicker";
 import MainButton from "../MainButton/MainButton";
 
-import { base } from "../../../styles";
-const { colors } = base;
+import { base, colors } from "../../../styles";
 const { defaultInput } = base;
 
 interface DateTimePickerTypes {
@@ -39,9 +38,8 @@ const NewActivity: React.FC<Props> = ({ onSubmit, close, colorPicker }) => {
   const [color, setColor] = useState(colors.menuPrimary);
   const [mode, setMode] = useState<DateTimePickerTypes["mode"]>("date");
   const [show, setShow] = useState(false);
-  const [target, setTarget] = useState<DateTimePickerTypes["target"]>(
-    "startTime"
-  );
+  const [target, setTarget] =
+    useState<DateTimePickerTypes["target"]>("startTime");
 
   //export to utils?
   const ukDate = (dateObj: Date) => {

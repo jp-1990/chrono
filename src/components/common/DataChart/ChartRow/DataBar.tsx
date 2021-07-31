@@ -26,5 +26,6 @@ export default DataBar;
 const styles = StyleSheet.create({
   dataBar: {
     height: 22,
+    borderRadius: 2,
   },
 });

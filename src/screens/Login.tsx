@@ -5,18 +5,13 @@ import { StackParams } from "../Navigation";
 import { useLazyQuery } from "@apollo/client";
 
 import { LoginQuery, LoginQueryArgs, LoginQueryRes } from "../graphql/queries";
-import {
-  AuthHeader,
-  AppTitle,
-  AuthForm,
-  SignUpButton,
-} from "../Components/AuthUI";
-import TextButton from "../Components/Common/TextButton/TextButton";
+import { AppTitle, AuthForm, SignUpButton } from "../Components/AuthUI";
+import { TextButton, Header } from "../Components/Common";
 
 import { useStoreActions, useStoreState } from "../global-store";
 
-import { base } from "../styles";
-const { colors, screen, contentWrapper } = base;
+import { base, colors } from "../styles";
+const { screen, contentWrapper } = base;
 
 type ForgottenPasswordNavigationProp = StackNavigationProp<
   StackParams,
@@ -57,7 +52,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.screen}>
-      <AuthHeader statusBar="light" />
+      <Header statusBar="light" />
       <ScrollView>
         <View style={styles.contentWrapper}>
           <AppTitle

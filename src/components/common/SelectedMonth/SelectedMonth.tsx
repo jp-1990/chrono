@@ -3,8 +3,7 @@ import { Text, StyleSheet } from "react-native";
 
 import MonthSelector from "../MonthSelector/MonthSelector";
 
-import { base } from "../../../styles";
-const { colors } = base;
+import { colors } from "../../../styles";
 
 interface Props {
   month: string;

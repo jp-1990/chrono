@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import { base } from "../../../styles";
+import { colors } from "../../../styles";
 
 interface Props {
   title1: string;
@@ -27,11 +27,11 @@ const styles = StyleSheet.create({
     fontFamily: "lato-light",
     textTransform: "uppercase",
     fontSize: 42,
-    color: base.colors.headingPrimary,
+    color: colors.headingPrimary,
   },
   subtitle: {
     fontFamily: "lato-light",
-    color: base.colors.textSecondary,
+    color: colors.textSecondary,
     fontSize: 18,
   },
 });

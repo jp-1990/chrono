@@ -10,9 +10,8 @@ import ActivitiesKey from "../Components/Common/ActivitiesKey/ActivitiesKey";
 import MainButton from "../Components/Common/MainButton/MainButton";
 import BottomNav from "../Components/Common/BottomNav/BottomNav";
 
-import { base } from "../styles/base";
+import { base, colors } from "../styles/base";
 
-const { colors } = base;
 const { screen } = base;
 
 // test data

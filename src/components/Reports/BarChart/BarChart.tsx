@@ -4,8 +4,7 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import ChartColumn from "./ChartColumn/ChartColumn";
 import { BarChartTypes } from "../../../types";
 
-import { base } from "../../../styles";
-const { colors } = base;
+import { colors } from "../../../styles";
 
 interface Props {
   data: { [name: string]: BarChartTypes["chartBar"][] }[];

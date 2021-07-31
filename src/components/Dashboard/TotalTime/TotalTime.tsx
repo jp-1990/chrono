@@ -1,24 +1,31 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet, ViewStyle } from "react-native";
 
-import Subtitle from "../../Common/Subtitle/Subtitle";
+import { Text } from "../../Common";
 
-import { base } from "../../../styles";
-const { colors } = base;
+import { colors } from "../../../styles";
 
 interface Props {
-  total: {
+  recorded: {
     hours: number;
     minutes: number;
   };
+  possible: number;
+  style?: ViewStyle;
 }
 
-const TotalTime: React.FC<Props> = ({ total }) => {
+const TotalTime: React.FC<Props> = ({ recorded, possible, style }) => {
   return (
-    <View style={styles.container}>
-      <Subtitle text="total" />
-      <Text style={styles.total}>[ {total.hours} hours ]</Text>
-      <Text style={styles.total}> + {total.minutes} mins ]</Text>
+    <View style={style}>
+      <Text variant="h3">TOTAL</Text>
+
+      <Text variant="h4" style={styles.recorded}>
+        [ {recorded.hours || "   "} hours {recorded.minutes || "   "} mins ]
+        recorded
+      </Text>
+      <Text variant="sp" style={styles.possible}>
+        of [ {possible || "   "} hours ] possible
+      </Text>
     </View>
   );
 };
@@ -26,15 +33,11 @@ const TotalTime: React.FC<Props> = ({ total }) => {
 export default TotalTime;
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: "flex-end",
-    marginTop: 15,
+  recorded: {
+    color: colors.textPrimary,
+    marginTop: 4,
   },
-  total: {
-    color: colors.headingPrimary,
-    fontFamily: "lato-bold",
-    fontSize: 20,
-    marginHorizontal: 4,
-    marginTop: 6,
+  possible: {
+    marginTop: 4,
   },
 });

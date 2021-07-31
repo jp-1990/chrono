@@ -3,9 +3,8 @@ import { View, Text, StyleSheet } from "react-native";
 
 import DataBar from "./DataBar";
 
-import { base } from "../../../../styles";
+import { colors } from "../../../../styles";
 import { TaskDataWithMarginAndWidth } from "../../../../types/data";
-const { colors } = base;
 
 interface Props {
   date: number;
@@ -20,7 +19,6 @@ const ChartRow: React.FC<Props> = ({ date, data }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.date}>{date}</Text>
       <View style={styles.dataBars}>{renderedBars}</View>
     </View>
   );
@@ -30,17 +28,14 @@ export default ChartRow;
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
     flexDirection: "row",
-    marginVertical: 5,
-  },
-  date: {
-    width: "10%",
-    color: colors.headingSecondary,
+    marginVertical: 4,
+    marginHorizontal: 20,
+    flex: 1,
   },
   dataBars: {
-    width: "85%",
-    height: 20,
+    height: 22,
     flexDirection: "row",
+    flex: 1,
   },
 });
