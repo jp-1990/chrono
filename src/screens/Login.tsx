@@ -26,7 +26,6 @@ const Login: React.FC<Props> = ({ navigation }) => {
   const [values, setValues] = useState<{ [key: string]: string }>({});
   const [errorMessage, setErrorMessage] = useState<string>("");
   const { setAuth } = useStoreActions((actions) => actions);
-  const { auth } = useStoreState((state) => state);
 
   const [requestLogin, { data, loading }] = useLazyQuery<
     LoginQueryRes,

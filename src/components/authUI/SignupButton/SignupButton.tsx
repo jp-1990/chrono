@@ -1,5 +1,7 @@
 import React from "react";
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { View, Pressable, StyleSheet } from "react-native";
+
+import { Text } from "../../Common";
 
 interface Props {
   labelColor?: string;
@@ -16,7 +18,7 @@ const SignupButton: React.FC<Props> = ({
 }) => {
   return (
     <View style={styles.signupBox}>
-      <Text style={{ ...styles.signupText, color: labelColor || "#454851" }}>
+      <Text variant="h4" style={{ color: labelColor || "#454851" }}>
         Don't have an account?
       </Text>
       <Pressable
@@ -29,6 +31,7 @@ const SignupButton: React.FC<Props> = ({
         onPress={() => onPress()}
       >
         <Text
+          variant="h4"
           style={{ ...styles.signupPress, color: buttonColor || "#5484CB" }}
         >
           Sign up
@@ -47,14 +50,10 @@ const styles = StyleSheet.create({
     marginTop: 56,
     marginBottom: 18,
   },
-  signupText: {
-    fontSize: 16,
-  },
   signupPressBox: {
     marginVertical: 4,
   },
   signupPress: {
-    fontSize: 16,
     fontFamily: "lato-bold",
     paddingHorizontal: 18,
     paddingVertical: 6,

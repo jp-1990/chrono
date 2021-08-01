@@ -4,7 +4,7 @@ import DateTimePicker, { Event } from "@react-native-community/datetimepicker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import FormInputs from "../FormInputs/FormInputs";
+import { FormInputs } from "../FormInputs";
 import ColorPicker, {
   Display as DisplayColorPickerProps,
 } from "../ColorPicker/ColorPicker";

@@ -4,7 +4,6 @@ import { ScrollView, View, StyleSheet } from "react-native";
 import Header from "../Components/Common/Header/Header";
 import Title from "../Components/Common/Title/Title";
 import DataChart from "../Components/Common/DataChart/DataChart";
-import Subtitle from "../Components/Common/Subtitle/Subtitle";
 import SelectedMonth from "../Components/Common/SelectedMonth/SelectedMonth";
 import ActivitiesKey from "../Components/Common/ActivitiesKey/ActivitiesKey";
 import MainButton from "../Components/Common/MainButton/MainButton";
@@ -82,9 +81,6 @@ const Timeline = () => {
           </View>
           <View>
             <DataChart data={testData} start={0} num={0} />
-          </View>
-          <View style={styles.subtitleBox}>
-            <Subtitle text="key" />
           </View>
           <View>
             <ActivitiesKey

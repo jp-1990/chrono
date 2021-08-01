@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 
-import { FormInputs, MainButton } from "../../Common/index";
+import { FormInputs, MainButton, Text } from "../../Common";
 
 import { colors } from "../../../styles";
 
@@ -29,7 +29,9 @@ const AuthForm: React.FC<Props> = ({
         setValues={setValues}
         values={values}
       />
-      <Text style={styles.errorText}>{errorMessage && errorMessage}</Text>
+      <Text variant="main" style={styles.errorText}>
+        {errorMessage && errorMessage}
+      </Text>
       <MainButton
         label={submitLabel}
         width="50%"

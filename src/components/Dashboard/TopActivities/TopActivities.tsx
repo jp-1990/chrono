@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, ViewStyle } from "react-native";
+import { View, ViewStyle } from "react-native";
 
 import { ActivityTotal, Text } from "../../Common";
 import { GroupSummaryWithName } from "../../../types";

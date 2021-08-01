@@ -1,22 +1,13 @@
 import React, { useState } from "react";
-import { ScrollView, View, StyleSheet, Modal, Pressable } from "react-native";
+import { ScrollView, View, StyleSheet, Modal } from "react-native";
 import moment from "moment";
 
-import {
-  Header,
-  Text,
-  Title,
-  DataChart,
-  Subtitle,
-  MainButton,
-  BottomNav,
-  NewActivity,
-} from "../Components/Common";
+import { Header, Title, DataChart, NewActivity } from "../Components/Common";
 import { TopActivities, TotalTime } from "../Components/Dashboard";
 import { useDashboard } from "../hooks";
 import { hoursToHoursAndMinutes, durationInHours } from "../utils";
 
-import { base, colors, screenSize } from "../styles";
+import { base, screenSize } from "../styles";
 const { screen } = base;
 
 const Dashboard = () => {
@@ -84,8 +75,6 @@ const Dashboard = () => {
           />
         </View>
       </ScrollView>
-
-      {/* <BottomNav /> */}
     </View>
   );
 };

@@ -4,7 +4,6 @@ import { ScrollView, View, StyleSheet } from "react-native";
 import {
   Header,
   Title,
-  Subtitle,
   SelectedMonth,
   BottomNav,
   ActivitiesKey,
