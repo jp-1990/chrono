@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-export const LoginQuery = gql`
-  query signIn($email: String!, $password: String!) {
+export const LoginMutation = gql`
+  mutation signIn($email: String!, $password: String!) {
     signIn(email: $email, password: $password) {
       user {
         id
@@ -12,17 +12,17 @@ export const LoginQuery = gql`
   }
 `;
 
-export interface LoginQueryArgs {
+export interface LoginMutationArgs {
   email: string;
   password: string;
 }
 
-export interface LoginQueryRes {
+export interface LoginMutationRes {
   signIn: {
     user: {
       id: string;
     };
     token: string;
-    tokenExpires: number;
+    tokenExpires: string;
   };
 }

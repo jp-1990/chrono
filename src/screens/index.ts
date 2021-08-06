@@ -4,3 +4,4 @@ export { default as Login } from "./Login";
 export { default as Reports } from "./Reports";
 export { default as SignUp } from "./SignUp";
 export { default as Timeline } from "./Timeline";
+export { default as Loading } from "./Loading";

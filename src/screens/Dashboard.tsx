@@ -15,11 +15,13 @@ const Dashboard = () => {
   const [colorPickerVisible, setColorPickerVisible] = useState(false);
 
   const { tasks, startDate, endDate } = useDashboard();
+
   // get top 3 activities
   const topActivities = tasks.summary?.slice(0, 3);
   // get total as hours and mins
   const recorded = hoursToHoursAndMinutes(tasks?.totalTime);
   const possible = durationInHours(moment(startDate), moment(endDate));
+
   return (
     <View style={screen}>
       <Header statusBar="light" />

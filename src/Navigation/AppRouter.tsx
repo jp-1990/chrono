@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import moment from "moment";
 
-import Login from "../Screens/Login";
-import ForgottenPassword from "../Screens/ForgottenPassword";
-import SignUp from "../Screens/SignUp";
-import Dashboard from "../Screens/Dashboard";
-import Timeline from "../Screens/Timeline";
-import Reports from "../Screens/Reports";
+import {
+  Login,
+  ForgottenPassword,
+  SignUp,
+  Dashboard,
+  Timeline,
+  Reports,
+  Loading,
+} from "../Screens";
 
+import { useRehydrateAuth } from "../hooks";
 import { useStoreState } from "../global-store";
 
 type RouteParams = {
@@ -21,20 +25,38 @@ export type StackParams = {
   Dashboard?: RouteParams;
   Timeline?: RouteParams;
   Reports?: RouteParams;
+  Loading?: undefined;
 };
 const Stack = createStackNavigator<StackParams>();
 
 export const AppRouter = () => {
+  const [rehydratingState, setRehydratingState] = useState<boolean>(true);
+
+  const { rehydrateToken } = useRehydrateAuth();
+
+  console.log("====================================");
+
+  useEffect(() => {
+    const rehydrateAsync = async () => {
+      await rehydrateToken();
+      setRehydratingState(false);
+      console.log("rehydrated");
+    };
+    // rehydrate auth state
+    if (rehydratingState) rehydrateAsync();
+  }, []);
+
   // check auth state
   const { token, tokenExpires } = useStoreState((state) => state.auth);
   const now = moment();
-  const tokenNotExpired = moment(Number(tokenExpires)) > now;
+  const tokenNotExpired = moment(tokenExpires) > now;
   const tokenValid = token && tokenNotExpired;
 
   // render relevant screens based on auth state
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {!tokenValid ? (
+      {rehydratingState && <Stack.Screen name="Loading" component={Loading} />}
+      {!tokenValid && (
         <>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen
@@ -43,7 +65,8 @@ export const AppRouter = () => {
           />
           <Stack.Screen name="SignUp" component={SignUp} />
         </>
-      ) : (
+      )}
+      {tokenValid && (
         <>
           <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="Timeline" component={Timeline} />
