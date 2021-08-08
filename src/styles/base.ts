@@ -56,7 +56,7 @@ export const colors = {
   transparent: "transparent",
   positive: "#00C31F",
   negative: "#C90000",
-  modalBackground: "rgba(69,72,81,0.9)",
+  modalBackground: "rgba(69,72,81,0.6)",
   newActivityBackground: "rgba(218,218,218,1)",
 };
 
