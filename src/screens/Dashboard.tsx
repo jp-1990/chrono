@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { ScrollView, View, StyleSheet, Modal } from "react-native";
+import { ScrollView, View, StyleSheet, Text } from "react-native";
 import moment from "moment";
 
-import { Header, Title, DataChart, NewActivity } from "../Components/Common";
+import {
+  Header,
+  Title,
+  DataChart,
+  NewActivity,
+  BottomNav,
+} from "../Components/Common";
 import { TopActivities, TotalTime } from "../Components/Dashboard";
+import { Modal } from "../Components/Layouts";
 import { useDashboard } from "../hooks";
 import { hoursToHoursAndMinutes, durationInHours } from "../utils";
 
@@ -11,8 +18,11 @@ import { base, screenSize } from "../styles";
 const { screen } = base;
 
 const Dashboard = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [colorPickerVisible, setColorPickerVisible] = useState(false);
+  const [modalActive, setModalActive] = useState(false);
+  const [modalContentSize, setModalContentSize] = useState<{
+    height: number;
+    width: number;
+  }>({ height: 0, width: 0 });
 
   const { tasks, startDate, endDate } = useDashboard();
 
@@ -22,29 +32,18 @@ const Dashboard = () => {
   const recorded = hoursToHoursAndMinutes(tasks?.totalTime);
   const possible = durationInHours(moment(startDate), moment(endDate));
 
+  const handleOpenModal = () => {
+    setModalActive(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalActive(false);
+  };
+
   return (
     <View style={screen}>
       <Header statusBar="light" />
       <ScrollView style={styles.scrollZindex}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(false);
-            setColorPickerVisible(false);
-          }}
-        >
-          <NewActivity
-            onSubmit={() => {}}
-            close={() => {}}
-            colorPicker={{
-              setColorPickerVisible: () =>
-                setColorPickerVisible((prev) => !prev),
-              colorPickerVisible: colorPickerVisible,
-            }}
-          />
-        </Modal>
         <View style={styles.container}>
           <View style={styles.titleContainer}>
             <Title
@@ -77,6 +76,25 @@ const Dashboard = () => {
           />
         </View>
       </ScrollView>
+      <Modal
+        active={modalActive}
+        setActive={setModalActive}
+        contentSize={modalContentSize}
+      >
+        <View
+          onLayout={(event) =>
+            setModalContentSize({
+              height: event.nativeEvent.layout.height,
+              width: event.nativeEvent.layout.width,
+            })
+          }
+        >
+          <NewActivity onSubmit={() => {}} />
+        </View>
+        <View style={styles.modalContentPadding} />
+      </Modal>
+
+      <BottomNav FABAction={handleOpenModal} />
     </View>
   );
 };
@@ -87,11 +105,17 @@ const styles = StyleSheet.create({
   scrollZindex: { position: "relative", zIndex: -100 },
   container: {
     paddingHorizontal: 12,
-    paddingVertical: 24,
+    paddingTop: 24,
+    paddingBottom: 36,
   },
   titleContainer: {
     alignItems: "center",
     marginBottom: 6,
+  },
+  FABContainer: {
+    position: "absolute",
+    bottom: 16,
+    right: 12,
   },
   dataChart: {
     width: screenSize.width - 24,
@@ -104,5 +128,8 @@ const styles = StyleSheet.create({
   },
   totalTime: {
     marginHorizontal: 24,
+  },
+  modalContentPadding: {
+    height: "100%",
   },
 });

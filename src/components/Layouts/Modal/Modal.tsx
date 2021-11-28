@@ -8,7 +8,11 @@ import Animated, {
   runOnJS,
   Easing,
 } from "react-native-reanimated";
-import { PanGestureHandler } from "react-native-gesture-handler";
+import {
+  GestureEventPayload,
+  PanGestureHandler,
+  PanGestureHandlerEventPayload,
+} from "react-native-gesture-handler";
 import constants from "expo-constants";
 
 import { colors, screenSize } from "../../../styles";
@@ -31,36 +35,21 @@ const Modal: React.FC<Props> = ({
 }) => {
   const [modalActive, setModalActive] = useState<boolean>(false);
 
-  // close modal
-  const handleClose = () => {
-    contentHeight.value = withTiming(0, {
-      duration: 500,
-      easing: Easing.out(Easing.exp),
-    });
-    opacity.value = withTiming(0, undefined, (isFinished) => {
-      if (isFinished) {
-        runOnJS(setModalActive)(false);
-        runOnJS(setActive)(false);
-      }
-    });
-  };
-
   const opacity = useSharedValue(0);
   const contentHeight = useSharedValue(0);
   const borderRadius = useSharedValue(20);
 
+  // animated styles
   const animatedOpacity = useAnimatedStyle(() => {
     return {
       opacity: opacity.value,
     };
   });
-
   const animatedContentHeight = useAnimatedStyle(() => {
     return {
       height: contentHeight.value,
     };
   });
-
   const animatedBorderRadius = useAnimatedStyle(() => {
     return {
       borderTopRightRadius: borderRadius.value,
@@ -79,11 +68,74 @@ const Modal: React.FC<Props> = ({
     }
   }, [active, contentSize]);
 
-  const autoOffset = 150;
+  // variables
+  const autoCloseThreshold = 150;
   const gestureModfier = 1.5;
   const animationOptions = {
     duration: 500,
     easing: Easing.out(Easing.exp),
+  };
+
+  // close modal from ui
+  const handleClose = () => {
+    opacity.value = withTiming(0, undefined, (isFinished) => {
+      if (isFinished) {
+        runOnJS(setModalActive)(false);
+        runOnJS(setActive)(false);
+      }
+    });
+  };
+
+  // close modal via background press
+  const handleBackgroundPressClose = () => {
+    contentHeight.value = withTiming(0, animationOptions);
+    opacity.value = withTiming(0, undefined, (isFinished) => {
+      if (isFinished) {
+        runOnJS(setModalActive)(false);
+        runOnJS(setActive)(false);
+      }
+    });
+  };
+
+  interface GestureContext {
+    currentHeight: number;
+  }
+
+  // gesture handling function
+  const handleOnGesture = (
+    event: Readonly<GestureEventPayload & PanGestureHandlerEventPayload>,
+    ctx: GestureContext,
+    state: "START" | "ACTIVE" | "END"
+  ) => {
+    "worklet";
+    const height = ctx.currentHeight;
+    const gestureY = event.translationY;
+
+    const shouldClose = height - gestureY * gestureModfier < autoCloseThreshold;
+    const shouldFillScreen =
+      height - gestureY * gestureModfier >
+      screenSize.height - autoCloseThreshold;
+
+    if (shouldClose) {
+      contentHeight.value = withTiming(0, animationOptions);
+      if (state === "END") runOnJS(handleClose)();
+      return;
+    }
+
+    if (shouldFillScreen) {
+      contentHeight.value = withTiming(
+        screenSize.height - constants.statusBarHeight,
+        animationOptions
+      );
+      borderRadius.value = withTiming(0, animationOptions);
+      return;
+    }
+
+    borderRadius.value = 20;
+    contentHeight.value = withTiming(height - gestureY * gestureModfier, {
+      ...animationOptions,
+      duration: 300,
+    });
   };
 
   const gestureHandler = useAnimatedGestureHandler({
@@ -91,58 +143,10 @@ const Modal: React.FC<Props> = ({
       ctx.currentHeight = contentHeight.value;
     },
     onActive: (event, ctx) => {
-      if (
-        ctx.currentHeight - event.translationY * gestureModfier <
-        autoOffset
-      ) {
-        return runOnJS(handleClose)();
-      }
-      if (
-        ctx.currentHeight - event.translationY * gestureModfier >
-        screenSize.height - autoOffset
-      ) {
-        contentHeight.value = withTiming(
-          screenSize.height - constants.statusBarHeight,
-          {
-            duration: 300,
-            easing: Easing.out(Easing.exp),
-          }
-        );
-        borderRadius.value = 0;
-        return;
-      }
-      borderRadius.value = 20;
-      contentHeight.value = withTiming(
-        ctx.currentHeight - event.translationY * gestureModfier,
-        {
-          duration: 300,
-          easing: Easing.out(Easing.exp),
-        }
-      );
+      handleOnGesture(event, ctx, "ACTIVE");
     },
     onEnd: (event, ctx) => {
-      if (
-        ctx.currentHeight - event.translationY * gestureModfier <
-        autoOffset
-      ) {
-        return runOnJS(handleClose)();
-      }
-      if (
-        ctx.currentHeight - event.translationY * gestureModfier >
-        screenSize.height - autoOffset
-      ) {
-        contentHeight.value = withTiming(
-          screenSize.height - constants.statusBarHeight,
-          animationOptions
-        );
-        borderRadius.value = 0;
-        return;
-      }
-      borderRadius.value = 20;
-      contentHeight.value = withTiming(
-        ctx.currentHeight - event.translationY * gestureModfier,
-        animationOptions
-      );
+      handleOnGesture(event, ctx, "END");
     },
   });
 
@@ -159,7 +163,7 @@ const Modal: React.FC<Props> = ({
             zIndex: 10,
           },
         ]}
-        onPress={handleClose}
+        onPress={handleBackgroundPressClose}
       >
         <Animated.View
           style={[
@@ -222,5 +226,4 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: colors.backgroundColor,
   },
-  content: {},
 });

@@ -4,9 +4,41 @@ import { View, StyleSheet, Text, Pressable } from "react-native";
 import { colors } from "../../../styles";
 
 export interface Display {
-  setColorPickerVisible(): void;
-  colorPickerVisible: boolean;
+  setColorPickerActive: React.Dispatch<React.SetStateAction<boolean>>;
+  colorPickerActive: boolean;
 }
+
+interface PressableColorSquareProps {
+  color: string;
+  setColor: React.Dispatch<React.SetStateAction<string>>;
+  setColorPickerActive: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const PressableColorSquare: React.FC<PressableColorSquareProps> = ({
+  color,
+  setColor,
+  setColorPickerActive,
+}) => {
+  return (
+    <View>
+      <Pressable
+        style={{
+          ...styles.colorBox,
+          backgroundColor: color.toLowerCase(),
+        }}
+        android_ripple={{
+          color: colors.backgroundColor,
+          borderless: false,
+          radius: 150,
+        }}
+        onPress={() => {
+          setColorPickerActive((prev) => !prev);
+          setColor(color.toLowerCase());
+        }}
+      ></Pressable>
+    </View>
+  );
+};
 
 interface Props {
   color: string;
@@ -46,63 +78,30 @@ const ColorPicker: React.FC<Props> = ({ color, setColor, display }) => {
   for (let i = 0, j = colorSelection.length; i < j; i++) {
     if (i < 7) {
       row1.push(
-        <View key={i}>
-          <Pressable
-            style={{
-              ...styles.colorBox,
-              backgroundColor: colorSelection[i].toLowerCase(),
-            }}
-            android_ripple={{
-              color: colors.menuSecondary,
-              borderless: false,
-              radius: 150,
-            }}
-            onPress={() => {
-              display.setColorPickerVisible();
-              setColor(colorSelection[i].toLowerCase());
-            }}
-          ></Pressable>
-        </View>
+        <PressableColorSquare
+          key={colorSelection[i]}
+          color={colorSelection[i]}
+          setColor={setColor}
+          setColorPickerActive={display.setColorPickerActive}
+        />
       );
     } else if (i < 14) {
       row2.push(
-        <View key={i}>
-          <Pressable
-            style={{
-              ...styles.colorBox,
-              backgroundColor: colorSelection[i].toLowerCase(),
-            }}
-            android_ripple={{
-              color: colors.menuSecondary,
-              borderless: false,
-              radius: 150,
-            }}
-            onPress={() => {
-              display.setColorPickerVisible();
-              setColor(colorSelection[i].toLowerCase());
-            }}
-          ></Pressable>
-        </View>
+        <PressableColorSquare
+          key={colorSelection[i]}
+          color={colorSelection[i]}
+          setColor={setColor}
+          setColorPickerActive={display.setColorPickerActive}
+        />
       );
     } else if (i <= 21) {
       row3.push(
-        <View key={i}>
-          <Pressable
-            style={{
-              ...styles.colorBox,
-              backgroundColor: colorSelection[i].toLowerCase(),
-            }}
-            android_ripple={{
-              color: colors.menuSecondary,
-              borderless: false,
-              radius: 150,
-            }}
-            onPress={() => {
-              display.setColorPickerVisible();
-              setColor(colorSelection[i].toLowerCase());
-            }}
-          ></Pressable>
-        </View>
+        <PressableColorSquare
+          key={colorSelection[i]}
+          color={colorSelection[i]}
+          setColor={setColor}
+          setColorPickerActive={display.setColorPickerActive}
+        />
       );
     }
   }
@@ -118,12 +117,12 @@ const ColorPicker: React.FC<Props> = ({ color, setColor, display }) => {
               borderless: false,
               radius: 150,
             }}
-            onPress={() => display.setColorPickerVisible()}
+            onPress={() => display.setColorPickerActive((prev) => !prev)}
             style={{ ...styles.selectedColor, backgroundColor: color }}
-          ></Pressable>
+          />
         </View>
       </View>
-      {display.colorPickerVisible ? (
+      {display.colorPickerActive ? (
         <View style={styles.pickerVisible}>
           <View style={styles.row}>{row1}</View>
           <View style={styles.row}>{row2}</View>
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "lato-light",
-    fontSize: 30,
+    fontSize: 24,
     color: colors.headingPrimary,
     paddingHorizontal: 10,
     textTransform: "uppercase",
@@ -157,6 +156,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     height: 36,
     width: 36,
+    borderRadius: 2,
   },
   pickerVisible: {
     position: "absolute",
@@ -164,19 +164,24 @@ const styles = StyleSheet.create({
     left: 0,
     height: 120,
     width: "100%",
+    display: "flex",
     justifyContent: "space-between",
-    backgroundColor: colors.newActivityBackground,
+    alignItems: "center",
+    backgroundColor: colors.backgroundColor,
     zIndex: 1,
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
+    maxWidth: 300,
+    minWidth: 300,
   },
   colorBox: {
     height: 36,
     width: 36,
     borderWidth: 0.5,
     borderColor: colors.headingSecondary,
+    borderRadius: 2,
   },
 });

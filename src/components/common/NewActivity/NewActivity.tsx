@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import DateTimePicker, { Event } from "@react-native-community/datetimepicker";
-import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import moment from "moment";
 
 import { FormInputs } from "../FormInputs";
-import ColorPicker, {
-  Display as DisplayColorPickerProps,
-} from "../ColorPicker/ColorPicker";
+import ColorPicker from "../ColorPicker/ColorPicker";
 import MainButton from "../MainButton/MainButton";
+
+import { Text } from "../Text";
 
 import { base, colors } from "../../../styles";
 const { defaultInput } = base;
 
 interface DateTimePickerTypes {
-  mode: "date" | "time" | "datetime" | "countdown" | undefined;
+  mode: "date" | "time" | undefined;
   target: "startTime" | "endTime" | "startDate" | "endDate";
   dateObject: {
     now: Date;
@@ -27,11 +27,16 @@ interface DateTimePickerTypes {
 
 interface Props {
   onSubmit(): void;
-  close(): void;
-  colorPicker: DisplayColorPickerProps;
 }
 
-const NewActivity: React.FC<Props> = ({ onSubmit, close, colorPicker }) => {
+const NewActivity: React.FC<Props> = ({ onSubmit }) => {
+  const [colorPickerActive, setColorPickerActive] = useState(false);
+  const [values, setValues] = useState<{ [key: string]: string }>({
+    Title: "",
+    Activity: "",
+    Notes: "",
+  });
+
   const [date, setDate] = useState<DateTimePickerTypes["dateObject"]>({
     now: new Date(Date.now()),
   });
@@ -76,101 +81,118 @@ const NewActivity: React.FC<Props> = ({ onSubmit, close, colorPicker }) => {
     showMode("time");
   };
 
-  return (
-    <View style={styles.background}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.close}></View>
-          <Text style={styles.headerText}>New Activity</Text>
-        </View>
-        <View style={styles.formContainer}>
-          <FormInputs inputLabels={["Activity", "Category", "Notes"]} />
-          <View style={styles.dateTimeContainer}>
-            <View>
-              <Pressable onPress={() => showDatepicker("startDate")}>
-                <View style={{ ...defaultInput, ...styles.dateTime }}>
-                  <Text style={styles.dateTimeText}>
-                    {date.startDate !== undefined
-                      ? ukDate(date.startDate)
-                      : "Start date"}
-                  </Text>
-                  <MaterialCommunityIcons
-                    name="calendar-plus"
-                    size={22}
-                    color={colors.headingPrimary}
-                  />
-                </View>
-              </Pressable>
-              <Pressable onPress={() => showDatepicker("endDate")}>
-                <View style={{ ...defaultInput, ...styles.dateTime }}>
-                  <Text style={styles.dateTimeText}>
-                    {date.endDate !== undefined
-                      ? ukDate(date.endDate)
-                      : "End date"}
-                  </Text>
-                  <MaterialCommunityIcons
-                    name="calendar-remove"
-                    size={22}
-                    color={colors.headingPrimary}
-                  />
-                </View>
-              </Pressable>
-            </View>
-            <View>
-              <Pressable onPress={() => showTimepicker("startTime")}>
-                <View style={{ ...defaultInput, ...styles.dateTime }}>
-                  <Text style={styles.dateTimeText}>
-                    {date.startTime !== undefined
-                      ? date.startTime.toLocaleTimeString().substring(0, 5)
-                      : "Start time"}
-                  </Text>
-                  <MaterialIcons
-                    name="more-time"
-                    size={22}
-                    color={colors.headingPrimary}
-                  />
-                </View>
-              </Pressable>
-              <Pressable onPress={() => showTimepicker("endTime")}>
-                <View style={{ ...defaultInput, ...styles.dateTime }}>
-                  <Text style={styles.dateTimeText}>
-                    {date.endTime !== undefined
-                      ? date.endTime.toLocaleTimeString().substring(0, 5)
-                      : "End time"}
-                  </Text>
-                  <MaterialIcons
-                    name="timer-off"
-                    size={22}
-                    color={colors.headingPrimary}
-                  />
-                </View>
-              </Pressable>
-            </View>
-            {show && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date.now}
-                mode={mode}
-                // @ts-expect-error something within DateTimePicker types
-                is24Hour={true}
-                display="default"
-                onChange={onChange}
-              />
-            )}
-          </View>
-        </View>
-        <ColorPicker color={color} setColor={setColor} display={colorPicker} />
-        <View style={styles.buttonContainer}>
-          <MainButton
-            label="Create"
-            width="50%"
-            colorBG={colors.buttonPrimary}
-            colorText={colors.buttonText}
-            ripple={colors.buttonPrimaryRipple}
-            marginTop={24}
-            onPress={onSubmit}
+  interface DateTimeInputProps {
+    label: DateTimePickerTypes["target"];
+    icon: keyof typeof MaterialCommunityIcons.glyphMap;
+    placeholder: string;
+  }
+  const DateTimeInput: React.FC<DateTimeInputProps> = ({
+    label,
+    icon,
+    placeholder,
+  }) => {
+    const onPress = () => {
+      if (label.includes("Date")) showDatepicker(label);
+      if (label.includes("Time")) showTimepicker(label);
+    };
+
+    let text;
+    if (date[label]) {
+      if (label.includes("Date"))
+        text = moment(date[label]).format("DD/MM/YYYY");
+      if (label.includes("Time")) text = moment(date[label]).format("HH:mm");
+    }
+    return (
+      <Pressable onPress={onPress}>
+        <View style={{ ...defaultInput, ...styles.dateTime }}>
+          {date[label] ? (
+            <Text variant="sp" style={styles.dateTimeText}>
+              {text}
+            </Text>
+          ) : (
+            <Text variant="sp" style={styles.placeholder}>
+              {placeholder}
+            </Text>
+          )}
+          <MaterialCommunityIcons
+            name={icon}
+            size={20}
+            color={colors.headingPrimary}
           />
         </View>
+      </Pressable>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text variant="h2" style={styles.headerText}>
+          New Activity
+        </Text>
+        <Text variant="sp">
+          Statistics will group by 'Activity', and then by 'Title'
+        </Text>
+      </View>
+      <View style={styles.formContainer}>
+        <FormInputs
+          inputLabels={["Title", "Activity", "Notes"]}
+          values={values}
+          setValues={setValues}
+        />
+
+        <View style={styles.dateTimeContainer}>
+          <View>
+            <DateTimeInput
+              label="startDate"
+              icon="calendar-range"
+              placeholder="Start date"
+            />
+            <DateTimeInput
+              label="endDate"
+              icon="calendar-range"
+              placeholder="End date"
+            />
+          </View>
+          <View>
+            <DateTimeInput
+              label="startTime"
+              icon="timer-outline"
+              placeholder="Start time"
+            />
+            <DateTimeInput
+              label="endTime"
+              icon="timer-off-outline"
+              placeholder="End time"
+            />
+          </View>
+          {show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date.now}
+              mode={mode}
+              is24Hour={true}
+              display="default"
+              onChange={onChange}
+            />
+          )}
+        </View>
+      </View>
+      <ColorPicker
+        color={color}
+        setColor={setColor}
+        display={{ setColorPickerActive, colorPickerActive }}
+      />
+      <View style={styles.buttonContainer}>
+        <MainButton
+          label="Create"
+          width="50%"
+          colorBG={colors.buttonPrimary}
+          colorText={colors.buttonText}
+          ripple={colors.buttonPrimaryRipple}
+          marginTop={24}
+          onPress={onSubmit}
+        />
       </View>
     </View>
   );
@@ -179,35 +201,20 @@ const NewActivity: React.FC<Props> = ({ onSubmit, close, colorPicker }) => {
 export default NewActivity;
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: colors.modalBackground,
-  },
   container: {
-    backgroundColor: colors.newActivityBackground,
-    width: "90%",
-    height: "80%",
-    borderWidth: 0.5,
-    borderColor: colors.headingSecondary,
     alignItems: "center",
+    marginBottom: 36,
+    height: 464,
   },
   header: {
-    backgroundColor: colors.menuSecondary,
     position: "relative",
-    height: 66,
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-  },
-  close: {
-    position: "absolute",
+    marginTop: 20,
   },
   headerText: {
-    color: colors.buttonText,
-    fontSize: 30,
-    fontFamily: "lato-light",
+    marginBottom: 8,
   },
   formContainer: {
     paddingVertical: 16,
@@ -216,7 +223,7 @@ const styles = StyleSheet.create({
   },
   dateTimeContainer: {
     flexDirection: "row",
-    width: "100%",
+    width: 250,
     justifyContent: "center",
   },
   dateTime: {
@@ -224,12 +231,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 10,
-    width: 130,
+    width: 120,
   },
   dateTimeText: {
-    fontSize: 18,
-    color: colors.menuSecondary,
-    fontFamily: "lato-light",
+    color: colors.headingPrimary,
+  },
+  placeholder: {
+    color: colors.headingSecondary,
   },
   buttonContainer: {
     width: "100%",
