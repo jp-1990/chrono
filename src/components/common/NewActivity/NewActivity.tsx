@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Pressable, TextInput } from "react-native";
 import DateTimePicker, { Event } from "@react-native-community/datetimepicker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import moment from "moment";
 
-import { FormInputs } from "../FormInputs";
+import { Text } from "../Text";
 import ColorPicker from "../ColorPicker/ColorPicker";
 import MainButton from "../MainButton/MainButton";
 
-import { Text } from "../Text";
+import { useNewActivity } from "../../../hooks";
 
 import { base, colors } from "../../../styles";
 const { defaultInput } = base;
@@ -27,43 +27,41 @@ interface DateTimePickerTypes {
 
 interface Props {
   onSubmit(): void;
+  modalActive: boolean;
 }
+const NewActivity: React.FC<Props> = ({ modalActive }) => {
+  const { state, actions } = useNewActivity();
 
-const NewActivity: React.FC<Props> = ({ onSubmit }) => {
   const [colorPickerActive, setColorPickerActive] = useState(false);
-  const [values, setValues] = useState<{ [key: string]: string }>({
-    Title: "",
-    Activity: "",
-    Notes: "",
-  });
-
-  const [date, setDate] = useState<DateTimePickerTypes["dateObject"]>({
-    now: new Date(Date.now()),
-  });
-  const [color, setColor] = useState(colors.menuPrimary);
+  const [dateTimeSelected, setDateTimeSelected] = useState<
+    DateTimePickerTypes["target"][]
+  >([]);
   const [mode, setMode] = useState<DateTimePickerTypes["mode"]>("date");
   const [show, setShow] = useState(false);
   const [target, setTarget] =
     useState<DateTimePickerTypes["target"]>("startTime");
 
-  //export to utils?
-  const ukDate = (dateObj: Date) => {
-    const year = dateObj.getFullYear();
-    const month =
-      dateObj.getMonth() + 1 < 10
-        ? `0${dateObj.getMonth() + 1}`
-        : dateObj.getMonth() + 1;
-    const date =
-      dateObj.getDate() < 10 ? `0${dateObj.getDate()}` : dateObj.getDate();
-    return `${date}/${month}/${year.toString().substring(0, 2)}`;
+  useEffect(() => {
+    actions.resetState();
+    setColorPickerActive(false);
+    setDateTimeSelected([]);
+  }, [modalActive]);
+
+  const handleSubmit = () => {
+    console.log(state);
   };
 
-  const onChange = (event: Event, selectedDate: Date | undefined) => {
-    const currentDate = selectedDate || undefined;
+  const onChange = (_: Event, selectedDate: Date | undefined) => {
+    if (!selectedDate) return;
     setShow(false);
-    setDate((prev) => {
-      return { ...prev, [target]: currentDate };
-    });
+    setDateTimeSelected((prev) => [...new Set([...prev, target])]);
+    const actionKey = `set${target[0].toUpperCase()}${target.slice(
+      1
+    )}` as keyof Omit<
+      typeof actions,
+      "setTitle" | "setActivity" | "setNotes" | "setColor"
+    >;
+    actions[actionKey](selectedDate);
   };
 
   const showMode = (currentMode: DateTimePickerTypes["mode"]) => {
@@ -95,17 +93,19 @@ const NewActivity: React.FC<Props> = ({ onSubmit }) => {
       if (label.includes("Date")) showDatepicker(label);
       if (label.includes("Time")) showTimepicker(label);
     };
+    const when = label.includes("start") ? "start" : "end";
 
     let text;
-    if (date[label]) {
-      if (label.includes("Date"))
-        text = moment(date[label]).format("DD/MM/YYYY");
-      if (label.includes("Time")) text = moment(date[label]).format("HH:mm");
+    if (state[when]) {
+      if (label.includes("Date") && dateTimeSelected.includes(label))
+        text = moment(state[when]).format("DD/MM/YYYY");
+      if (label.includes("Time") && dateTimeSelected.includes(label))
+        text = moment(state[when]).format("HH:mm");
     }
     return (
       <Pressable onPress={onPress}>
         <View style={{ ...defaultInput, ...styles.dateTime }}>
-          {date[label] ? (
+          {state[when] && dateTimeSelected.includes(label) ? (
             <Text variant="sp" style={styles.dateTimeText}>
               {text}
             </Text>
@@ -135,12 +135,29 @@ const NewActivity: React.FC<Props> = ({ onSubmit }) => {
         </Text>
       </View>
       <View style={styles.formContainer}>
-        <FormInputs
-          inputLabels={["Title", "Activity", "Notes"]}
-          values={values}
-          setValues={setValues}
-        />
-
+        <View style={styles.inputContainer}>
+          <TextInput
+            value={state.title}
+            onChangeText={actions.setTitle}
+            placeholder={"Title"}
+            placeholderTextColor={colors.headingSecondary}
+            style={defaultInput}
+          />
+          <TextInput
+            value={state.activity}
+            onChangeText={actions.setActivity}
+            placeholder={"Activity"}
+            placeholderTextColor={colors.headingSecondary}
+            style={defaultInput}
+          />
+          <TextInput
+            value={state.notes}
+            onChangeText={actions.setNotes}
+            placeholder={"Notes"}
+            placeholderTextColor={colors.headingSecondary}
+            style={defaultInput}
+          />
+        </View>
         <View style={styles.dateTimeContainer}>
           <View>
             <DateTimeInput
@@ -169,7 +186,7 @@ const NewActivity: React.FC<Props> = ({ onSubmit }) => {
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
-              value={date.now}
+              value={new Date(Date.now())}
               mode={mode}
               is24Hour={true}
               display="default"
@@ -179,8 +196,8 @@ const NewActivity: React.FC<Props> = ({ onSubmit }) => {
         </View>
       </View>
       <ColorPicker
-        color={color}
-        setColor={setColor}
+        color={state.color}
+        setColor={actions.setColor}
         display={{ setColorPickerActive, colorPickerActive }}
       />
       <View style={styles.buttonContainer}>
@@ -191,7 +208,7 @@ const NewActivity: React.FC<Props> = ({ onSubmit }) => {
           colorText={colors.buttonText}
           ripple={colors.buttonPrimaryRipple}
           marginTop={24}
-          onPress={onSubmit}
+          onPress={handleSubmit}
         />
       </View>
     </View>
@@ -221,6 +238,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
+  inputContainer: { alignItems: "center", width: "100%" },
   dateTimeContainer: {
     flexDirection: "row",
     width: 250,

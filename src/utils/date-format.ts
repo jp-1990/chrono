@@ -29,3 +29,9 @@ export const hoursToHoursAndMinutes = (hours: number = 0) => {
     minutes: Number(outputMinutes),
   };
 };
+
+export const buildDateTime = (date: Date, time: Date) => {
+  const dateString = date.toDateString();
+  const timeString = time.toTimeString();
+  return new Date(`${dateString} ${timeString}`);
+};

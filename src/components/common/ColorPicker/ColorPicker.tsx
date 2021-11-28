@@ -10,7 +10,7 @@ export interface Display {
 
 interface PressableColorSquareProps {
   color: string;
-  setColor: React.Dispatch<React.SetStateAction<string>>;
+  setColor: (color: string) => void;
   setColorPickerActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -42,34 +42,34 @@ const PressableColorSquare: React.FC<PressableColorSquareProps> = ({
 
 interface Props {
   color: string;
-  setColor: React.Dispatch<React.SetStateAction<string>>;
+  setColor: (color: string) => void;
   display: Display;
 }
 
 // provides a color picker which supports 21 colors
 const ColorPicker: React.FC<Props> = ({ color, setColor, display }) => {
   const colorSelection = [
-    "navy",
-    "steelblue",
-    "Blue",
-    "DarkBlue",
-    "Cyan",
-    "Crimson",
-    "DarkRed",
-    "IndianRed",
-    "Chartreuse",
-    "DarkGreen",
-    "DarkOliveGreen",
-    "DarkViolet",
-    "DeepPink",
-    "Indigo",
-    "Orange",
-    "Yellow",
-    "Gold",
-    "Black",
-    "DarkGrey",
-    "Grey",
-    "SaddleBrown",
+    "rgba(229, 229, 229, 1)",
+    "rgba(126, 126, 126, 1)",
+    "rgba(50, 50, 50, 1)",
+    "rgba(0, 0, 0, 1)",
+    "rgba(0, 63, 6, 1)",
+    "rgba(0, 118, 19, 1)",
+    "rgba(4, 218, 0, 1)",
+    "rgba(255, 214, 0, 1)",
+    "rgba(255, 86, 0, 1)",
+    "rgba(177, 64, 0, 1)",
+    "rgba(86, 26, 0, 1)",
+    "rgba(2, 0, 80, 1)",
+    "rgba(0, 22, 218, 1)",
+    "rgba(38, 203, 255, 1)",
+    "rgba(255, 0, 199, 1)",
+    "rgba(192, 0, 150, 1)",
+    "rgba(234, 0, 0, 1)",
+    "rgba(126, 0, 0, 1)",
+    "rgba(75, 0, 111, 1)",
+    "rgba(155, 0, 250, 1)",
+    "rgba(0, 94, 115, 1)",
   ];
   const row1 = [];
   const row2 = [];
@@ -113,7 +113,7 @@ const ColorPicker: React.FC<Props> = ({ color, setColor, display }) => {
         <View>
           <Pressable
             android_ripple={{
-              color: colors.menuSecondary,
+              color: "rgba(126, 126, 126, 1)",
               borderless: false,
               radius: 150,
             }}
