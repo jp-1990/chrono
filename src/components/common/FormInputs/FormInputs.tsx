@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { TextInput, View, StyleSheet } from "react-native";
 
-import { base } from "../../../styles";
+import { base, colors } from "../../../styles";
 const { defaultInput } = base;
 
 interface Props {
@@ -28,6 +28,7 @@ const FormInputs: React.FC<Props> = ({ inputLabels, values, setValues }) => {
         value={values[e]}
         onChangeText={handleChangeText}
         placeholder={e}
+        placeholderTextColor={colors.headingSecondary}
         style={defaultInput}
       ></TextInput>
     );

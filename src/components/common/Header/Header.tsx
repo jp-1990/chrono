@@ -1,6 +1,7 @@
 import React from "react";
-import { View, StyleSheet, StatusBar } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+import Constants from "expo-constants";
 
 import { colors } from "../../../styles";
 
@@ -11,7 +12,7 @@ interface Props {
 const Header: React.FC<Props> = ({ statusBar }) => {
   return (
     <>
-      <ExpoStatusBar style={statusBar} />
+      <ExpoStatusBar style={Platform.OS === "android" ? statusBar : "light"} />
       <View style={styles.statusBar}></View>
     </>
   );
@@ -21,7 +22,7 @@ export default Header;
 
 const styles = StyleSheet.create({
   statusBar: {
-    height: StatusBar.currentHeight,
+    height: Constants.statusBarHeight,
     backgroundColor: colors.menuSecondary,
   },
 });
