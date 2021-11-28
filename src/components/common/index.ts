@@ -3,6 +3,7 @@ export * from "./ActivityTotal";
 export * from "./BottomNav";
 export * from "./ColorPicker";
 export * from "./DataChart";
+export * from "./FAB";
 export * from "./FormInputs";
 export * from "./Header";
 export * from "./MainButton";
