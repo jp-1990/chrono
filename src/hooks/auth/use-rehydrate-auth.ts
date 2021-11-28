@@ -23,7 +23,7 @@ export const useRehydrateAuth = () => {
       }
       return;
     } catch (err) {
-      console.log("rehydrateToken:", err);
+      console.error("rehydrateToken:", err);
     }
   };
 

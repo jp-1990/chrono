@@ -34,13 +34,10 @@ export const AppRouter = () => {
 
   const { rehydrateToken } = useRehydrateAuth();
 
-  console.log("====================================");
-
   useEffect(() => {
     const rehydrateAsync = async () => {
       await rehydrateToken();
       setRehydratingState(false);
-      console.log("rehydrated");
     };
     // rehydrate auth state
     if (rehydratingState) rehydrateAsync();

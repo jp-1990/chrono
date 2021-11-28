@@ -19,7 +19,7 @@ export const useDashboard = () => {
         scope: 10,
       },
       onError: (err) => {
-        console.log(err);
+        console.error(err);
       },
     }
   );

@@ -27,5 +27,10 @@ const styles = StyleSheet.create({
   dataBar: {
     height: 22,
     borderRadius: 2,
+    // shadowColor: "#111",
+    // shadowOffset: { width: 1, height: 1 },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 2,
+    // elevation: 0,
   },
 });

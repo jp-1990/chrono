@@ -22,7 +22,7 @@ export const setToSecureStore = async <
     await SecureStore.setItemAsync(key, jsonValue);
     console.log(`Successfully set ${key} to secure store`);
   } catch (err) {
-    console.log("setToSecureStore:", err);
+    console.error("setToSecureStore:", err);
   }
 };
 
@@ -42,7 +42,7 @@ export const getFromSecureStore = async <Key extends keyof SecureStoreItems>(
     console.log(`Successfully got ${key} from secure store`);
     return result;
   } catch (err) {
-    console.log("getFromSecureStore:", err);
+    console.error("getFromSecureStore:", err);
   }
 };
 
@@ -56,6 +56,6 @@ export const removeFromSecureStore = async <Key extends keyof SecureStoreItems>(
     await SecureStore.deleteItemAsync(key);
     console.log(`Successfully removed ${key} from secure store`);
   } catch (err) {
-    console.log("removeFromSecureStore:", err);
+    console.error("removeFromSecureStore:", err);
   }
 };
