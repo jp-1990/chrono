@@ -1,5 +1,11 @@
 import React, { useState, useEffect, ReactNode } from "react";
-import { StyleSheet, View, Pressable, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Pressable,
+  Keyboard,
+  BackHandler,
+} from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -68,6 +74,17 @@ const Modal: React.FC<Props> = ({
     }
   }, [active, contentSize]);
 
+  useEffect(() => {
+    const onHardwareBack = () => {
+      handleBackgroundPressClose();
+      return true;
+    };
+    BackHandler.addEventListener("hardwareBackPress", onHardwareBack);
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", onHardwareBack);
+    };
+  }, []);
+
   // variables
   const autoCloseThreshold = 150;
   const gestureModfier = 1.5;
@@ -78,6 +95,7 @@ const Modal: React.FC<Props> = ({
 
   // close modal from ui
   const handleClose = () => {
+    Keyboard.dismiss();
     opacity.value = withTiming(0, undefined, (isFinished) => {
       if (isFinished) {
         runOnJS(setModalActive)(false);
@@ -88,6 +106,7 @@ const Modal: React.FC<Props> = ({
 
   // close modal via background press
   const handleBackgroundPressClose = () => {
+    Keyboard.dismiss();
     contentHeight.value = withTiming(0, animationOptions);
     opacity.value = withTiming(0, undefined, (isFinished) => {
       if (isFinished) {

@@ -89,7 +89,7 @@ const Dashboard = () => {
             })
           }
         >
-          <NewActivity onSubmit={() => {}} />
+          <NewActivity modalActive={modalActive} onSubmit={() => {}} />
         </View>
         <View style={styles.modalContentPadding} />
       </Modal>
