@@ -1,11 +1,16 @@
 import React from "react";
 import { View, StyleSheet, Pressable } from "react-native";
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
+import { FAB } from "../FAB";
 import { colors } from "../../../styles";
 
-const BottomNav = () => {
+interface Props {
+  FABAction: () => void;
+}
+
+const BottomNav: React.FC<Props> = ({ FABAction }) => {
   // useNavigation hook works with react context in the background and provides the navigation object from the current screen
   const navigation = useNavigation();
   // useRoute provides route object from current screen
@@ -14,63 +19,26 @@ const BottomNav = () => {
   return (
     <View style={styles.container}>
       <Pressable
-        android_ripple={{
-          color: colors.buttonTextRipple,
-          borderless: false,
-          radius: 150,
-        }}
         onPress={() => navigation.navigate("Dashboard")}
-        style={{
-          ...styles.iconBox,
-          backgroundColor:
-            route.name === "Dashboard" ? colors.buttonSecondary : undefined,
-        }}
+        style={styles.iconBox}
       >
-        <View>
-          <MaterialCommunityIcons
-            name="view-dashboard"
-            size={35}
-            color="white"
-          />
-        </View>
+        <MaterialCommunityIcons name="view-dashboard" size={28} color="white" />
       </Pressable>
-      <Pressable
-        android_ripple={{
-          color: colors.buttonTextRipple,
-          borderless: false,
-          radius: 150,
-        }}
-        onPress={() => navigation.navigate("Timeline")}
-        style={{
-          ...styles.iconBox,
-          backgroundColor:
-            route.name === "Timeline" ? colors.buttonSecondary : undefined,
-        }}
-      >
-        <View>
-          <MaterialCommunityIcons
-            name="chart-timeline"
-            size={35}
-            color="white"
-          />
-        </View>
+      <Pressable onPress={() => null} style={styles.iconBox}>
+        <MaterialCommunityIcons
+          name="timeline-clock-outline"
+          size={28}
+          color="white"
+        />
       </Pressable>
-      <Pressable
-        android_ripple={{
-          color: colors.buttonTextRipple,
-          borderless: false,
-          radius: 150,
-        }}
-        onPress={() => navigation.navigate("Reports")}
-        style={{
-          ...styles.iconBox,
-          backgroundColor:
-            route.name === "Reports" ? colors.buttonSecondary : undefined,
-        }}
-      >
-        <View>
-          <MaterialIcons name="analytics" size={35} color="white" />
-        </View>
+      <View style={styles.fabContainer}>
+        <FAB onPress={FABAction} />
+      </View>
+      <Pressable onPress={() => null} style={styles.iconBox}>
+        <Ionicons name="stats-chart-sharp" size={28} color="white" />
+      </Pressable>
+      <Pressable onPress={() => null} style={styles.iconBox}>
+        <Ionicons name="person" size={28} color="white" />
       </Pressable>
     </View>
   );
@@ -82,15 +50,22 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.menuSecondary,
     flexDirection: "row",
-    height: 56,
+    height: 50,
     justifyContent: "space-around",
     alignItems: "center",
     paddingHorizontal: 3,
   },
+  fabContainer: {
+    top: -10,
+    width: 80,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   iconBox: {
     height: 44,
-    width: "31.5%",
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 3,
   },
 });
