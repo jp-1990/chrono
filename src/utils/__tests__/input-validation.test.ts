@@ -14,8 +14,12 @@ describe("isDefined", () => {
     const result = isDefined(["string", 1, {}, [], null]);
     expect(result).toBe(false);
   });
+  it("returns false if any item is empty string", () => {
+    const result = isDefined(["string", 1, {}, [], ""]);
+    expect(result).toBe(false);
+  });
   it("returns true on valid falsy values (e.g. 0, '')", () => {
-    const result = isDefined([0, "", -0]);
+    const result = isDefined([0, -0]);
     expect(result).toBe(true);
   });
 });
@@ -25,8 +29,16 @@ describe("isValidCharLengh", () => {
     const result = isValidCharLength("four", 4);
     expect(result).toBe(true);
   });
+  it("returns true when string === ''", () => {
+    const result = isValidCharLength("", 4);
+    expect(result).toBe(true);
+  });
   it("returns false when string > length", () => {
     const result = isValidCharLength("four", 3);
+    expect(result).toBe(false);
+  });
+  it("returns false when string === undefined", () => {
+    const result = isValidCharLength(undefined, 3);
     expect(result).toBe(false);
   });
 });
@@ -44,6 +56,10 @@ describe("isValidDateOrder", () => {
       new Date("10/10/2019"),
       new Date("10/10/2020")
     );
+    expect(result).toBe(true);
+  });
+  it("returns true when dateA or dateB is undefined", () => {
+    const result = isValidDateOrder(undefined, undefined);
     expect(result).toBe(true);
   });
 });

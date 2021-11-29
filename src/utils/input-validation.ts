@@ -9,7 +9,7 @@ const isValidCharLength = (
   string: string | undefined,
   maxLength: number
 ): boolean => {
-  if (!string) return false;
+  if (string === null || string === undefined) return false;
   if (string.length > maxLength) return false;
   return true;
 };
@@ -18,11 +18,11 @@ const isValidCharLength = (
  * @param  {any[]} items
  * @return {boolean} boolean
  *
- * @description iterates through the input array and returns false if any item is undefined || null (returns true for all other falsy values)
+ * @description iterates through the input array and returns false if any item is undefined || null || '' (returns true for all other falsy values)
  */
-const isDefined = (items: any | undefined[]): boolean => {
+const isDefined = (items: (any | undefined)[]): boolean => {
   for (const item of items) {
-    if (item === undefined || item === null) return false;
+    if (item === undefined || item === null || item === "") return false;
   }
   return true;
 };
@@ -37,7 +37,7 @@ const isValidDateOrder = (
   dateA: Date | undefined,
   dateB: Date | undefined
 ): boolean => {
-  if (!dateA || !dateB) return false;
+  if (!dateA || !dateB) return true;
   if (dateA.getTime() >= dateB.getTime()) return false;
   return true;
 };

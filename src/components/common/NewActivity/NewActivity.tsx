@@ -13,9 +13,15 @@ import { useNewActivity } from "../../../hooks";
 import { base, colors } from "../../../styles";
 const { defaultInput } = base;
 
+const targetTypes = [
+  "setStartDate",
+  "setStartTime",
+  "setEndDate",
+  "setEndTime",
+] as const;
 interface DateTimePickerTypes {
   mode: "date" | "time" | undefined;
-  target: "startTime" | "endTime" | "startDate" | "endDate";
+  target: "setStartTime" | "setEndTime" | "setStartDate" | "setEndDate";
   dateObject: {
     now: Date;
     startTime?: Date;
@@ -39,7 +45,7 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
   const [mode, setMode] = useState<DateTimePickerTypes["mode"]>("date");
   const [show, setShow] = useState(false);
   const [target, setTarget] =
-    useState<DateTimePickerTypes["target"]>("startTime");
+    useState<DateTimePickerTypes["target"]>("setStartTime");
 
   useEffect(() => {
     actions.resetState();
@@ -48,20 +54,18 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
   }, [modalActive]);
 
   const handleSubmit = () => {
-    console.log(state);
+    const validationErrors = actions.validate(state);
+    const unselectedDateTime = targetTypes.filter(
+      (el) => !dateTimeSelected.includes(el)
+    );
+    console.log({ state, validationErrors, unselectedDateTime });
   };
 
   const onChange = (_: Event, selectedDate: Date | undefined) => {
     if (!selectedDate) return;
     setShow(false);
     setDateTimeSelected((prev) => [...new Set([...prev, target])]);
-    const actionKey = `set${target[0].toUpperCase()}${target.slice(
-      1
-    )}` as keyof Omit<
-      typeof actions,
-      "setTitle" | "setActivity" | "setNotes" | "setColor"
-    >;
-    actions[actionKey](selectedDate);
+    actions[target](selectedDate);
   };
 
   const showMode = (currentMode: DateTimePickerTypes["mode"]) => {
@@ -93,7 +97,7 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
       if (label.includes("Date")) showDatepicker(label);
       if (label.includes("Time")) showTimepicker(label);
     };
-    const when = label.includes("start") ? "start" : "end";
+    const when = label.includes("Start") ? "start" : "end";
 
     let text;
     if (state[when]) {
@@ -102,6 +106,7 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
       if (label.includes("Time") && dateTimeSelected.includes(label))
         text = moment(state[when]).format("HH:mm");
     }
+
     return (
       <Pressable onPress={onPress}>
         <View style={{ ...defaultInput, ...styles.dateTime }}>
@@ -142,6 +147,7 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
             placeholder={"Title"}
             placeholderTextColor={colors.headingSecondary}
             style={defaultInput}
+            returnKeyType="next"
           />
           <TextInput
             value={state.activity}
@@ -149,6 +155,7 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
             placeholder={"Activity"}
             placeholderTextColor={colors.headingSecondary}
             style={defaultInput}
+            returnKeyType="next"
           />
           <TextInput
             value={state.notes}
@@ -161,24 +168,24 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
         <View style={styles.dateTimeContainer}>
           <View>
             <DateTimeInput
-              label="startDate"
+              label="setStartDate"
               icon="calendar-range"
               placeholder="Start date"
             />
             <DateTimeInput
-              label="endDate"
+              label="setEndDate"
               icon="calendar-range"
               placeholder="End date"
             />
           </View>
           <View>
             <DateTimeInput
-              label="startTime"
+              label="setStartTime"
               icon="timer-outline"
               placeholder="Start time"
             />
             <DateTimeInput
-              label="endTime"
+              label="setEndTime"
               icon="timer-off-outline"
               placeholder="End time"
             />

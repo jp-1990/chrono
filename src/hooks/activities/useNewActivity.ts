@@ -1,7 +1,8 @@
 import React, { useReducer } from "react";
 import { useMutation } from "@apollo/client";
 
-import { buildDateTime } from "../../utils";
+import { buildDateTime, inputValidation } from "../../utils";
+const { isDefined, isValidDateOrder, isValidCharLength } = inputValidation;
 
 enum Actions {
   SET_TITLE = "SET_TITLE",
@@ -112,6 +113,25 @@ const useNewActivity = () => {
     setEndTime: (endTime: Date) =>
       dispatch({ type: Actions.SET_END_TIME, payload: endTime }),
     resetState: () => dispatch({ type: Actions.RESET_STATE }),
+    validate: (input: StateType) => {
+      const validationErrors = [];
+      for (const key of Object.keys(input) as (keyof typeof input)[]) {
+        if (key === "title" && !isValidCharLength(input[key], 50))
+          validationErrors.push({ key, error: "LENGTH" });
+        if (
+          (key === "activity" || key === "notes") &&
+          !isValidCharLength(input[key], 255)
+        )
+          validationErrors.push({ key, error: "LENGTH" });
+        if (key === "notes" || key === "color") continue;
+        if (!isDefined([input[key]]))
+          validationErrors.push({ key, error: "UNDEFINED" });
+      }
+      if (!isValidDateOrder(input.start, input.end))
+        validationErrors.push({ key: "end", error: "DATE_ORDER" });
+
+      return validationErrors;
+    },
     submit: () => {},
   };
 
