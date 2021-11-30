@@ -38,16 +38,20 @@ type StateType = {
   activity: string;
   notes: string;
   color: string;
-  start: Date | undefined;
-  end: Date | undefined;
+  startDate: Date | undefined;
+  startTime: Date | undefined;
+  endDate: Date | undefined;
+  endTime: Date | undefined;
 };
 
 const initialState = {
   title: "",
   activity: "",
   notes: "",
-  start: undefined,
-  end: undefined,
+  startDate: undefined,
+  startTime: undefined,
+  endDate: undefined,
+  endTime: undefined,
   color: "rgba(126, 126, 126, 1)",
 };
 
@@ -66,24 +70,16 @@ const newActivityReducer = (state: StateType, action: ActionType) => {
       return { ...state, color: action.payload };
 
     case Actions.SET_START_DATE:
-      if (state.start)
-        return { ...state, start: buildDateTime(action.payload, state.start) };
-      return { ...state, start: action.payload };
+      return { ...state, startDate: action.payload };
 
     case Actions.SET_START_TIME:
-      if (state.start)
-        return { ...state, start: buildDateTime(state.start, action.payload) };
-      return { ...state, start: action.payload };
+      return { ...state, startTime: action.payload };
 
     case Actions.SET_END_DATE:
-      if (state.end)
-        return { ...state, end: buildDateTime(action.payload, state.end) };
-      return { ...state, end: action.payload };
+      return { ...state, endDate: action.payload };
 
     case Actions.SET_END_TIME:
-      if (state.end)
-        return { ...state, end: buildDateTime(state.end, action.payload) };
-      return { ...state, end: action.payload };
+      return { ...state, endTime: action.payload };
 
     case Actions.RESET_STATE:
       return initialState;
@@ -127,9 +123,12 @@ const useNewActivity = () => {
         if (!isDefined([input[key]]))
           validationErrors.push({ key, error: "UNDEFINED" });
       }
-      if (!isValidDateOrder(input.start, input.end))
-        validationErrors.push({ key: "end", error: "DATE_ORDER" });
-
+      const start = buildDateTime(input.startDate, input.startTime);
+      const end = buildDateTime(input.endDate, input.endTime);
+      if (!isValidDateOrder(start, end)) {
+        validationErrors.push({ key: "endDate", error: "DATE_ORDER" });
+        validationErrors.push({ key: "endTime", error: "DATE_ORDER" });
+      }
       return validationErrors;
     },
     submit: () => {},

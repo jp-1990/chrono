@@ -30,7 +30,11 @@ export const hoursToHoursAndMinutes = (hours: number = 0) => {
   };
 };
 
-export const buildDateTime = (date: Date, time: Date) => {
+export const buildDateTime = (
+  date: Date | undefined,
+  time: Date | undefined
+) => {
+  if (!date || !time) return;
   const dateString = date.toDateString();
   const timeString = time.toTimeString();
   return new Date(`${dateString} ${timeString}`);

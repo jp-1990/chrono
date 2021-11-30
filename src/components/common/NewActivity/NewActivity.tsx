@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, StyleSheet, Pressable, TextInput } from "react-native";
 import DateTimePicker, { Event } from "@react-native-community/datetimepicker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -13,15 +13,10 @@ import { useNewActivity } from "../../../hooks";
 import { base, colors } from "../../../styles";
 const { defaultInput } = base;
 
-const targetTypes = [
-  "setStartDate",
-  "setStartTime",
-  "setEndDate",
-  "setEndTime",
-] as const;
+const targetTypes = ["startDate", "startTime", "endDate", "endTime"] as const;
 interface DateTimePickerTypes {
   mode: "date" | "time" | undefined;
-  target: "setStartTime" | "setEndTime" | "setStartDate" | "setEndDate";
+  target: typeof targetTypes[number];
   dateObject: {
     now: Date;
     startTime?: Date;
@@ -38,35 +33,31 @@ interface Props {
 const NewActivity: React.FC<Props> = ({ modalActive }) => {
   const { state, actions } = useNewActivity();
 
+  const activityRef = useRef<TextInput>(null);
+  const notesRef = useRef<TextInput>(null);
+
+  const focusActivity = () => activityRef?.current?.focus();
+  const focusNotes = () => notesRef?.current?.focus();
+
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [colorPickerActive, setColorPickerActive] = useState(false);
-  const [dateTimeSelected, setDateTimeSelected] = useState<
-    DateTimePickerTypes["target"][]
-  >([]);
   const [mode, setMode] = useState<DateTimePickerTypes["mode"]>("date");
   const [show, setShow] = useState(false);
   const [target, setTarget] =
-    useState<DateTimePickerTypes["target"]>("setStartTime");
+    useState<DateTimePickerTypes["target"]>("startTime");
 
   useEffect(() => {
     actions.resetState();
     setColorPickerActive(false);
-    setDateTimeSelected([]);
     setValidationErrors([]);
   }, [modalActive]);
 
   const handleSubmit = () => {
     const validationErrorFields = actions.validate(state).map(({ key }) => key);
-    const unselectedDateTime = targetTypes.filter(
-      (el) => !dateTimeSelected.includes(el)
-    );
-    const validationErrorState = [
-      ...validationErrorFields,
-      ...unselectedDateTime,
-    ];
-    setValidationErrors(validationErrorState);
-    if (validationErrorState.length > 0) return;
-    console.log("should fire");
+    setValidationErrors(validationErrorFields);
+    if (validationErrorFields.length > 0) return;
+
+    console.log("submit to api here");
   };
 
   const onTitleChange = (title: string) => {
@@ -81,8 +72,13 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
   const onChange = (_: Event, selectedDate: Date | undefined) => {
     if (!selectedDate) return;
     setShow(false);
-    setDateTimeSelected((prev) => [...new Set([...prev, target])]);
-    actions[target](selectedDate);
+    const action = `set${target[0].toUpperCase()}${target.slice(
+      1
+    )}` as keyof Pick<
+      typeof actions,
+      "setStartDate" | "setStartTime" | "setEndDate" | "setEndTime"
+    >;
+    actions[action](selectedDate);
   };
 
   const showMode = (currentMode: DateTimePickerTypes["mode"]) => {
@@ -111,20 +107,16 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
     placeholder,
   }) => {
     const onPress = () => {
-      console.log(validationErrors);
-
       setValidationErrors((prev) => prev.filter((el) => el !== label));
       if (label.includes("Date")) showDatepicker(label);
       if (label.includes("Time")) showTimepicker(label);
     };
-    const when = label.includes("Start") ? "start" : "end";
 
     let text;
-    if (state[when]) {
-      if (label.includes("Date") && dateTimeSelected.includes(label))
-        text = moment(state[when]).format("DD/MM/YYYY");
-      if (label.includes("Time") && dateTimeSelected.includes(label))
-        text = moment(state[when]).format("HH:mm");
+    if (state[label]) {
+      if (label.includes("Date"))
+        text = moment(state[label]).format("DD/MM/YYYY");
+      if (label.includes("Time")) text = moment(state[label]).format("HH:mm");
     }
 
     return (
@@ -134,10 +126,9 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
             defaultInput,
             styles.dateTime,
             validationErrors.includes(label) ? styles.inputError : null,
-            validationErrors.includes(when) ? styles.inputError : null,
           ]}
         >
-          {state[when] && dateTimeSelected.includes(label) ? (
+          {state[label] ? (
             <Text variant="sp" style={styles.dateTimeText}>
               {text}
             </Text>
@@ -178,8 +169,11 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
               validationErrors.includes("title") ? styles.inputError : null,
             ]}
             returnKeyType="next"
+            onSubmitEditing={focusActivity}
+            blurOnSubmit={false}
           />
           <TextInput
+            ref={activityRef}
             value={state.activity}
             onChangeText={onActivityChange}
             placeholder={"Activity"}
@@ -189,36 +183,40 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
               validationErrors.includes("activity") ? styles.inputError : null,
             ]}
             returnKeyType="next"
+            onSubmitEditing={focusNotes}
+            blurOnSubmit={false}
           />
           <TextInput
+            ref={notesRef}
             value={state.notes}
             onChangeText={actions.setNotes}
             placeholder={"Notes"}
             placeholderTextColor={colors.headingSecondary}
             style={defaultInput}
+            returnKeyType="next"
           />
         </View>
         <View style={styles.dateTimeContainer}>
           <View>
             <DateTimeInput
-              label="setStartDate"
+              label="startDate"
               icon="calendar-range"
               placeholder="Start date"
             />
             <DateTimeInput
-              label="setEndDate"
+              label="endDate"
               icon="calendar-range"
               placeholder="End date"
             />
           </View>
           <View>
             <DateTimeInput
-              label="setStartTime"
+              label="startTime"
               icon="timer-outline"
               placeholder="Start time"
             />
             <DateTimeInput
-              label="setEndTime"
+              label="endTime"
               icon="timer-off-outline"
               placeholder="End time"
             />
