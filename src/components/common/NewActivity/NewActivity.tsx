@@ -38,6 +38,7 @@ interface Props {
 const NewActivity: React.FC<Props> = ({ modalActive }) => {
   const { state, actions } = useNewActivity();
 
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [colorPickerActive, setColorPickerActive] = useState(false);
   const [dateTimeSelected, setDateTimeSelected] = useState<
     DateTimePickerTypes["target"][]
@@ -51,14 +52,30 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
     actions.resetState();
     setColorPickerActive(false);
     setDateTimeSelected([]);
+    setValidationErrors([]);
   }, [modalActive]);
 
   const handleSubmit = () => {
-    const validationErrors = actions.validate(state);
+    const validationErrorFields = actions.validate(state).map(({ key }) => key);
     const unselectedDateTime = targetTypes.filter(
       (el) => !dateTimeSelected.includes(el)
     );
-    console.log({ state, validationErrors, unselectedDateTime });
+    const validationErrorState = [
+      ...validationErrorFields,
+      ...unselectedDateTime,
+    ];
+    setValidationErrors(validationErrorState);
+    if (validationErrorState.length > 0) return;
+    console.log("should fire");
+  };
+
+  const onTitleChange = (title: string) => {
+    setValidationErrors((prev) => prev.filter((el) => el !== "title"));
+    actions.setTitle(title);
+  };
+  const onActivityChange = (activity: string) => {
+    setValidationErrors((prev) => prev.filter((el) => el !== "activity"));
+    actions.setActivity(activity);
   };
 
   const onChange = (_: Event, selectedDate: Date | undefined) => {
@@ -94,6 +111,9 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
     placeholder,
   }) => {
     const onPress = () => {
+      console.log(validationErrors);
+
+      setValidationErrors((prev) => prev.filter((el) => el !== label));
       if (label.includes("Date")) showDatepicker(label);
       if (label.includes("Time")) showTimepicker(label);
     };
@@ -109,7 +129,14 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
 
     return (
       <Pressable onPress={onPress}>
-        <View style={{ ...defaultInput, ...styles.dateTime }}>
+        <View
+          style={[
+            defaultInput,
+            styles.dateTime,
+            validationErrors.includes(label) ? styles.inputError : null,
+            validationErrors.includes(when) ? styles.inputError : null,
+          ]}
+        >
           {state[when] && dateTimeSelected.includes(label) ? (
             <Text variant="sp" style={styles.dateTimeText}>
               {text}
@@ -143,18 +170,24 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
         <View style={styles.inputContainer}>
           <TextInput
             value={state.title}
-            onChangeText={actions.setTitle}
+            onChangeText={onTitleChange}
             placeholder={"Title"}
             placeholderTextColor={colors.headingSecondary}
-            style={defaultInput}
+            style={[
+              defaultInput,
+              validationErrors.includes("title") ? styles.inputError : null,
+            ]}
             returnKeyType="next"
           />
           <TextInput
             value={state.activity}
-            onChangeText={actions.setActivity}
+            onChangeText={onActivityChange}
             placeholder={"Activity"}
             placeholderTextColor={colors.headingSecondary}
-            style={defaultInput}
+            style={[
+              defaultInput,
+              validationErrors.includes("activity") ? styles.inputError : null,
+            ]}
             returnKeyType="next"
           />
           <TextInput
@@ -246,6 +279,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputContainer: { alignItems: "center", width: "100%" },
+  inputError: { borderColor: "red", borderWidth: 1 },
   dateTimeContainer: {
     flexDirection: "row",
     width: 250,

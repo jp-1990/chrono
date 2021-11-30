@@ -10,8 +10,10 @@ interface StyleTypes {
 export const base: StyleTypes = {
   defaultInput: {
     backgroundColor: "#EBEBEB",
-    paddingVertical: 6,
-    paddingHorizontal: 16,
+    borderColor: "#EBEBEB",
+    borderWidth: 1,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
     margin: 5,
     width: 250,
     fontSize: 14,
