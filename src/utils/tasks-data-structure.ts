@@ -6,6 +6,7 @@ import {
 } from "./date-format";
 import { FindTasksRes } from "../graphql/queries";
 import {
+  TaskAPIResponse,
   TaskDataStructure,
   TasksDataStructure,
   TasksDataWithMarginAndWidth,
@@ -37,7 +38,9 @@ const addLeftMarginAndWidth = (
   return output as TasksDataWithMarginAndWidth;
 };
 
-export const buildTasksDataStructure = (data: FindTasksRes | undefined) => {
+export const buildTasksDataStructure = (
+  data: { findTasks: TaskAPIResponse[] } | undefined
+) => {
   if (!data) return undefined;
   const taskData: TasksDataStructure = {};
   // loop over data returned from query
@@ -60,8 +63,9 @@ export const buildTasksDataStructure = (data: FindTasksRes | undefined) => {
         group: el.group,
         percentageTimes: { ...el.percentageTimes, endPercentage: 100 },
         color: el.colour,
-        start: el.start,
-        end: endOfDay(Number(el.start)),
+        luminance: el.luminance,
+        start: +el.start,
+        end: endOfDay(+el.start),
       });
       let keyTracker = addDayUnixString(taskStartKey);
       // while covers situation where task spans any number of days
@@ -79,6 +83,7 @@ export const buildTasksDataStructure = (data: FindTasksRes | undefined) => {
             endPercentage: 100,
           },
           color: el.colour,
+          luminance: el.luminance,
           start: startOfDay(Number(keyTracker)),
           end: endOfDay(Number(keyTracker)),
         });
@@ -90,8 +95,9 @@ export const buildTasksDataStructure = (data: FindTasksRes | undefined) => {
         group: el.group,
         percentageTimes: { ...el.percentageTimes, startPercentage: 0 },
         color: el.colour,
+        luminance: el.luminance,
         start: startOfDay(Number(el.end)),
-        end: el.end,
+        end: +el.end,
       });
     } else {
       // if the task starts and ends on the same day, push to that key
@@ -101,8 +107,9 @@ export const buildTasksDataStructure = (data: FindTasksRes | undefined) => {
         group: el.group,
         percentageTimes: { ...el.percentageTimes },
         color: el.colour,
-        start: el.start,
-        end: el.end,
+        luminance: el.luminance,
+        start: +el.start,
+        end: +el.end,
       });
     }
   });

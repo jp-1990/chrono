@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { TaskAPIResponse } from "../../../types";
 
 export const FindTasksQuery = gql`
   query findTasks($scope: Int) {
@@ -29,23 +30,5 @@ export interface FindTasksArgs {
 }
 
 export interface FindTasksRes {
-  findTasks: {
-    id: string;
-    title: string;
-    group: string;
-    description: string;
-    colour: string;
-    start: number;
-    end: number;
-    createdAt: number;
-    percentageTimes: {
-      startPercentage: number;
-      endPercentage: number;
-    };
-    luminance: number;
-    user: {
-      id: string;
-      name: string;
-    };
-  }[];
+  findTasks: TaskAPIResponse[];
 }

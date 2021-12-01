@@ -1,6 +1,11 @@
 import React, { useReducer } from "react";
 import { useMutation } from "@apollo/client";
 
+import {
+  CreateTaskMutation,
+  CreateTaskMutationArgs,
+  CreateTaskMutationRes,
+} from "../../graphql/mutations";
 import { buildDateTime, inputValidation } from "../../utils";
 const { isDefined, isValidDateOrder, isValidCharLength } = inputValidation;
 
@@ -55,7 +60,7 @@ const initialState = {
   color: "rgba(126, 126, 126, 1)",
 };
 
-const newActivityReducer = (state: StateType, action: ActionType) => {
+const createTaskReducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
     case Actions.SET_TITLE:
       return { ...state, title: action.payload };
@@ -88,8 +93,16 @@ const newActivityReducer = (state: StateType, action: ActionType) => {
   }
 };
 
-const useNewActivity = () => {
-  const [state, dispatch] = useReducer(newActivityReducer, initialState);
+const useCreateTask = () => {
+  const [state, dispatch] = useReducer(createTaskReducer, initialState);
+
+  const [createTaskMutation] = useMutation<
+    CreateTaskMutationRes,
+    CreateTaskMutationArgs
+  >(CreateTaskMutation, {
+    onError: (err) => console.error(err),
+    onCompleted: (res) => console.log(res),
+  });
 
   const actions = {
     setTitle: (title: string) =>
@@ -131,7 +144,11 @@ const useNewActivity = () => {
       }
       return validationErrors;
     },
-    submit: () => {},
+    submit: (variables: CreateTaskMutationArgs) => {
+      createTaskMutation({
+        variables,
+      });
+    },
   };
 
   return {
@@ -140,4 +157,5 @@ const useNewActivity = () => {
   };
 };
 
-export default useNewActivity;
+export default useCreateTask;
+export type SubmitVariables = CreateTaskMutationArgs;

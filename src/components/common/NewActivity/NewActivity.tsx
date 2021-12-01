@@ -8,9 +8,10 @@ import { Text } from "../Text";
 import ColorPicker from "../ColorPicker/ColorPicker";
 import MainButton from "../MainButton/MainButton";
 
-import { useNewActivity } from "../../../hooks";
+import { useCreateTask, SubmitVariables } from "../../../hooks";
 
 import { base, colors } from "../../../styles";
+import { buildDateTime } from "../../../utils";
 const { defaultInput } = base;
 
 const targetTypes = ["startDate", "startTime", "endDate", "endTime"] as const;
@@ -31,7 +32,7 @@ interface Props {
   modalActive: boolean;
 }
 const NewActivity: React.FC<Props> = ({ modalActive }) => {
-  const { state, actions } = useNewActivity();
+  const { state, actions } = useCreateTask();
 
   const activityRef = useRef<TextInput>(null);
   const notesRef = useRef<TextInput>(null);
@@ -57,7 +58,21 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
     setValidationErrors(validationErrorFields);
     if (validationErrorFields.length > 0) return;
 
-    console.log("submit to api here");
+    const start = buildDateTime(state.startDate, state.startTime);
+    const end = buildDateTime(state.endDate, state.endTime);
+    if (!start || !end) return;
+
+    const variables: SubmitVariables = {
+      title: state.title,
+      activity: state.activity,
+      notes: state.notes,
+      colour: state.color,
+      start,
+      end,
+    };
+    console.log(variables);
+
+    actions.submit(variables);
   };
 
   const onTitleChange = (title: string) => {

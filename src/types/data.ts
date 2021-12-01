@@ -9,8 +9,29 @@ export type BarChartTypes = {
   };
 };
 
+export interface TaskAPIResponse {
+  id: string;
+  title: string;
+  group: string;
+  description?: string;
+  colour: string;
+  start: string;
+  end: string;
+  createdAt: string;
+  user: {
+    id: string;
+    name: string;
+  };
+  percentageTimes: {
+    endPercentage: number;
+    startPercentage: number;
+  };
+  luminance: number;
+}
+
 export type TaskDataStructure = {
   color: string;
+  luminance: number;
   group?: string;
   id: string;
   percentageTimes: {
