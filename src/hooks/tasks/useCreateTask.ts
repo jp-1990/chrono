@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 
 import {
   CreateTaskMutation,
@@ -101,7 +101,25 @@ const useCreateTask = () => {
     CreateTaskMutationArgs
   >(CreateTaskMutation, {
     onError: (err) => console.error(err),
-    onCompleted: (res) => console.log(res),
+    update: (cache, { data }) => {
+      const createTask = data?.createTask;
+      cache.modify({
+        fields: {
+          findTasks: (existingTasks = []) => {
+            const newTaskRef = cache.writeFragment({
+              data: createTask,
+              fragment: gql`
+                fragment NewTask on Task {
+                  id
+                  type
+                }
+              `,
+            });
+            return [...existingTasks, newTaskRef];
+          },
+        },
+      });
+    },
   });
 
   const actions = {

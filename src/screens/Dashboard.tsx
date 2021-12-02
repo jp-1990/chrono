@@ -89,7 +89,10 @@ const Dashboard = () => {
             })
           }
         >
-          <NewActivity modalActive={modalActive} onSubmit={() => {}} />
+          <NewActivity
+            modalActive={modalActive}
+            closeModal={handleCloseModal}
+          />
         </View>
         <View style={styles.modalContentPadding} />
       </Modal>

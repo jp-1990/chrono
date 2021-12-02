@@ -75,6 +75,14 @@ const Modal: React.FC<Props> = ({
   }, [active, contentSize]);
 
   useEffect(() => {
+    if (!active) {
+      if (modalActive) {
+        handleBackgroundPressClose();
+      }
+    }
+  }, [active]);
+
+  useEffect(() => {
     const onHardwareBack = () => {
       handleBackgroundPressClose();
       return true;

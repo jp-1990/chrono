@@ -28,10 +28,10 @@ interface DateTimePickerTypes {
 }
 
 interface Props {
-  onSubmit(): void;
+  closeModal(): void;
   modalActive: boolean;
 }
-const NewActivity: React.FC<Props> = ({ modalActive }) => {
+const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
   const { state, actions } = useCreateTask();
 
   const activityRef = useRef<TextInput>(null);
@@ -67,12 +67,11 @@ const NewActivity: React.FC<Props> = ({ modalActive }) => {
       activity: state.activity,
       notes: state.notes,
       colour: state.color,
-      start,
-      end,
+      start: `${start.valueOf()}`,
+      end: `${end.valueOf()}`,
     };
-    console.log(variables);
-
     actions.submit(variables);
+    closeModal();
   };
 
   const onTitleChange = (title: string) => {

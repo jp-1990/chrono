@@ -18,6 +18,7 @@ export const useDashboard = () => {
       variables: {
         scope: 10,
       },
+      fetchPolicy: "cache-and-network",
       onError: (err) => {
         console.error(err);
       },
