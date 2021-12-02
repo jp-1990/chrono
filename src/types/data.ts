@@ -36,6 +36,7 @@ export type TaskDataStructure = {
   color: string;
   luminance: number;
   group?: string;
+  description?: string;
   id: string;
   percentageTimes: {
     endPercentage: number;

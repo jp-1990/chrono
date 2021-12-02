@@ -12,6 +12,7 @@ import { useCreateTask, SubmitVariables } from "../../../hooks";
 
 import { base, colors } from "../../../styles";
 import { buildDateTime, calcLuminance } from "../../../utils";
+import { TaskDataWithMarginAndWidth } from "../../../types";
 const { defaultInput } = base;
 
 const targetTypes = ["startDate", "startTime", "endDate", "endTime"] as const;
@@ -30,9 +31,14 @@ interface DateTimePickerTypes {
 interface Props {
   closeModal(): void;
   modalActive: boolean;
+  selectedTask: TaskDataWithMarginAndWidth | undefined;
 }
-const UpdateActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
-  // const { state, actions } = useCreateTask();
+const UpdateActivity: React.FC<Props> = ({
+  modalActive,
+  closeModal,
+  selectedTask,
+}) => {
+  // const { state, actions } = useUpdateTask();
 
   const activityRef = useRef<TextInput>(null);
   const notesRef = useRef<TextInput>(null);
@@ -48,14 +54,14 @@ const UpdateActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
     useState<DateTimePickerTypes["target"]>("startTime");
 
   const state = {
-    startTime: new Date(Date.now()),
-    startDate: new Date(Date.now()),
-    endTime: new Date(Date.now()),
-    endDate: new Date(Date.now()),
-    title: "Testing",
-    activity: "Testing",
-    notes: "",
-    color: "rgb(255, 86, 0)",
+    startTime: selectedTask?.start,
+    startDate: selectedTask?.start,
+    endTime: selectedTask?.end,
+    endDate: selectedTask?.end,
+    title: selectedTask?.title,
+    activity: selectedTask?.group,
+    notes: selectedTask?.description,
+    color: selectedTask?.color || "rgb(192,192,192)",
   };
   const actions = {
     setNotes: () => {},

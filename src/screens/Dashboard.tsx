@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, View, StyleSheet, Text } from "react-native";
 import moment from "moment";
 
@@ -34,7 +34,10 @@ const Dashboard = () => {
   }>({ height: 0, width: 0 });
   const [selectedTask, setSelectedTask] =
     useState<TaskDataWithMarginAndWidth>();
-  console.log(selectedTask);
+
+  useEffect(() => {
+    if (selectedTask !== undefined) handleOpenUpdateModal();
+  }, [selectedTask]);
 
   const { tasks, startDate, endDate } = useDashboard();
 
@@ -96,7 +99,7 @@ const Dashboard = () => {
         active={modalActive.open}
         setActive={setModalActive}
         contentSize={modalContentSize}
-        accentColor={"rgb(255, 86, 0)"}
+        accentColor={selectedTask?.color}
       >
         <View
           onLayout={(event) =>
@@ -116,13 +119,14 @@ const Dashboard = () => {
             <UpdateActivity
               modalActive={modalActive.open}
               closeModal={handleCloseModal}
+              selectedTask={selectedTask}
             />
           )}
         </View>
         <View style={styles.modalContentPadding} />
       </Modal>
 
-      <BottomNav FABAction={handleOpenUpdateModal} />
+      <BottomNav FABAction={handleOpenCreateModal} />
     </View>
   );
 };
