@@ -52,6 +52,7 @@ export const colors = {
   buttonTextRipple: "#EBEBEB",
   textPrimary: "#454851",
   textSecondary: "#818CA0",
+  textDark: "#161616",
   headingPrimary: "#705E57",
   headingSecondary: "#B7B7B7",
   backgroundColor: "#fff",

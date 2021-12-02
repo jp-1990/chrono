@@ -13,3 +13,4 @@ export * from "./SelectedMonth";
 export * from "./Text";
 export * from "./TextButton";
 export * from "./Title";
+export * from "./UpdateActivity";

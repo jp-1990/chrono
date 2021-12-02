@@ -5,7 +5,10 @@ import moment from "moment";
 import ChartRow from "./ChartRow/ChartRow";
 import Text from "../Text/Text";
 
-import { TasksDataWithMarginAndWidth } from "../../../types/data";
+import {
+  TaskDataWithMarginAndWidth,
+  TasksDataWithMarginAndWidth,
+} from "../../../types/data";
 import { addDayUnixString, durationInHours } from "../../../utils";
 import { colors, screenSize } from "../../../styles";
 
@@ -15,6 +18,9 @@ interface Props {
   data: TasksDataWithMarginAndWidth | undefined;
   style?: ViewStyle;
   internalWidth?: number;
+  setSelectedTask: React.Dispatch<
+    React.SetStateAction<TaskDataWithMarginAndWidth | undefined>
+  >;
 }
 
 const DataChart: React.FC<Props> = ({
@@ -23,6 +29,7 @@ const DataChart: React.FC<Props> = ({
   end,
   style,
   internalWidth = screenSize.width * 2,
+  setSelectedTask,
 }) => {
   const [scrollViewWidth, setScrollViewWidth] = useState<number>();
   const scrollRef = useRef<ScrollView>(null);
@@ -52,7 +59,14 @@ const DataChart: React.FC<Props> = ({
   while (safety < 100 && unixDay !== end) {
     const date = moment(Number(unixDay)).date();
     const rowData = data && data[unixDay];
-    chartRows.push(<ChartRow key={safety} date={date} data={rowData} />);
+    chartRows.push(
+      <ChartRow
+        key={safety}
+        date={date}
+        data={rowData}
+        setSelectedTask={setSelectedTask}
+      />
+    );
     chartDates.push(
       <Text key={safety} style={styles.columnLabels} variant="sp">
         {date}

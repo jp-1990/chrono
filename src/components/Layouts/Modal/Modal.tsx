@@ -31,6 +31,7 @@ interface Props {
     width: number;
     height: number;
   };
+  accentColor?: string;
   children: ReactNode;
 }
 
@@ -38,6 +39,7 @@ const Modal: React.FC<Props> = ({
   setActive,
   active,
   contentSize,
+  accentColor = colors.buttonPrimary,
   children,
 }) => {
   const [modalActive, setModalActive] = useState<boolean>(false);
@@ -205,7 +207,9 @@ const Modal: React.FC<Props> = ({
         <Animated.View style={[animatedContentHeight, styles.container]}>
           <Animated.View style={[animatedBorderRadius, styles.headerContainer]}>
             <View style={styles.whiteBar}></View>
-            <View style={styles.blueBar}></View>
+            <View
+              style={[styles.colorBar, { backgroundColor: accentColor }]}
+            ></View>
           </Animated.View>
           <View style={styles.contentContainer}>{children}</View>
         </Animated.View>
@@ -242,10 +246,9 @@ const styles = StyleSheet.create({
     marginBottom: 2,
     borderRadius: 1,
   },
-  blueBar: {
+  colorBar: {
     height: 4,
     width: 210,
-    backgroundColor: colors.buttonPrimary,
     borderRadius: 1,
     marginBottom: 3,
   },

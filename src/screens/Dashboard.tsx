@@ -7,13 +7,18 @@ import {
   Title,
   DataChart,
   NewActivity,
+  UpdateActivity,
   BottomNav,
 } from "../Components/Common";
 import { TopActivities, TotalTime } from "../Components/Dashboard";
 import { Modal } from "../Components/Layouts";
 import { useDashboard } from "../hooks";
 import { hoursToHoursAndMinutes, durationInHours } from "../utils";
-import { ModalState, ModalTypeEnum } from "../types";
+import {
+  ModalState,
+  ModalTypeEnum,
+  TaskDataWithMarginAndWidth,
+} from "../types";
 
 import { base, screenSize } from "../styles";
 const { screen } = base;
@@ -27,6 +32,9 @@ const Dashboard = () => {
     height: number;
     width: number;
   }>({ height: 0, width: 0 });
+  const [selectedTask, setSelectedTask] =
+    useState<TaskDataWithMarginAndWidth>();
+  console.log(selectedTask);
 
   const { tasks, startDate, endDate } = useDashboard();
 
@@ -68,6 +76,7 @@ const Dashboard = () => {
               data={tasks.data}
               start={startDate}
               end={endDate}
+              setSelectedTask={setSelectedTask}
             />
           </View>
           <TopActivities
@@ -87,6 +96,7 @@ const Dashboard = () => {
         active={modalActive.open}
         setActive={setModalActive}
         contentSize={modalContentSize}
+        accentColor={"rgb(255, 86, 0)"}
       >
         <View
           onLayout={(event) =>
@@ -102,11 +112,17 @@ const Dashboard = () => {
               closeModal={handleCloseModal}
             />
           )}
+          {modalActive.type === ModalTypeEnum.UPDATE && (
+            <UpdateActivity
+              modalActive={modalActive.open}
+              closeModal={handleCloseModal}
+            />
+          )}
         </View>
         <View style={styles.modalContentPadding} />
       </Modal>
 
-      <BottomNav FABAction={handleOpenCreateModal} />
+      <BottomNav FABAction={handleOpenUpdateModal} />
     </View>
   );
 };

@@ -1,23 +1,29 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 
 import { TaskDataWithMarginAndWidth } from "../../../../types/data";
 
 interface Props {
   data: TaskDataWithMarginAndWidth | undefined;
+  onPress: () => void;
 }
 
 // renders an individual bar within the the data chart
-const DataBar: React.FC<Props> = ({ data }) => {
+const DataBar: React.FC<Props> = ({ data, onPress }) => {
   return (
-    <View
+    <Pressable
       style={{
         ...styles.dataBar,
         backgroundColor: data?.color,
         width: data?.width,
         marginLeft: data?.marginLeft ? data.marginLeft : 0,
       }}
-    ></View>
+      android_ripple={{
+        borderless: false,
+        radius: 150,
+      }}
+      onPress={onPress}
+    />
   );
 };
 
@@ -27,10 +33,7 @@ const styles = StyleSheet.create({
   dataBar: {
     height: 22,
     borderRadius: 2,
-    // shadowColor: "#111",
-    // shadowOffset: { width: 1, height: 1 },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 2,
-    // elevation: 0,
+    borderWidth: 0.5,
+    borderColor: "#e3e3e3",
   },
 });

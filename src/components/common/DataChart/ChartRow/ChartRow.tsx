@@ -9,12 +9,18 @@ import { TaskDataWithMarginAndWidth } from "../../../../types/data";
 interface Props {
   date: number;
   data: TaskDataWithMarginAndWidth[] | undefined;
+  setSelectedTask: React.Dispatch<
+    React.SetStateAction<TaskDataWithMarginAndWidth | undefined>
+  >;
 }
 
-const ChartRow: React.FC<Props> = ({ date, data }) => {
+const ChartRow: React.FC<Props> = ({ date, data, setSelectedTask }) => {
   // create array of databars to render in row
   const renderedBars = data?.map((el, i) => {
-    return <DataBar key={i} data={el} />;
+    const handleOnPress = () => {
+      setSelectedTask(el);
+    };
+    return <DataBar key={i} data={el} onPress={handleOnPress} />;
   });
 
   return (
