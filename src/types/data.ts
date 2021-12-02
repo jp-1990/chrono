@@ -10,6 +10,7 @@ export type BarChartTypes = {
 };
 
 export interface TaskAPIResponse {
+  __typename?: "Task";
   id: string;
   title: string;
   group: string;
@@ -19,10 +20,12 @@ export interface TaskAPIResponse {
   end: string;
   createdAt: string;
   user: {
+    __typename?: "ReducedUser";
     id: string;
     name: string;
   };
   percentageTimes: {
+    __typename?: "PercentageTimes";
     endPercentage: number;
     startPercentage: number;
   };

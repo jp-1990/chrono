@@ -43,8 +43,8 @@ export interface CreateTaskMutationArgs {
   title: string;
   activity: string;
   notes?: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   colour: string;
 }
 
