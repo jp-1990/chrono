@@ -13,12 +13,16 @@ import { TopActivities, TotalTime } from "../Components/Dashboard";
 import { Modal } from "../Components/Layouts";
 import { useDashboard } from "../hooks";
 import { hoursToHoursAndMinutes, durationInHours } from "../utils";
+import { ModalState, ModalTypeEnum } from "../types";
 
 import { base, screenSize } from "../styles";
 const { screen } = base;
 
 const Dashboard = () => {
-  const [modalActive, setModalActive] = useState(false);
+  const [modalActive, setModalActive] = useState<ModalState>({
+    open: false,
+    type: ModalTypeEnum.CREATE,
+  });
   const [modalContentSize, setModalContentSize] = useState<{
     height: number;
     width: number;
@@ -32,12 +36,15 @@ const Dashboard = () => {
   const recorded = hoursToHoursAndMinutes(tasks?.totalTime);
   const possible = durationInHours(moment(startDate), moment(endDate));
 
-  const handleOpenModal = () => {
-    setModalActive(true);
+  const handleOpenCreateModal = () => {
+    setModalActive({ open: true, type: ModalTypeEnum.CREATE });
+  };
+  const handleOpenUpdateModal = () => {
+    setModalActive({ open: true, type: ModalTypeEnum.UPDATE });
   };
 
   const handleCloseModal = () => {
-    setModalActive(false);
+    setModalActive({ open: false, type: ModalTypeEnum.CREATE });
   };
 
   return (
@@ -77,7 +84,7 @@ const Dashboard = () => {
         </View>
       </ScrollView>
       <Modal
-        active={modalActive}
+        active={modalActive.open}
         setActive={setModalActive}
         contentSize={modalContentSize}
       >
@@ -89,15 +96,17 @@ const Dashboard = () => {
             })
           }
         >
-          <NewActivity
-            modalActive={modalActive}
-            closeModal={handleCloseModal}
-          />
+          {modalActive.type === ModalTypeEnum.CREATE && (
+            <NewActivity
+              modalActive={modalActive.open}
+              closeModal={handleCloseModal}
+            />
+          )}
         </View>
         <View style={styles.modalContentPadding} />
       </Modal>
 
-      <BottomNav FABAction={handleOpenModal} />
+      <BottomNav FABAction={handleOpenCreateModal} />
     </View>
   );
 };

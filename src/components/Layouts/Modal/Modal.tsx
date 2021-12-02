@@ -20,11 +20,12 @@ import {
   PanGestureHandlerEventPayload,
 } from "react-native-gesture-handler";
 import constants from "expo-constants";
+import { ModalState, ModalTypeEnum } from "../../../types";
 
 import { colors, screenSize } from "../../../styles";
 
 interface Props {
-  setActive: (arg: boolean) => void;
+  setActive: (value: React.SetStateAction<ModalState>) => void;
   active: boolean;
   contentSize: {
     width: number;
@@ -107,7 +108,7 @@ const Modal: React.FC<Props> = ({
     opacity.value = withTiming(0, undefined, (isFinished) => {
       if (isFinished) {
         runOnJS(setModalActive)(false);
-        runOnJS(setActive)(false);
+        runOnJS(setActive)({ open: false, type: ModalTypeEnum.CREATE });
       }
     });
   };
@@ -119,7 +120,7 @@ const Modal: React.FC<Props> = ({
     opacity.value = withTiming(0, undefined, (isFinished) => {
       if (isFinished) {
         runOnJS(setModalActive)(false);
-        runOnJS(setActive)(false);
+        runOnJS(setActive)({ open: false, type: ModalTypeEnum.CREATE });
       }
     });
   };
