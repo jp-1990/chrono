@@ -162,10 +162,11 @@ const useCreateTask = () => {
       }
       return validationErrors;
     },
-    submit: (variables: CreateTaskMutationArgs) => {
-      createTaskMutation({
+    submit: async (variables: CreateTaskMutationArgs) => {
+      await createTaskMutation({
         variables,
       });
+      return;
     },
   };
 

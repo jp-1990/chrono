@@ -4,20 +4,23 @@ import {
   DeleteTaskMutationArgs,
   DeleteTaskMutationRes,
 } from '../../graphql/mutations';
-import { TaskAPIResponse } from '../../types';
+
+interface CacheObjectRef {
+  __ref: string;
+}
 
 const useDeleteTask = () => {
-  const [deleteTask] = useMutation<
+  const [deleteTaskMutation] = useMutation<
     DeleteTaskMutationRes,
     DeleteTaskMutationArgs
   >(DeleteTaskMutation, {
     update: (cache, { data }) => {
-      const taskId = data?.deleteTask.id;
+      const id = data?.deleteTask.id;
       cache.modify({
         fields: {
           findTasks: (existingTasks = []) => {
             return existingTasks.filter(
-              (task: TaskAPIResponse) => task.id !== taskId
+              (ref: CacheObjectRef) => ref.__ref !== `Task:${id}`
             );
           },
         },
@@ -25,12 +28,17 @@ const useDeleteTask = () => {
     },
   });
 
+  const deleteTask = async (id: string | undefined) => {
+    if (!id) return;
+    await deleteTaskMutation({
+      variables: { id },
+    });
+    return;
+  };
+
   return {
     deleteTask,
   };
 };
 
 export default useDeleteTask;
-export interface DeleteVariables {
-  id: string;
-}

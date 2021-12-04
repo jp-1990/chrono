@@ -8,7 +8,7 @@ import { Text } from '../Text';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import MainButton from '../MainButton/MainButton';
 
-import { useUpdateTask, UpdateVariables } from '../../../hooks';
+import { useDeleteTask, useUpdateTask, UpdateVariables } from '../../../hooks';
 
 import { base, colors } from '../../../styles';
 import { buildDateTime, calcLuminance } from '../../../utils';
@@ -49,6 +49,7 @@ const UpdateActivity: React.FC<Props> = ({
     color: selectedTask?.color || 'rgba(126, 126, 126, 1)',
   };
   const { state, actions } = useUpdateTask(task, selectedTask?.id || '');
+  const { deleteTask } = useDeleteTask();
 
   const activityRef = useRef<TextInput>(null);
   const notesRef = useRef<TextInput>(null);
@@ -71,7 +72,7 @@ const UpdateActivity: React.FC<Props> = ({
     }
   }, [modalActive, actions]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const validationErrorFields = actions.validate(state).map(({ key }) => key);
     setValidationErrors(validationErrorFields);
     if (validationErrorFields.length > 0) return;
@@ -92,7 +93,12 @@ const UpdateActivity: React.FC<Props> = ({
         colour: state.color,
       },
     };
-    actions.submit(variables);
+    await actions.submit(variables);
+    closeModal();
+  };
+
+  const handleDelete = async () => {
+    await deleteTask(selectedTask?.id);
     closeModal();
   };
 
@@ -289,7 +295,7 @@ const UpdateActivity: React.FC<Props> = ({
           colorText={colors.buttonText}
           ripple={colors.buttonPrimaryRipple}
           marginTop={24}
-          onPress={() => null}
+          onPress={handleDelete}
         />
         <View style={styles.spacer} />
         <MainButton

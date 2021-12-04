@@ -1,22 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet, Pressable, TextInput } from "react-native";
-import DateTimePicker, { Event } from "@react-native-community/datetimepicker";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import moment from "moment";
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, Pressable, TextInput } from 'react-native';
+import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import moment from 'moment';
 
-import { Text } from "../Text";
-import ColorPicker from "../ColorPicker/ColorPicker";
-import MainButton from "../MainButton/MainButton";
+import { Text } from '../Text';
+import ColorPicker from '../ColorPicker/ColorPicker';
+import MainButton from '../MainButton/MainButton';
 
-import { useCreateTask, CreateVariables } from "../../../hooks";
+import { useCreateTask, CreateVariables } from '../../../hooks';
 
-import { base, colors } from "../../../styles";
-import { buildDateTime } from "../../../utils";
+import { base, colors } from '../../../styles';
+import { buildDateTime } from '../../../utils';
 const { defaultInput } = base;
 
-const targetTypes = ["startDate", "startTime", "endDate", "endTime"] as const;
+const targetTypes = ['startDate', 'startTime', 'endDate', 'endTime'] as const;
 interface DateTimePickerTypes {
-  mode: "date" | "time" | undefined;
+  mode: 'date' | 'time' | undefined;
   target: typeof targetTypes[number];
   dateObject: {
     now: Date;
@@ -42,18 +42,20 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
 
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [colorPickerActive, setColorPickerActive] = useState(false);
-  const [mode, setMode] = useState<DateTimePickerTypes["mode"]>("date");
+  const [mode, setMode] = useState<DateTimePickerTypes['mode']>('date');
   const [show, setShow] = useState(false);
   const [target, setTarget] =
-    useState<DateTimePickerTypes["target"]>("startTime");
+    useState<DateTimePickerTypes['target']>('startTime');
 
   useEffect(() => {
-    actions.resetState();
-    setColorPickerActive(false);
-    setValidationErrors([]);
-  }, [modalActive]);
+    if (!modalActive) {
+      actions.resetState();
+      setColorPickerActive(false);
+      setValidationErrors([]);
+    }
+  }, [modalActive, actions]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const validationErrorFields = actions.validate(state).map(({ key }) => key);
     setValidationErrors(validationErrorFields);
     if (validationErrorFields.length > 0) return;
@@ -70,16 +72,16 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
       start: `${start.valueOf()}`,
       end: `${end.valueOf()}`,
     };
-    actions.submit(variables);
+    await actions.submit(variables);
     closeModal();
   };
 
   const onTitleChange = (title: string) => {
-    setValidationErrors((prev) => prev.filter((el) => el !== "title"));
+    setValidationErrors((prev) => prev.filter((el) => el !== 'title'));
     actions.setTitle(title);
   };
   const onActivityChange = (activity: string) => {
-    setValidationErrors((prev) => prev.filter((el) => el !== "activity"));
+    setValidationErrors((prev) => prev.filter((el) => el !== 'activity'));
     actions.setActivity(activity);
   };
 
@@ -90,28 +92,28 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
       1
     )}` as keyof Pick<
       typeof actions,
-      "setStartDate" | "setStartTime" | "setEndDate" | "setEndTime"
+      'setStartDate' | 'setStartTime' | 'setEndDate' | 'setEndTime'
     >;
     actions[action](selectedDate);
   };
 
-  const showMode = (currentMode: DateTimePickerTypes["mode"]) => {
+  const showMode = (currentMode: DateTimePickerTypes['mode']) => {
     setShow(true);
     setMode(currentMode);
   };
 
-  const showDatepicker = (target: DateTimePickerTypes["target"]) => {
+  const showDatepicker = (target: DateTimePickerTypes['target']) => {
     setTarget(target);
-    showMode("date");
+    showMode('date');
   };
 
-  const showTimepicker = (target: DateTimePickerTypes["target"]) => {
+  const showTimepicker = (target: DateTimePickerTypes['target']) => {
     setTarget(target);
-    showMode("time");
+    showMode('time');
   };
 
   interface DateTimeInputProps {
-    label: DateTimePickerTypes["target"];
+    label: DateTimePickerTypes['target'];
     icon: keyof typeof MaterialCommunityIcons.glyphMap;
     placeholder: string;
   }
@@ -122,15 +124,15 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
   }) => {
     const onPress = () => {
       setValidationErrors((prev) => prev.filter((el) => el !== label));
-      if (label.includes("Date")) showDatepicker(label);
-      if (label.includes("Time")) showTimepicker(label);
+      if (label.includes('Date')) showDatepicker(label);
+      if (label.includes('Time')) showTimepicker(label);
     };
 
     let text;
     if (state[label]) {
-      if (label.includes("Date"))
-        text = moment(state[label]).format("DD/MM/YYYY");
-      if (label.includes("Time")) text = moment(state[label]).format("HH:mm");
+      if (label.includes('Date'))
+        text = moment(state[label]).format('DD/MM/YYYY');
+      if (label.includes('Time')) text = moment(state[label]).format('HH:mm');
     }
 
     return (
@@ -168,7 +170,8 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
           New Activity
         </Text>
         <Text variant="sp">
-          Statistics will group by 'Activity', and then by 'Title'
+          Statistics will group by &apos;Activity&apos;, and then by
+          &apos;Title&apos;
         </Text>
       </View>
       <View style={styles.formContainer}>
@@ -176,11 +179,11 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
           <TextInput
             value={state.title}
             onChangeText={onTitleChange}
-            placeholder={"Title"}
+            placeholder={'Title'}
             placeholderTextColor={colors.headingSecondary}
             style={[
               defaultInput,
-              validationErrors.includes("title") ? styles.inputError : null,
+              validationErrors.includes('title') ? styles.inputError : null,
             ]}
             returnKeyType="next"
             onSubmitEditing={focusActivity}
@@ -190,11 +193,11 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
             ref={activityRef}
             value={state.activity}
             onChangeText={onActivityChange}
-            placeholder={"Activity"}
+            placeholder={'Activity'}
             placeholderTextColor={colors.headingSecondary}
             style={[
               defaultInput,
-              validationErrors.includes("activity") ? styles.inputError : null,
+              validationErrors.includes('activity') ? styles.inputError : null,
             ]}
             returnKeyType="next"
             onSubmitEditing={focusNotes}
@@ -204,7 +207,7 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
             ref={notesRef}
             value={state.notes}
             onChangeText={actions.setNotes}
-            placeholder={"Notes"}
+            placeholder={'Notes'}
             placeholderTextColor={colors.headingSecondary}
             style={defaultInput}
             returnKeyType="next"
@@ -271,15 +274,15 @@ export default NewActivity;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 36,
     height: 464,
   },
   header: {
-    position: "relative",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
     marginTop: 20,
   },
   headerText: {
@@ -287,20 +290,20 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     paddingVertical: 16,
-    width: "100%",
-    alignItems: "center",
+    width: '100%',
+    alignItems: 'center',
   },
-  inputContainer: { alignItems: "center", width: "100%" },
-  inputError: { borderColor: "red", borderWidth: 1 },
+  inputContainer: { alignItems: 'center', width: '100%' },
+  inputError: { borderColor: 'red', borderWidth: 1 },
   dateTimeContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     width: 250,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   dateTime: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 10,
     width: 120,
   },
@@ -311,9 +314,9 @@ const styles = StyleSheet.create({
     color: colors.headingSecondary,
   },
   buttonContainer: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingBottom: 0,
   },
 });

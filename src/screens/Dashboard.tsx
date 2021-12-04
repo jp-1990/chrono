@@ -26,7 +26,7 @@ const { screen } = base;
 const Dashboard = () => {
   const [modalActive, setModalActive] = useState<ModalState>({
     open: false,
-    type: ModalTypeEnum.CREATE,
+    type: undefined,
   });
   const [modalContentSize, setModalContentSize] = useState<{
     height: number;
@@ -39,7 +39,9 @@ const Dashboard = () => {
     if (selectedTask !== undefined) handleOpenUpdateModal();
   }, [selectedTask]);
   useEffect(() => {
-    if (!modalActive.open) setSelectedTask(undefined);
+    if (!modalActive.open) {
+      setSelectedTask(undefined);
+    }
   }, [modalActive]);
 
   const { tasks, startDate, endDate } = useDashboard();
@@ -58,7 +60,7 @@ const Dashboard = () => {
   };
 
   const handleCloseModal = () => {
-    setModalActive({ open: false, type: ModalTypeEnum.CREATE });
+    setModalActive({ open: false, type: undefined });
   };
 
   return (

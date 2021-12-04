@@ -167,43 +167,47 @@ const useUpdateTask = (task: StateType, taskId: string) => {
       }
       return validationErrors;
     },
-    submit: (variables: {
+    submit: async (variables: {
       updateTask: UpdateTaskMutationArgs;
       updateColourAndGroup: UpdateTasksColourAndGroupArgs;
     }) => {
-      updateTaskMutation({
-        variables: variables.updateTask,
-        optimisticResponse: {
-          updateTask: {
-            __typename: 'Task',
-            id: taskId,
-            title: state.title,
-            description: state.notes,
-            start: `${buildDateTime(
-              state.startDate,
-              state.startTime
-            )?.valueOf()}`,
-            end: `${buildDateTime(state.endDate, state.endTime)?.valueOf()}`,
-            percentageTimes: {
-              startPercentage: percentageTimeSinceMidnight(
-                buildDateTime(state.startDate, state.startTime) || new Date()
-              ),
-              endPercentage: percentageTimeSinceMidnight(
-                buildDateTime(state.endDate, state.endTime) || new Date()
-              ),
+      const update = async () => {
+        updateTaskMutation({
+          variables: variables.updateTask,
+          optimisticResponse: {
+            updateTask: {
+              __typename: 'Task',
+              id: taskId,
+              title: state.title,
+              description: state.notes,
+              start: `${buildDateTime(
+                state.startDate,
+                state.startTime
+              )?.valueOf()}`,
+              end: `${buildDateTime(state.endDate, state.endTime)?.valueOf()}`,
+              percentageTimes: {
+                startPercentage: percentageTimeSinceMidnight(
+                  buildDateTime(state.startDate, state.startTime) || new Date()
+                ),
+                endPercentage: percentageTimeSinceMidnight(
+                  buildDateTime(state.endDate, state.endTime) || new Date()
+                ),
+              },
             },
           },
-        },
-      });
-
-      if (
-        variables.updateColourAndGroup.activity !== task.activity ||
-        variables.updateColourAndGroup.colour !== task.color
-      ) {
-        updateTasksColourAndGroup({
-          variables: variables.updateColourAndGroup,
         });
-      }
+        if (
+          variables.updateColourAndGroup.activity !== task.activity ||
+          variables.updateColourAndGroup.colour !== task.color
+        ) {
+          updateTasksColourAndGroup({
+            variables: variables.updateColourAndGroup,
+          });
+        }
+      };
+
+      await update();
+      return;
     },
   };
 

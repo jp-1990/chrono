@@ -1,11 +1,11 @@
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect, ReactNode } from 'react';
 import {
   StyleSheet,
   View,
   Pressable,
   Keyboard,
   BackHandler,
-} from "react-native";
+} from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -13,16 +13,16 @@ import Animated, {
   withTiming,
   runOnJS,
   Easing,
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
 import {
   GestureEventPayload,
   PanGestureHandler,
   PanGestureHandlerEventPayload,
-} from "react-native-gesture-handler";
-import constants from "expo-constants";
-import { ModalState, ModalTypeEnum } from "../../../types";
+} from 'react-native-gesture-handler';
+import constants from 'expo-constants';
+import { ModalState } from '../../../types';
 
-import { colors, screenSize } from "../../../styles";
+import { colors, screenSize } from '../../../styles';
 
 interface Props {
   setActive: (value: React.SetStateAction<ModalState>) => void;
@@ -90,9 +90,9 @@ const Modal: React.FC<Props> = ({
       handleBackgroundPressClose();
       return true;
     };
-    BackHandler.addEventListener("hardwareBackPress", onHardwareBack);
+    BackHandler.addEventListener('hardwareBackPress', onHardwareBack);
     return () => {
-      BackHandler.removeEventListener("hardwareBackPress", onHardwareBack);
+      BackHandler.removeEventListener('hardwareBackPress', onHardwareBack);
     };
   }, []);
 
@@ -110,7 +110,7 @@ const Modal: React.FC<Props> = ({
     opacity.value = withTiming(0, undefined, (isFinished) => {
       if (isFinished) {
         runOnJS(setModalActive)(false);
-        runOnJS(setActive)({ open: false, type: ModalTypeEnum.CREATE });
+        runOnJS(setActive)({ open: false, type: undefined });
       }
     });
   };
@@ -122,7 +122,7 @@ const Modal: React.FC<Props> = ({
     opacity.value = withTiming(0, undefined, (isFinished) => {
       if (isFinished) {
         runOnJS(setModalActive)(false);
-        runOnJS(setActive)({ open: false, type: ModalTypeEnum.CREATE });
+        runOnJS(setActive)({ open: false, type: undefined });
       }
     });
   };
@@ -135,9 +135,9 @@ const Modal: React.FC<Props> = ({
   const handleOnGesture = (
     event: Readonly<GestureEventPayload & PanGestureHandlerEventPayload>,
     ctx: GestureContext,
-    state: "START" | "ACTIVE" | "END"
+    state: 'START' | 'ACTIVE' | 'END'
   ) => {
-    "worklet";
+    'worklet';
     const height = ctx.currentHeight;
     const gestureY = event.translationY;
 
@@ -148,7 +148,7 @@ const Modal: React.FC<Props> = ({
 
     if (shouldClose) {
       contentHeight.value = withTiming(0, animationOptions);
-      if (state === "END") runOnJS(handleClose)();
+      if (state === 'END') runOnJS(handleClose)();
       return;
     }
 
@@ -173,10 +173,10 @@ const Modal: React.FC<Props> = ({
       ctx.currentHeight = contentHeight.value;
     },
     onActive: (event, ctx) => {
-      handleOnGesture(event, ctx, "ACTIVE");
+      handleOnGesture(event, ctx, 'ACTIVE');
     },
     onEnd: (event, ctx) => {
-      handleOnGesture(event, ctx, "END");
+      handleOnGesture(event, ctx, 'END');
     },
   });
 
@@ -185,10 +185,10 @@ const Modal: React.FC<Props> = ({
       <Pressable
         style={[
           {
-            height: modalActive ? "100%" : 0,
-            width: "100%",
-            backgroundColor: "transparent",
-            position: "absolute",
+            height: modalActive ? '100%' : 0,
+            width: '100%',
+            backgroundColor: 'transparent',
+            position: 'absolute',
             bottom: 0,
             zIndex: 10,
           },
@@ -197,7 +197,7 @@ const Modal: React.FC<Props> = ({
       >
         <Animated.View
           style={[
-            { height: modalActive ? "100%" : 0 },
+            { height: modalActive ? '100%' : 0 },
             styles.background,
             animatedOpacity,
           ]}
@@ -222,22 +222,22 @@ export default Modal;
 
 const styles = StyleSheet.create({
   background: {
-    width: "100%",
+    width: '100%',
     backgroundColor: colors.modalBackground,
   },
   container: {
     zIndex: 12,
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
   },
   headerContainer: {
-    width: "100%",
+    width: '100%',
     height: 36,
     backgroundColor: colors.menuSecondary,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   whiteBar: {
     height: 7,
@@ -253,8 +253,8 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   contentContainer: {
-    height: "auto",
-    width: "100%",
+    height: 'auto',
+    width: '100%',
     backgroundColor: colors.backgroundColor,
   },
 });
