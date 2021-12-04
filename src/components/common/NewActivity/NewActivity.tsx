@@ -8,7 +8,7 @@ import { Text } from "../Text";
 import ColorPicker from "../ColorPicker/ColorPicker";
 import MainButton from "../MainButton/MainButton";
 
-import { useCreateTask, SubmitVariables } from "../../../hooks";
+import { useCreateTask, CreateVariables } from "../../../hooks";
 
 import { base, colors } from "../../../styles";
 import { buildDateTime } from "../../../utils";
@@ -62,7 +62,7 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
     const end = buildDateTime(state.endDate, state.endTime);
     if (!start || !end) return;
 
-    const variables: SubmitVariables = {
+    const variables: CreateVariables = {
       title: state.title,
       activity: state.activity,
       notes: state.notes,

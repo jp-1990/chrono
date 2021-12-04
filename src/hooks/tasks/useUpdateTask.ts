@@ -1,12 +1,19 @@
 import { useReducer } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
 import {
-  CreateTaskMutation,
-  CreateTaskMutationArgs,
-  CreateTaskMutationRes,
+  UpdateTaskMutation,
+  UpdateTaskMutationArgs,
+  UpdateTaskMutationRes,
+  UpdateTasksColourAndGroupMutation,
+  UpdateTasksColourAndGroupArgs,
+  UpdateTasksColourAndGroupRes,
 } from '../../graphql/mutations';
-import { buildDateTime, inputValidation } from '../../utils';
+import {
+  buildDateTime,
+  inputValidation,
+  percentageTimeSinceMidnight,
+} from '../../utils';
 const { isDefined, isValidDateOrder, isValidCharLength } = inputValidation;
 
 enum Actions {
@@ -18,6 +25,7 @@ enum Actions {
   SET_START_TIME = 'SET_START_TIME',
   SET_END_DATE = 'SET_END_DATE',
   SET_END_TIME = 'SET_END_TIME',
+  SET_STATE = 'SET_STATE',
   RESET_STATE = 'RESET_STATE',
 }
 type ActionType =
@@ -36,6 +44,10 @@ type ActionType =
         | Actions.SET_END_DATE
         | Actions.SET_END_TIME;
       payload: Date;
+    }
+  | {
+      type: Actions.SET_STATE;
+      payload: Partial<StateType>;
     }
   | { type: Actions.RESET_STATE };
 type StateType = {
@@ -60,7 +72,7 @@ const initialState = {
   color: 'rgba(126, 126, 126, 1)',
 };
 
-const createTaskReducer = (state: StateType, action: ActionType) => {
+const updateTaskReducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
     case Actions.SET_TITLE:
       return { ...state, title: action.payload };
@@ -86,6 +98,9 @@ const createTaskReducer = (state: StateType, action: ActionType) => {
     case Actions.SET_END_TIME:
       return { ...state, endTime: action.payload };
 
+    case Actions.SET_STATE:
+      return { ...state, ...action.payload };
+
     case Actions.RESET_STATE:
       return initialState;
     default:
@@ -93,33 +108,21 @@ const createTaskReducer = (state: StateType, action: ActionType) => {
   }
 };
 
-const useCreateTask = () => {
-  const [state, dispatch] = useReducer(createTaskReducer, initialState);
+const useUpdateTask = (task: StateType, taskId: string) => {
+  const [state, dispatch] = useReducer(updateTaskReducer, task);
 
-  const [createTaskMutation] = useMutation<
-    CreateTaskMutationRes,
-    CreateTaskMutationArgs
-  >(CreateTaskMutation, {
+  const [updateTaskMutation] = useMutation<
+    UpdateTaskMutationRes,
+    UpdateTaskMutationArgs
+  >(UpdateTaskMutation, {
     onError: (err) => console.error(err),
-    update: (cache, { data }) => {
-      const createTask = data?.createTask;
-      cache.modify({
-        fields: {
-          findTasks: (existingTasks = []) => {
-            const newTaskRef = cache.writeFragment({
-              data: createTask,
-              fragment: gql`
-                fragment NewTask on Task {
-                  id
-                  type
-                }
-              `,
-            });
-            return [...existingTasks, newTaskRef];
-          },
-        },
-      });
-    },
+  });
+
+  const [updateTasksColourAndGroup] = useMutation<
+    UpdateTasksColourAndGroupRes,
+    UpdateTasksColourAndGroupArgs
+  >(UpdateTasksColourAndGroupMutation, {
+    onError: (err) => console.error(err),
   });
 
   const actions = {
@@ -139,6 +142,8 @@ const useCreateTask = () => {
       dispatch({ type: Actions.SET_END_DATE, payload: endDate }),
     setEndTime: (endTime: Date) =>
       dispatch({ type: Actions.SET_END_TIME, payload: endTime }),
+    setState: (payload: Partial<StateType>) =>
+      dispatch({ type: Actions.SET_STATE, payload }),
     resetState: () => dispatch({ type: Actions.RESET_STATE }),
     validate: (input: StateType) => {
       const validationErrors = [];
@@ -162,10 +167,43 @@ const useCreateTask = () => {
       }
       return validationErrors;
     },
-    submit: (variables: CreateTaskMutationArgs) => {
-      createTaskMutation({
-        variables,
+    submit: (variables: {
+      updateTask: UpdateTaskMutationArgs;
+      updateColourAndGroup: UpdateTasksColourAndGroupArgs;
+    }) => {
+      updateTaskMutation({
+        variables: variables.updateTask,
+        optimisticResponse: {
+          updateTask: {
+            __typename: 'Task',
+            id: taskId,
+            title: state.title,
+            description: state.notes,
+            start: `${buildDateTime(
+              state.startDate,
+              state.startTime
+            )?.valueOf()}`,
+            end: `${buildDateTime(state.endDate, state.endTime)?.valueOf()}`,
+            percentageTimes: {
+              startPercentage: percentageTimeSinceMidnight(
+                buildDateTime(state.startDate, state.startTime) || new Date()
+              ),
+              endPercentage: percentageTimeSinceMidnight(
+                buildDateTime(state.endDate, state.endTime) || new Date()
+              ),
+            },
+          },
+        },
       });
+
+      if (
+        variables.updateColourAndGroup.activity !== task.activity ||
+        variables.updateColourAndGroup.colour !== task.color
+      ) {
+        updateTasksColourAndGroup({
+          variables: variables.updateColourAndGroup,
+        });
+      }
     },
   };
 
@@ -175,5 +213,8 @@ const useCreateTask = () => {
   };
 };
 
-export default useCreateTask;
-export type CreateVariables = CreateTaskMutationArgs;
+export default useUpdateTask;
+export type UpdateVariables = {
+  updateTask: UpdateTaskMutationArgs;
+  updateColourAndGroup: UpdateTasksColourAndGroupArgs;
+};

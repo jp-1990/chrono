@@ -21,7 +21,10 @@ export const UpdateTaskMutation = gql`
       description
       start
       end
-      percentageTimes
+      percentageTimes {
+        startPercentage
+        endPercentage
+      }
     }
   }
 `;

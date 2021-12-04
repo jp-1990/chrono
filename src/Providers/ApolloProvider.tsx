@@ -7,6 +7,21 @@ import {
 
 import { useStoreState } from "../global-store";
 
+const cache = new InMemoryCache({
+  typePolicies: {
+    Task: {
+      fields: {
+        percentageTimes: {
+          merge: false,
+        },
+        user: {
+          merge: false,
+        },
+      },
+    },
+  },
+});
+
 interface Props {
   children: ReactNode;
 }
@@ -16,7 +31,7 @@ export const ApolloProvider: React.FC<Props> = ({ children }) => {
   // Initialize Apollo Client
   const client = new ApolloClient({
     uri: "http://192.168.0.17:4000/graphql",
-    cache: new InMemoryCache(),
+    cache: cache,
     headers: {
       authorization: token || "",
     },

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView, View, StyleSheet, Text } from "react-native";
-import moment from "moment";
+import React, { useEffect, useState } from 'react';
+import { ScrollView, View, StyleSheet } from 'react-native';
+import moment from 'moment';
 
 import {
   Header,
@@ -9,18 +9,18 @@ import {
   NewActivity,
   UpdateActivity,
   BottomNav,
-} from "../Components/Common";
-import { TopActivities, TotalTime } from "../Components/Dashboard";
-import { Modal } from "../Components/Layouts";
-import { useDashboard } from "../hooks";
-import { hoursToHoursAndMinutes, durationInHours } from "../utils";
+} from '../Components/Common';
+import { TopActivities, TotalTime } from '../Components/Dashboard';
+import { Modal } from '../Components/Layouts';
+import { useDashboard } from '../hooks';
+import { hoursToHoursAndMinutes, durationInHours } from '../utils';
 import {
   ModalState,
   ModalTypeEnum,
   TaskDataWithMarginAndWidth,
-} from "../types";
+} from '../types';
 
-import { base, screenSize } from "../styles";
+import { base, screenSize } from '../styles';
 const { screen } = base;
 
 const Dashboard = () => {
@@ -38,6 +38,9 @@ const Dashboard = () => {
   useEffect(() => {
     if (selectedTask !== undefined) handleOpenUpdateModal();
   }, [selectedTask]);
+  useEffect(() => {
+    if (!modalActive.open) setSelectedTask(undefined);
+  }, [modalActive]);
 
   const { tasks, startDate, endDate } = useDashboard();
 
@@ -66,11 +69,11 @@ const Dashboard = () => {
           <View style={styles.titleContainer}>
             <Title
               title="dashboard"
-              subtitle={`${moment(startDate).format("MMM Do")} - ${moment(
+              subtitle={`${moment(startDate).format('MMM Do')} - ${moment(
                 endDate
               )
-                .subtract(1, "days")
-                .format("MMM Do")}`}
+                .subtract(1, 'days')
+                .format('MMM Do')}`}
             />
           </View>
           <View>
@@ -134,18 +137,18 @@ const Dashboard = () => {
 export default Dashboard;
 
 const styles = StyleSheet.create({
-  scrollZindex: { position: "relative", zIndex: -100 },
+  scrollZindex: { position: 'relative', zIndex: -100 },
   container: {
     paddingHorizontal: 12,
     paddingTop: 24,
     paddingBottom: 36,
   },
   titleContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 6,
   },
   FABContainer: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 16,
     right: 12,
   },
@@ -162,6 +165,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
   },
   modalContentPadding: {
-    height: "100%",
+    height: '100%',
   },
 });
