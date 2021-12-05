@@ -105,7 +105,7 @@ const useCreateTask = () => {
       const createTask = data?.createTask;
       cache.modify({
         fields: {
-          findTasks: (existingTasks = []) => {
+          scopedTasks: (existingTasks = []) => {
             const newTaskRef = cache.writeFragment({
               data: createTask,
               fragment: gql`

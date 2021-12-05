@@ -2,9 +2,9 @@ import { ApolloError, useQuery } from '@apollo/client';
 import moment from 'moment';
 import { useState } from 'react';
 import {
-  FindTasksQuery,
-  FindTasksRes,
-  FindTasksArgs,
+  ScopedTasksQuery,
+  ScopedTasksRes,
+  ScopedTasksArgs,
 } from '../../../../graphql/queries';
 import {
   GroupSummaryWithName,
@@ -43,8 +43,8 @@ interface UseDashboardDataReturn {
  */
 const useDashboardData = (): UseDashboardDataReturn => {
   const [tasks, setTasks] = useState<TasksDataWithMarginAndWidth | undefined>();
-  const { loading, error } = useQuery<FindTasksRes, FindTasksArgs>(
-    FindTasksQuery,
+  const { loading, error } = useQuery<ScopedTasksRes, ScopedTasksArgs>(
+    ScopedTasksQuery,
     {
       variables: {
         scope: 10,

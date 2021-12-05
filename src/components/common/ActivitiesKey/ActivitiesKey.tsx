@@ -1,10 +1,14 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 
-import ActivityTotal from "../ActivityTotal/ActivityTotal";
+import ActivityTotal from '../ActivityTotal/ActivityTotal';
 
 interface Props {
-  activities: { color: string; title: string; total: number }[];
+  activities: {
+    color: string;
+    title: string;
+    total: { hours: number; minutes: number };
+  }[];
 }
 
 const ActivitiesKey: React.FC<Props> = ({ activities }) => {
@@ -49,8 +53,8 @@ export default ActivitiesKey;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
   },
 });

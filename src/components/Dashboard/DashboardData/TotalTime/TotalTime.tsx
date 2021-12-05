@@ -1,9 +1,8 @@
-import React from "react";
-import { View, StyleSheet, ViewStyle } from "react-native";
+import React from 'react';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 
-import { Text } from "../../Common";
-
-import { colors } from "../../../styles";
+import { Text } from '../../../Common';
+import { colors } from '../../../../styles';
 
 interface Props {
   recorded: {
@@ -20,11 +19,11 @@ const TotalTime: React.FC<Props> = ({ recorded, possible, style }) => {
       <Text variant="h3">TOTAL</Text>
 
       <Text variant="h4" style={styles.recorded}>
-        [ {recorded.hours || "   "} hours {recorded.minutes || "   "} mins ]
+        [ {recorded.hours || '   '} hours {recorded.minutes || '   '} mins ]
         recorded
       </Text>
       <Text variant="sp" style={styles.possible}>
-        of [ {possible || "   "} hours ] possible
+        of [ {possible || '   '} hours ] possible
       </Text>
     </View>
   );

@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
-import moment from 'moment';
+import { View, StyleSheet } from 'react-native';
 
 import {
   Header,
-  Title,
-  DataChart,
   NewActivity,
   UpdateActivity,
   BottomNav,
 } from '../Components/Common';
-import { TopActivities, TotalTime } from '../Components/Dashboard';
+import { DashboardData } from '../Components/Dashboard';
 import { Modal } from '../Components/Layouts';
-import { useDashboard } from '../hooks';
-import { hoursToHoursAndMinutes, durationInHours } from '../utils';
+
 import {
   ModalState,
   ModalTypeEnum,
@@ -44,14 +40,6 @@ const Dashboard = () => {
     }
   }, [modalActive]);
 
-  const { tasks, startDate, endDate } = useDashboard();
-
-  // get top 3 activities
-  const topActivities = tasks.summary?.slice(0, 3);
-  // get total as hours and mins
-  const recorded = hoursToHoursAndMinutes(tasks?.totalTime);
-  const possible = durationInHours(moment(startDate), moment(endDate));
-
   const handleOpenCreateModal = () => {
     setModalActive({ open: true, type: ModalTypeEnum.CREATE });
   };
@@ -66,40 +54,7 @@ const Dashboard = () => {
   return (
     <View style={screen}>
       <Header statusBar="light" />
-      <ScrollView style={styles.scrollZindex}>
-        <View style={styles.container}>
-          <View style={styles.titleContainer}>
-            <Title
-              title="dashboard"
-              subtitle={`${moment(startDate).format('MMM Do')} - ${moment(
-                endDate
-              )
-                .subtract(1, 'days')
-                .format('MMM Do')}`}
-            />
-          </View>
-          <View>
-            <DataChart
-              style={styles.dataChart}
-              data={tasks.data}
-              start={startDate}
-              end={endDate}
-              setSelectedTask={setSelectedTask}
-            />
-          </View>
-          <TopActivities
-            style={styles.topActivities}
-            title="TOP ACTIVITIES"
-            activities={topActivities}
-          />
-
-          <TotalTime
-            style={styles.totalTime}
-            recorded={recorded}
-            possible={possible}
-          />
-        </View>
-      </ScrollView>
+      <DashboardData />
       <Modal
         active={modalActive.open}
         setActive={setModalActive}

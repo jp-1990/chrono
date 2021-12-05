@@ -1,2 +1,4 @@
-export * from "./TopActivities";
-export * from "./TotalTime";
+export * from './DashboardData/TopActivities';
+export * from './DashboardData/TotalTime';
+
+export { DashboardData } from './DashboardData';

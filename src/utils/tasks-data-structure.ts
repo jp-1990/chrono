@@ -3,14 +3,13 @@ import {
   addDayUnixString,
   startOfDay,
   endOfDay,
-} from "./date-format";
-import { FindTasksRes } from "../graphql/queries";
+} from './date-format';
 import {
   TaskAPIResponse,
   TaskDataStructure,
   TasksDataStructure,
   TasksDataWithMarginAndWidth,
-} from "../types";
+} from '../types';
 
 const addLeftMarginAndWidth = (
   data: TasksDataStructure
@@ -39,12 +38,12 @@ const addLeftMarginAndWidth = (
 };
 
 export const buildTasksDataStructure = (
-  data: { findTasks: TaskAPIResponse[] } | undefined
+  data: { scopedTasks: TaskAPIResponse[] } | undefined
 ) => {
   if (!data) return undefined;
   const taskData: TasksDataStructure = {};
   // loop over data returned from query
-  data.findTasks.forEach((el) => {
+  data.scopedTasks.forEach((el) => {
     // keys are the day at midnight that the task starts or ends as a unix string
     const taskStartKey = convertDateToMidnightUnixString(el.start);
     const taskEndKey = convertDateToMidnightUnixString(el.end);
@@ -68,7 +67,7 @@ export const buildTasksDataStructure = (
         start: +el.start,
         end: endOfDay(+el.start),
       });
-      let keyTracker = addDayUnixString(taskStartKey);
+      const keyTracker = addDayUnixString(taskStartKey);
       // while covers situation where task spans any number of days
       while (taskEndKey !== keyTracker) {
         // if the tracker key doesnt exist yet, assign an empty array to it
