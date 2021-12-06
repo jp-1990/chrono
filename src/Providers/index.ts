@@ -1,1 +1,5 @@
-export * from "./ApolloProvider";
+export * from './ApolloProvider';
+export {
+  useCreateUpdateModalContext,
+  CreateUpdateModalProvider,
+} from './CreateUpdateModalProvider';
