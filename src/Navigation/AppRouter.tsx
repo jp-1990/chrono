@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import moment from "moment";
+import React, { useState, useEffect } from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import moment from 'moment';
 
 import {
   Login,
@@ -10,10 +10,10 @@ import {
   Timeline,
   Reports,
   Loading,
-} from "../Screens";
+} from '../Screens';
 
-import { useRehydrateAuth } from "../hooks";
-import { useStoreState } from "../global-store";
+import { useRehydrateAuth } from '../hooks';
+import { useStoreState } from '../global-store';
 
 type RouteParams = {
   id: string;

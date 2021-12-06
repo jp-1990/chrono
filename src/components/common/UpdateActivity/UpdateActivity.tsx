@@ -31,7 +31,7 @@ interface DateTimePickerTypes {
 interface Props {
   closeModal(): void;
   modalActive: boolean;
-  selectedTask: TaskDataWithMarginAndWidth | undefined;
+  selectedTask: TaskDataWithMarginAndWidth | null;
 }
 const UpdateActivity: React.FC<Props> = ({
   modalActive,

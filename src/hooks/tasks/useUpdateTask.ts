@@ -13,6 +13,7 @@ import {
   buildDateTime,
   inputValidation,
   percentageTimeSinceMidnight,
+  calcLuminance,
 } from '../../utils';
 const { isDefined, isValidDateOrder, isValidCharLength } = inputValidation;
 
@@ -116,6 +117,7 @@ const useUpdateTask = (task: StateType, taskId: string) => {
     UpdateTaskMutationArgs
   >(UpdateTaskMutation, {
     onError: (err) => console.error(err),
+    refetchQueries: ['scopedTasks'],
   });
 
   const [updateTasksColourAndGroup] = useMutation<
@@ -123,6 +125,7 @@ const useUpdateTask = (task: StateType, taskId: string) => {
     UpdateTasksColourAndGroupArgs
   >(UpdateTasksColourAndGroupMutation, {
     onError: (err) => console.error(err),
+    refetchQueries: ['scopedTasks'],
   });
 
   const actions = {
@@ -202,6 +205,19 @@ const useUpdateTask = (task: StateType, taskId: string) => {
         ) {
           updateTasksColourAndGroup({
             variables: variables.updateColourAndGroup,
+            optimisticResponse: {
+              updateTaskColourAndGroup: [
+                {
+                  __typename: 'Task',
+                  id: taskId,
+                  colour: variables.updateColourAndGroup.colour || '',
+                  group: variables.updateColourAndGroup.activity || '',
+                  luminance: calcLuminance(
+                    variables.updateColourAndGroup.colour || ''
+                  ),
+                },
+              ],
+            },
           });
         }
       };

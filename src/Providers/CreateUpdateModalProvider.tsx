@@ -50,7 +50,9 @@ export const CreateUpdateModalProvider: React.FC = ({ children }) => {
     setSelectedTask(task);
     setModalActive(ModalActiveEnum.UPDATE);
   };
-  const openCreateModal = () => setModalActive(ModalActiveEnum.CREATE);
+  const openCreateModal = () => {
+    setModalActive(ModalActiveEnum.CREATE);
+  };
   const closeModal = () => {
     setSelectedTask(null);
     setModalActive(null);
@@ -67,6 +69,7 @@ export const CreateUpdateModalProvider: React.FC = ({ children }) => {
       openUpdateModal,
     },
   };
+
   return (
     <CreateUpdateTaskContext.Provider value={value}>
       {children}

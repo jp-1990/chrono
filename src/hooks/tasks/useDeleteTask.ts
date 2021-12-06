@@ -14,11 +14,12 @@ const useDeleteTask = () => {
     DeleteTaskMutationRes,
     DeleteTaskMutationArgs
   >(DeleteTaskMutation, {
+    refetchQueries: ['scopedTasks'],
     update: (cache, { data }) => {
       const id = data?.deleteTask.id;
       cache.modify({
         fields: {
-          findTasks: (existingTasks = []) => {
+          scopedTasks: (existingTasks = []) => {
             return existingTasks.filter(
               (ref: CacheObjectRef) => ref.__ref !== `Task:${id}`
             );

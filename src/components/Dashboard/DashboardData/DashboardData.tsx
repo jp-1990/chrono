@@ -31,9 +31,6 @@ const DashboardData = () => {
             data={data.tasks}
             start={data.startDate}
             end={data.endDate}
-            setSelectedTask={function (): void {
-              throw new Error('Function not implemented.');
-            }}
           />
         </View>
         <TopActivities

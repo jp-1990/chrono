@@ -101,6 +101,7 @@ const useCreateTask = () => {
     CreateTaskMutationArgs
   >(CreateTaskMutation, {
     onError: (err) => console.error(err),
+    refetchQueries: ['scopedTasks'],
     update: (cache, { data }) => {
       const createTask = data?.createTask;
       cache.modify({
@@ -112,6 +113,22 @@ const useCreateTask = () => {
                 fragment NewTask on Task {
                   id
                   type
+                  title
+                  group
+                  description
+                  colour
+                  start
+                  end
+                  createdAt
+                  percentageTimes {
+                    startPercentage
+                    endPercentage
+                  }
+                  luminance
+                  user {
+                    id
+                    name
+                  }
                 }
               `,
             });

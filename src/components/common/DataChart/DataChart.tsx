@@ -1,16 +1,23 @@
-import React, { useRef, useState, useEffect } from "react";
-import { View, StyleSheet, ViewStyle, ScrollView, Button } from "react-native";
-import moment from "moment";
+import React, { useRef, useState, useEffect } from 'react';
+import { View, StyleSheet, ViewStyle, ScrollView } from 'react-native';
+import moment from 'moment';
 
-import ChartRow from "./ChartRow/ChartRow";
-import Text from "../Text/Text";
+import ChartRow from './ChartRow/ChartRow';
+import Text from '../Text/Text';
 
-import {
-  TaskDataWithMarginAndWidth,
-  TasksDataWithMarginAndWidth,
-} from "../../../types/data";
-import { addDayUnixString, durationInHours } from "../../../utils";
-import { colors, screenSize } from "../../../styles";
+import { TasksDataWithMarginAndWidth } from '../../../types/data';
+import { addDayUnixString, durationInHours } from '../../../utils';
+import { colors, screenSize } from '../../../styles';
+
+const scrollToNow = (internalWidth: number, scrollViewWidth: number) => {
+  const now = moment();
+  const startOfToday = moment().startOf('day');
+  const hoursPassed = durationInHours(startOfToday, now);
+  const percentageOfDay = hoursPassed / 24;
+  const scrollTarget = internalWidth * percentageOfDay;
+  const viewOffset = (scrollViewWidth || 200) / 2;
+  return scrollTarget - viewOffset;
+};
 
 interface Props {
   start: number;
@@ -18,9 +25,6 @@ interface Props {
   data: TasksDataWithMarginAndWidth | undefined;
   style?: ViewStyle;
   internalWidth?: number;
-  setSelectedTask: React.Dispatch<
-    React.SetStateAction<TaskDataWithMarginAndWidth | undefined>
-  >;
 }
 
 const DataChart: React.FC<Props> = ({
@@ -29,27 +33,16 @@ const DataChart: React.FC<Props> = ({
   end,
   style,
   internalWidth = screenSize.width * 2,
-  setSelectedTask,
 }) => {
   const [scrollViewWidth, setScrollViewWidth] = useState<number>();
   const scrollRef = useRef<ScrollView>(null);
 
-  const scrollToNow = () => {
-    const now = moment();
-    const startOfToday = moment().startOf("day");
-    const hoursPassed = durationInHours(startOfToday, now);
-    const percentageOfDay = hoursPassed / 24;
-    const scrollTarget = internalWidth * percentageOfDay;
-    const viewOffset = (scrollViewWidth || 200) / 2;
-    return scrollTarget - viewOffset;
-  };
-
   useEffect(() => {
     scrollViewWidth &&
       scrollRef.current?.scrollTo({
-        x: scrollToNow(),
+        x: scrollToNow(internalWidth, scrollViewWidth),
       });
-  }, [scrollViewWidth]);
+  }, [scrollViewWidth, internalWidth]);
 
   const chartRows = [];
   const chartDates = [];
@@ -59,14 +52,7 @@ const DataChart: React.FC<Props> = ({
   while (safety < 100 && unixDay !== end) {
     const date = moment(Number(unixDay)).date();
     const rowData = data && data[unixDay];
-    chartRows.push(
-      <ChartRow
-        key={safety}
-        date={date}
-        data={rowData}
-        setSelectedTask={setSelectedTask}
-      />
-    );
+    chartRows.push(<ChartRow key={safety} data={rowData} />);
     chartDates.push(
       <Text key={safety} style={styles.columnLabels} variant="sp">
         {date}
@@ -79,7 +65,7 @@ const DataChart: React.FC<Props> = ({
   const times = [];
   for (let i = 0; i < 25; i++) {
     const labelModifier = internalWidth > 500 ? 4 : 8;
-    let timeString = "";
+    let timeString = '';
     if (i < 10) timeString = `0${i}:00`;
     if (i >= 10) timeString = `${i}:00`;
     times.push(
@@ -130,10 +116,10 @@ export default DataChart;
 
 const styles = StyleSheet.create({
   container: {
-    color: "#000",
-    height: "auto",
+    color: '#000',
+    height: 'auto',
     width: screenSize.width,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   scrollView: {
     flex: 1,
@@ -145,22 +131,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   timesHeader: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginHorizontal: 20,
   },
   timeLabelContainer: {
-    justifyContent: "center",
+    justifyContent: 'center',
     height: 20,
   },
   timeLabel: {
     width: 50,
-    textAlign: "center",
+    textAlign: 'center',
     transform: [{ translateX: -25 }],
   },
   datesColumn: {
     marginRight: 5,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     marginTop: 20,
     marginBottom: 10,
   },
@@ -168,8 +154,8 @@ const styles = StyleSheet.create({
     color: colors.headingSecondary,
     height: 30,
     paddingVertical: 5,
-    textAlignVertical: "center",
-    textAlign: "center",
+    textAlignVertical: 'center',
+    textAlign: 'center',
   },
   labels: {
     color: colors.headingSecondary,

@@ -1,26 +1,24 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 
-import DataBar from "./DataBar";
+import DataBar from './DataBar';
 
-import { colors } from "../../../../styles";
-import { TaskDataWithMarginAndWidth } from "../../../../types/data";
+import { TaskDataWithMarginAndWidth } from '../../../../types/data';
+import { useCreateUpdateModalContext } from '../../../../Providers';
 
 interface Props {
-  date: number;
   data: TaskDataWithMarginAndWidth[] | undefined;
-  setSelectedTask: React.Dispatch<
-    React.SetStateAction<TaskDataWithMarginAndWidth | undefined>
-  >;
 }
 
-const ChartRow: React.FC<Props> = ({ date, data, setSelectedTask }) => {
+const ChartRow: React.FC<Props> = ({ data }) => {
+  const { actions } = useCreateUpdateModalContext();
+
   // create array of databars to render in row
-  const renderedBars = data?.map((el, i) => {
+  const renderedBars = data?.map((el: TaskDataWithMarginAndWidth) => {
     const handleOnPress = () => {
-      setSelectedTask(el);
+      actions.openUpdateModal(el);
     };
-    return <DataBar key={i} data={el} onPress={handleOnPress} />;
+    return <DataBar key={el.id} data={el} onPress={handleOnPress} />;
   });
 
   return (
@@ -34,14 +32,14 @@ export default ChartRow;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginVertical: 4,
     marginHorizontal: 20,
     flex: 1,
   },
   dataBars: {
     height: 22,
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 1,
   },
 });
