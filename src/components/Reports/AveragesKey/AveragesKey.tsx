@@ -1,13 +1,13 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
-import { ActivityTotal, Subtitle } from "../../Common";
-import { ActivityTypes } from "../../../types";
+import { ActivityTotal } from '../../Common';
+import { ActivityTypes } from '../../../types';
 
-import { colors } from "../../../styles";
+import { colors } from '../../../styles';
 
 interface Props {
-  activities: ActivityTypes["activity"][];
+  activities: ActivityTypes['activity'][];
 }
 
 const AveragesKey: React.FC<Props> = ({ activities }) => {
@@ -21,7 +21,7 @@ const AveragesKey: React.FC<Props> = ({ activities }) => {
         <ActivityTotal
           color={activities[i].color || colors.textPrimary}
           title={activities[i].title}
-          total={activities[i].total}
+          total={{ hours: activities[i].total, minutes: 0 }}
           totalVisible={true}
         />
         <View>
@@ -36,7 +36,6 @@ const AveragesKey: React.FC<Props> = ({ activities }) => {
   return (
     <View>
       <View style={styles.titles}>
-        <Subtitle text="key" />
         <View>
           <Text style={styles.averageTitle}>Average</Text>
           <Text style={styles.averageTitle}>p/week</Text>
@@ -51,19 +50,19 @@ export default AveragesKey;
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   titles: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginVertical: 15,
   },
   averageTitle: {
     fontSize: 15,
-    fontFamily: "lato-light",
+    fontFamily: 'lato-light',
     color: colors.headingPrimary,
   },
   averageText: { color: colors.headingSecondary },

@@ -24,7 +24,7 @@ export type StackParams = {
   SignUp?: RouteParams;
   Dashboard?: RouteParams;
   Timeline?: RouteParams;
-  Reports?: RouteParams;
+  Statistics?: RouteParams;
   Loading?: undefined;
 };
 const Stack = createStackNavigator<StackParams>();
@@ -67,7 +67,7 @@ export const AppRouter = () => {
         <>
           <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="Timeline" component={Timeline} />
-          <Stack.Screen name="Reports" component={Reports} />
+          <Stack.Screen name="Statistics" component={Reports} />
         </>
       )}
     </Stack.Navigator>

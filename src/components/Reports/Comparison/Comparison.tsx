@@ -1,13 +1,13 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
-import { ActivityTotal, Subtitle } from "../../Common";
-import { ActivityTypes } from "../../../types";
+import { ActivityTotal } from '../../Common';
+import { ActivityTypes } from '../../../types';
 
-import { colors } from "../../../styles";
+import { colors } from '../../../styles';
 
 interface Props {
-  activities: ActivityTypes["activity"][];
+  activities: ActivityTypes['activity'][];
 }
 
 const Comparison: React.FC<Props> = ({ activities }) => {
@@ -29,7 +29,7 @@ const Comparison: React.FC<Props> = ({ activities }) => {
         <ActivityTotal
           color={activities[i].color || colors.textPrimary}
           title={activities[i].title}
-          total={activities[i].total}
+          total={{ hours: activities[i].total, minutes: 0 }}
           totalVisible={false}
         />
         <View style={styles.percentageContainer}>
@@ -45,7 +45,6 @@ const Comparison: React.FC<Props> = ({ activities }) => {
   return (
     <View>
       <View style={styles.titles}>
-        <Subtitle text="comparison" />
         <View style={styles.dateContainer}>
           <View style={styles.date}>
             <Text style={styles.month}>jan</Text>
@@ -67,42 +66,42 @@ export default Comparison;
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   percentageContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    width: "50%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: '50%',
   },
   percentageText: {
     width: 45,
   },
   valueText: {
     color: colors.headingPrimary,
-    fontFamily: "lato-light",
+    fontFamily: 'lato-light',
   },
   titles: {
     marginVertical: 15,
   },
   dateContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   date: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   month: {
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
     color: colors.headingPrimary,
-    fontFamily: "lato-bold",
+    fontFamily: 'lato-bold',
     fontSize: 16,
   },
   year: {
     color: colors.headingSecondary,
-    fontFamily: "lato-light",
+    fontFamily: 'lato-light',
     fontSize: 16,
   },
   vs: {
