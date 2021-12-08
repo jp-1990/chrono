@@ -1,11 +1,11 @@
-import moment from "moment";
-import { durationInHours } from "./date-format";
+import moment from 'moment';
+import { durationInHours } from './date-format';
 import {
   TasksDataWithMarginAndWidth,
   TaskDataWithMarginAndWidth,
   GroupSummary,
   GroupSummaryWithName,
-} from "../types";
+} from '../types';
 
 const addToGroupsSummary = (args: {
   group: string;
@@ -17,7 +17,7 @@ const addToGroupsSummary = (args: {
 }) => {
   const { group, groups, title, duration, totalHours, color } = args;
   const average = (taskTime: number, totalHours: number) =>
-    (totalHours / 168) * taskTime;
+    taskTime / (totalHours / 168);
   const percentage = (taskTime: number, totalHours: number) =>
     (taskTime / totalHours) * 100;
 
@@ -25,7 +25,7 @@ const addToGroupsSummary = (args: {
     totalTime: 0,
     totalAsPercentage: 0,
     averagePerWeek: 0,
-    color: "",
+    color: '',
     tasks: {},
   };
   if (groups[group]) prev = { ...groups[group] } as GroupSummary;
@@ -35,7 +35,6 @@ const addToGroupsSummary = (args: {
   const averagePerWeek = average(totalTime, totalHours);
   groups[group] = {
     ...prev,
-    color,
     totalTime,
     totalAsPercentage,
     averagePerWeek,
@@ -56,6 +55,13 @@ const addToGroupsSummary = (args: {
       averagePerWeek: taskAveragePerWeek,
     },
   };
+
+  const prevTaskKeys = Object.keys(prev.tasks) as (keyof GroupSummary)[];
+  const currentMax = prevTaskKeys.reduce((last, cur) => {
+    if (prev.tasks[cur].totalTime > last) return prev.tasks[cur].totalTime;
+    return last;
+  }, 0);
+  if (currentMax < taskTotalTime) groups[group].color = color;
 };
 
 export const tasksSummary = (
@@ -81,7 +87,7 @@ export const tasksSummary = (
   const totalHours = durationInHours(moment(startDate), moment(endDate));
   const groups: { [key: string]: GroupSummary } = {};
 
-  input.forEach((el, i) => {
+  input.forEach((el) => {
     const { group, title, start, end, color } = el;
     const duration = durationInHours(
       moment(Number(start)),
@@ -91,7 +97,7 @@ export const tasksSummary = (
       addToGroupsSummary({ group, groups, title, duration, totalHours, color });
     } else {
       addToGroupsSummary({
-        group: "other",
+        group: 'other',
         groups,
         title,
         duration,
