@@ -1,0 +1,1 @@
+export { VictoryPieChart } from './VictoryPieChart';
