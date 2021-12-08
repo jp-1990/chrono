@@ -33,12 +33,14 @@ export default ChartRow;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginVertical: 4,
+    marginVertical: 1,
+    paddingVertical: 2,
     marginHorizontal: 20,
     flex: 1,
+    backgroundColor: '#fafafa',
   },
   dataBars: {
-    height: 22,
+    height: 24,
     flexDirection: 'row',
     flex: 1,
   },

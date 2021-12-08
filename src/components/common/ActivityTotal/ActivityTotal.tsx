@@ -31,7 +31,9 @@ const ActivityTotal: React.FC<Props> = ({
       </Text>
       {totalVisible && total ? (
         <Text variant="sp" style={styles.total}>
-          [ {total.hours} hours {total.minutes} mins ]
+          {`[ ${total.hours} h ${
+            total.minutes > 1 ? `${total.minutes} m` : ''
+          } ]`}
         </Text>
       ) : null}
     </View>
@@ -49,10 +51,11 @@ const styles = StyleSheet.create({
   color: {
     width: 20,
     height: 20,
+    borderRadius: 2,
   },
   title: {
     textTransform: 'capitalize',
-    width: 74,
+    width: 50,
     marginHorizontal: 10,
     color: colors.textPrimary,
   },

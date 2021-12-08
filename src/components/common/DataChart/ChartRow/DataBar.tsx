@@ -1,7 +1,7 @@
-import React from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import React from 'react';
+import { StyleSheet, Pressable } from 'react-native';
 
-import { TaskDataWithMarginAndWidth } from "../../../../types/data";
+import { TaskDataWithMarginAndWidth } from '../../../../types/data';
 
 interface Props {
   data: TaskDataWithMarginAndWidth | undefined;
@@ -31,9 +31,9 @@ export default DataBar;
 
 const styles = StyleSheet.create({
   dataBar: {
-    height: 22,
+    height: 24,
     borderRadius: 2,
     borderWidth: 0.5,
-    borderColor: "#e3e3e3",
+    borderColor: '#e3e3e3',
   },
 });
