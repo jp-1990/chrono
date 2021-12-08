@@ -55,7 +55,6 @@ const useDashboardData = (): UseDashboardDataReturn => {
         // build the data structure to display in app
         const tasksData = buildTasksDataStructure(res);
         setTasks(tasksData);
-        console.log('fetch tasks set to state');
       },
 
       onError: (err) => {
