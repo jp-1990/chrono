@@ -94,14 +94,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconBox: {
-    height: 44,
+    height: 40,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 3,
+    borderRadius: 6,
+    marginHorizontal: 8,
   },
   pressed: {
     backgroundColor: colors.buttonTextRipple,
   },
-  selected: {},
 });
