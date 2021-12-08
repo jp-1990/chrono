@@ -1,32 +1,27 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { GroupSummaryWithName } from '../../../types';
 
-import ActivityTotal from '../ActivityTotal/ActivityTotal';
+import { ActivityTotal } from '../ActivityTotal';
+import { hoursToHoursAndMinutes } from '../../../utils';
 
 interface Props {
-  activities: {
-    color: string;
-    title: string;
-    total: { hours: number; minutes: number };
-  }[];
+  activities: GroupSummaryWithName[];
 }
 
 const ActivitiesKey: React.FC<Props> = ({ activities }) => {
-  // activities contains array of objects with color, title and total
-
   // build arrays to be rendered
   const leftCol = [];
   const rightCol = [];
 
-  for (let i = 0, j = activities.length; i < j; i++) {
+  for (let i = 0, j = activities.length || 0; i < j; i++) {
     if (i % 2 === 0)
       leftCol.push(
         <ActivityTotal
           key={i}
           color={activities[i].color}
-          title={activities[i].title}
-          total={activities[i].total}
-          totalVisible={false}
+          title={activities[i].group}
+          total={hoursToHoursAndMinutes(activities[i].totalTime)}
         />
       );
     if (i % 2 !== 0)
@@ -34,9 +29,8 @@ const ActivitiesKey: React.FC<Props> = ({ activities }) => {
         <ActivityTotal
           key={i}
           color={activities[i].color}
-          title={activities[i].title}
-          total={activities[i].total}
-          totalVisible={false}
+          title={activities[i].group}
+          total={hoursToHoursAndMinutes(activities[i].totalTime)}
         />
       );
   }
