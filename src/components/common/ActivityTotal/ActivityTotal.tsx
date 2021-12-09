@@ -32,7 +32,7 @@ const ActivityTotal: React.FC<Props> = ({
       {totalVisible && total ? (
         <Text variant="sp" style={styles.total}>
           {`[ ${total.hours} h ${
-            total.minutes > 1 ? `${total.minutes} m` : ''
+            total.minutes > 1 ? `${Math.round(total.minutes)} m` : ''
           } ]`}
         </Text>
       ) : null}

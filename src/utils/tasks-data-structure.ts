@@ -38,12 +38,12 @@ const addLeftMarginAndWidth = (
 };
 
 export const buildTasksDataStructure = (
-  data: { scopedTasks: TaskAPIResponse[] } | undefined
+  data: { tasks: TaskAPIResponse[] } | undefined
 ) => {
   if (!data) return undefined;
   const taskData: TasksDataStructure = {};
   // loop over data returned from query
-  data.scopedTasks.forEach((el) => {
+  data.tasks.forEach((el) => {
     // keys are the day at midnight that the task starts or ends as a unix string
     const taskStartKey = convertDateToMidnightUnixString(el.start);
     const taskEndKey = convertDateToMidnightUnixString(el.end);

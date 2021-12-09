@@ -19,8 +19,8 @@ const TotalTime: React.FC<Props> = ({ recorded, possible, style }) => {
       <Text variant="h3">TOTAL</Text>
 
       <Text variant="h4" style={styles.recorded}>
-        [ {recorded.hours || '   '} hours {recorded.minutes || '   '} mins ]
-        recorded
+        [ {recorded.hours || '   '} hours{' '}
+        {Math.round(recorded.minutes) || '   '} mins ] recorded
       </Text>
       <Text variant="sp" style={styles.possible}>
         of [ {possible || '   '} hours ] possible
