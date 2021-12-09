@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+  createStackNavigator,
+  StackNavigationProp,
+} from '@react-navigation/stack';
+import {
+  createBottomTabNavigator,
+  BottomTabNavigationProp,
+} from '@react-navigation/bottom-tabs';
 import moment from 'moment';
 
 import {
@@ -9,15 +15,17 @@ import {
   SignUp,
   Dashboard,
   Timeline,
+  MainStatistics,
   Reports,
   Loading,
 } from '../Screens';
 
 import { useRehydrateAuth } from '../hooks';
 import { useStoreState } from '../global-store';
+import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 
 type RouteParams = {
-  id: string;
+  id: string | undefined;
 };
 export type StackParams = {
   Login?: RouteParams;
@@ -32,6 +40,13 @@ export type TabParams = {
   Statistics?: RouteParams;
   Profile?: RouteParams;
 };
+
+export type StackNavProp<T extends keyof StackParams> = CompositeNavigationProp<
+  StackNavigationProp<StackParams, T>,
+  BottomTabNavigationProp<TabParams>
+>;
+export type StackRouteProp = RouteProp<StackParams>;
+export type TabRouteProp = RouteProp<TabParams>;
 
 const Stack = createStackNavigator<StackParams>();
 const Tab = createBottomTabNavigator<TabParams>();
@@ -48,6 +63,7 @@ const AppTabs = () => {
       <Tab.Screen name="Dashboard" component={Dashboard} />
       <Tab.Screen name="Timeline" component={Timeline} />
       <Tab.Screen name="Statistics" component={Reports} />
+      <Tab.Screen name="Profile" component={MainStatistics} />
     </Tab.Navigator>
   );
 };

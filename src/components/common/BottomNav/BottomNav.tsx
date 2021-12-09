@@ -3,6 +3,7 @@ import { View, StyleSheet, Pressable } from 'react-native';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
+import { StackNavProp, TabRouteProp } from '../../../Navigation';
 import { useCreateUpdateModalContext } from '../../../Providers';
 import { FAB } from '../FAB';
 import { colors } from '../../../styles';
@@ -10,8 +11,8 @@ import { colors } from '../../../styles';
 const BottomNav: React.FC = () => {
   const { actions } = useCreateUpdateModalContext();
   // useNavigation hook works with react context in the background and provides the navigation object from the current screen
-  const navigation = useNavigation();
-  const route = useRoute();
+  const navigation = useNavigation<StackNavProp<'App'>>();
+  const route = useRoute<TabRouteProp>();
 
   // useRoute provides route object from current screen
 
@@ -60,7 +61,7 @@ const BottomNav: React.FC = () => {
         />
       </Pressable>
       <Pressable
-        onPress={() => null}
+        onPress={() => navigation.navigate('Profile')}
         style={({ pressed }) => [
           styles.iconBox,
           pressed ? styles.pressed : null,
