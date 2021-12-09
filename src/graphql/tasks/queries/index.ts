@@ -1,1 +1,1 @@
-export * from './scopedTasks';
+export * from './tasks';

@@ -1,11 +1,7 @@
 import { ApolloError, useQuery } from '@apollo/client';
 import moment from 'moment';
 import { useState } from 'react';
-import {
-  ScopedTasksQuery,
-  ScopedTasksRes,
-  ScopedTasksArgs,
-} from '../../../../graphql/queries';
+import { TasksQuery, TasksRes, TasksArgs } from '../../../../graphql/queries';
 import {
   GroupSummaryWithName,
   TasksDataWithMarginAndWidth,
@@ -43,25 +39,22 @@ interface UseDashboardDataReturn {
  */
 const useDashboardData = (): UseDashboardDataReturn => {
   const [tasks, setTasks] = useState<TasksDataWithMarginAndWidth | undefined>();
-  const { loading, error } = useQuery<ScopedTasksRes, ScopedTasksArgs>(
-    ScopedTasksQuery,
-    {
-      variables: {
-        scope: 10,
-      },
-      fetchPolicy: 'cache-and-network',
-      nextFetchPolicy: 'cache-first',
-      onCompleted: (res) => {
-        // build the data structure to display in app
-        const tasksData = buildTasksDataStructure(res);
-        setTasks(tasksData);
-      },
+  const { loading, error } = useQuery<TasksRes, TasksArgs>(TasksQuery, {
+    variables: {
+      scope: 10,
+    },
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
+    onCompleted: (res) => {
+      // build the data structure to display in app
+      const tasksData = buildTasksDataStructure(res);
+      setTasks(tasksData);
+    },
 
-      onError: (err) => {
-        console.error(err);
-      },
-    }
-  );
+    onError: (err) => {
+      console.error(err);
+    },
+  });
 
   // convert start and end date to display to unix for indexing task data structure
   const startDateUnix = moment().subtract(6, 'days').format('x');

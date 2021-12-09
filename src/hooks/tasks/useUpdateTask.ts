@@ -117,7 +117,7 @@ const useUpdateTask = (task: StateType, taskId: string) => {
     UpdateTaskMutationArgs
   >(UpdateTaskMutation, {
     onError: (err) => console.error(err),
-    refetchQueries: ['scopedTasks'],
+    refetchQueries: ['tasks'],
   });
 
   const [updateTasksColourAndGroup] = useMutation<
@@ -125,7 +125,7 @@ const useUpdateTask = (task: StateType, taskId: string) => {
     UpdateTasksColourAndGroupArgs
   >(UpdateTasksColourAndGroupMutation, {
     onError: (err) => console.error(err),
-    refetchQueries: ['scopedTasks'],
+    refetchQueries: ['tasks'],
   });
 
   const actions = {

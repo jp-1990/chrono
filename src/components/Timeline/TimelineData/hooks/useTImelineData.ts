@@ -1,11 +1,7 @@
 import { ApolloError, useQuery } from '@apollo/client';
 import moment from 'moment';
 import { useState } from 'react';
-import {
-  ScopedTasksQuery,
-  ScopedTasksRes,
-  ScopedTasksArgs,
-} from '../../../../graphql/queries';
+import { TasksQuery, TasksRes, TasksArgs } from '../../../../graphql/queries';
 import {
   GroupSummaryWithName,
   TasksDataWithMarginAndWidth,
@@ -42,32 +38,44 @@ interface UseTimelineDataReturn {
  *
  * @description Queries API or cache for tasks, formats them ready for display and returns the result as an object with 'data' and 'summary' properties.
  */
-const useTimelineData = (scope = 30): UseTimelineDataReturn => {
+const useTimelineData = (
+  scope?: number,
+  startDate?: Date | undefined,
+  endDate?: Date | undefined
+): UseTimelineDataReturn => {
   const [tasks, setTasks] = useState<TasksDataWithMarginAndWidth | undefined>();
-  const { loading, error } = useQuery<ScopedTasksRes, ScopedTasksArgs>(
-    ScopedTasksQuery,
-    {
-      variables: {
-        scope: scope + 1,
-      },
-      fetchPolicy: 'cache-and-network',
-      nextFetchPolicy: 'cache-first',
-      onCompleted: (res) => {
-        // build the data structure to display in app
-        const tasksData = buildTasksDataStructure(res);
-        setTasks(tasksData);
-      },
 
-      onError: (err) => {
-        console.error(err);
-      },
-    }
-  );
+  const { loading, error } = useQuery<TasksRes, TasksArgs>(TasksQuery, {
+    variables: {
+      scope: scope ? scope + 1 : undefined,
+      startDate: startDate
+        ? moment(startDate).subtract(1, 'days').toISOString()
+        : undefined,
+      endDate: endDate
+        ? moment(endDate).add(1, 'days').toISOString()
+        : undefined,
+    },
+    fetchPolicy: 'cache-and-network',
+    onCompleted: (res) => {
+      // build the data structure to display in app
+      const tasksData = buildTasksDataStructure(res);
+      setTasks(tasksData);
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
+
+  const range = moment
+    .duration(moment(endDate).diff(moment(startDate)))
+    .asDays();
 
   // convert start and end date to display to unix for indexing task data structure
-  const startDateUnix = moment().subtract(scope, 'days').format('x');
+  const startDateUnix = moment(endDate)
+    .subtract(range || scope, 'days')
+    .format('x');
   const startDateToDisplay = convertDateToMidnightUnixString(startDateUnix);
-  const endDateUnix = moment().add(1, 'days').format('x');
+  const endDateUnix = moment(endDate).add(1, 'days').format('x');
   const endDateToDisplay = convertDateToMidnightUnixString(endDateUnix);
 
   // get a summary of the tasks by group

@@ -19,7 +19,7 @@ const useDeleteTask = () => {
       const id = data?.deleteTask.id;
       cache.modify({
         fields: {
-          scopedTasks: (existingTasks = []) => {
+          tasks: (existingTasks = []) => {
             return existingTasks.filter(
               (ref: CacheObjectRef) => ref.__ref !== `Task:${id}`
             );

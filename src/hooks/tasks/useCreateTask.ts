@@ -101,12 +101,12 @@ const useCreateTask = () => {
     CreateTaskMutationArgs
   >(CreateTaskMutation, {
     onError: (err) => console.error(err),
-    refetchQueries: ['scopedTasks'],
+    refetchQueries: ['tasks'],
     update: (cache, { data }) => {
       const createTask = data?.createTask;
       cache.modify({
         fields: {
-          scopedTasks: (existingTasks = []) => {
+          tasks: (existingTasks = []) => {
             const newTaskRef = cache.writeFragment({
               data: createTask,
               fragment: gql`
