@@ -4,48 +4,36 @@ import { StyleSheet, View } from 'react-native';
 import { VictoryPie } from 'victory-native';
 import Svg from 'react-native-svg';
 
-import { ActivityTypes } from '../../../types';
 import { colors } from '../../../styles';
+import { GroupSummaryWithName } from '../../../types';
+
+const handleSelectActivity = (
+  activities: GroupSummaryWithName[],
+  target: string,
+  setSelectedGroup: (group: GroupSummaryWithName) => void
+) => {
+  const output = activities.find((el) => el.group === target) || null;
+  if (output) setSelectedGroup(output);
+};
 
 interface Props {
-  activities: ActivityTypes['activity'][];
+  activities: GroupSummaryWithName[];
+  setSelectedGroup: (group: GroupSummaryWithName) => void;
 }
-
-const VictoryPieChart: React.FC<Props> = ({ activities }) => {
-  ////////////////////////////////////////////////
-
-  // TASKS:
-  // export functions to allow unit testing?
-  // refactor and tidy up to allow true data input
-
-  ////////////////////////////////////////////////
-
-  if (activities.length < 8) {
-    // sort items to make bigger segments display on the left
-    activities.sort((a, b) => {
-      return a.total - b.total;
-    });
-    // testing add unused time
-    activities.unshift({
-      color: '#f1f1f1',
-      title: 'Unused',
-      total: 30,
-    });
-  }
-
-  let total = 0;
-  for (let i = 0, j = activities.length; i < j; i++) {
-    total += activities[i].total;
-  }
+const VictoryPieChart: React.FC<Props> = ({ activities, setSelectedGroup }) => {
+  const total = activities.reduce((total, current) => {
+    return total + current.totalTime;
+  }, 0);
   const data = [];
   const colorScale = [];
   for (let i = 0, j = activities.length; i < j; i++) {
     data.push({
       x:
-        activities[i].title === 'Unused'
+        activities[i].group === 'Unused'
           ? ' '
-          : `${Math.floor((activities[i].total / total) * 100)}%`,
-      y: activities[i].total,
+          : `${Math.floor((activities[i].totalTime / total) * 100)}%`,
+      y: activities[i].totalTime,
+      group: activities[i].group,
     });
     colorScale.push(activities[i].color);
   }
@@ -57,7 +45,6 @@ const VictoryPieChart: React.FC<Props> = ({ activities }) => {
           standalone={false}
           height={300}
           width={300}
-          // @ts-expect-error VictoryPie types
           colorScale={colorScale}
           data={data}
           labelRadius={120}
@@ -88,9 +75,11 @@ const VictoryPieChart: React.FC<Props> = ({ activities }) => {
                     {
                       target: 'data',
                       mutation: (props) => {
-                        // Selected data
-                        // @ts-expect-error VictoryPie internal types
-                        alert(props.style.fill);
+                        handleSelectActivity(
+                          activities,
+                          props.slice.data.group,
+                          setSelectedGroup
+                        );
                       },
                     },
                   ];

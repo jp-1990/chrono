@@ -53,6 +53,7 @@ const addToGroupsSummary = (args: {
       totalTime: taskTotalTime,
       totalAsPercentage: taskTotalAsPercentage,
       averagePerWeek: taskAveragePerWeek,
+      color,
     },
   };
 

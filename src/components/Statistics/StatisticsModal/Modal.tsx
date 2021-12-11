@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import {
-  NewActivity,
-  UpdateActivity,
-  Modal as ModalLayout,
-} from '../../Common';
+import { NewActivity, Modal as ModalLayout } from '../../Common';
 import { useModalContext } from '../../../Providers';
+import { default as Statistics } from './Content';
 
 interface ModalContentSizeType {
   height: number;
@@ -39,11 +36,11 @@ const Modal: React.FC = () => {
             closeModal={actions.closeModal}
           />
         )}
-        {state.modalActive === 'UPDATE' && (
-          <UpdateActivity
-            modalActive={state.modalActive === 'UPDATE'}
+        {state.modalActive === 'STATISTICS' && (
+          <Statistics
+            modalActive={state.modalActive === 'STATISTICS'}
             closeModal={actions.closeModal}
-            selectedTask={state.selectedTask}
+            selectedGroup={state.selectedGroup}
           />
         )}
       </View>
@@ -57,5 +54,21 @@ export default Modal;
 const styles = StyleSheet.create({
   modalContentPadding: {
     height: '100%',
+  },
+  scrollZindex: {
+    position: 'relative',
+    zIndex: -100,
+  },
+  container: {
+    paddingHorizontal: 12,
+    paddingTop: 24,
+    paddingBottom: 36,
+  },
+  titleContainer: {
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  spacer: {
+    marginBottom: 19,
   },
 });

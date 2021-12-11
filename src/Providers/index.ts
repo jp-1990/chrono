@@ -1,5 +1,2 @@
 export * from './ApolloProvider';
-export {
-  useCreateUpdateModalContext,
-  CreateUpdateModalProvider,
-} from './CreateUpdateModalProvider';
+export { useModalContext, ModalProvider } from './ModalProvider';

@@ -15,7 +15,7 @@ import {
   SignUp,
   Dashboard,
   Timeline,
-  MainStatistics,
+  Statistics,
   Reports,
   Loading,
 } from '../Screens';
@@ -55,6 +55,7 @@ const AppTabs = () => {
   return (
     <Tab.Navigator
       initialRouteName="Dashboard"
+      backBehavior="history"
       screenOptions={{
         headerShown: false,
         tabBarStyle: { display: 'none' },
@@ -62,8 +63,8 @@ const AppTabs = () => {
     >
       <Tab.Screen name="Dashboard" component={Dashboard} />
       <Tab.Screen name="Timeline" component={Timeline} />
-      <Tab.Screen name="Statistics" component={Reports} />
-      <Tab.Screen name="Profile" component={MainStatistics} />
+      <Tab.Screen name="Statistics" component={Statistics} />
+      <Tab.Screen name="Profile" component={Reports} />
     </Tab.Navigator>
   );
 };

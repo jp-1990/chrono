@@ -4,15 +4,14 @@ import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import moment from 'moment';
 
-import { Text } from '../Text';
-import ColorPicker from '../ColorPicker/ColorPicker';
-import MainButton from '../MainButton/MainButton';
+import { Text } from '../../Text';
+import ColorPicker from '../../ColorPicker/ColorPicker';
+import MainButton from '../../MainButton/MainButton';
 
-import { useDeleteTask, useUpdateTask, UpdateVariables } from '../../../hooks';
+import { useCreateTask, CreateVariables } from '../../../../hooks';
 
-import { base, colors } from '../../../styles';
-import { buildDateTime, calcLuminance } from '../../../utils';
-import { TaskDataWithMarginAndWidth } from '../../../types';
+import { base, colors } from '../../../../styles';
+import { buildDateTime } from '../../../../utils';
 const { defaultInput } = base;
 
 const targetTypes = ['startDate', 'startTime', 'endDate', 'endTime'] as const;
@@ -31,25 +30,9 @@ interface DateTimePickerTypes {
 interface Props {
   closeModal(): void;
   modalActive: boolean;
-  selectedTask: TaskDataWithMarginAndWidth | null;
 }
-const UpdateActivity: React.FC<Props> = ({
-  modalActive,
-  closeModal,
-  selectedTask,
-}) => {
-  const task = {
-    title: selectedTask?.title || '',
-    activity: selectedTask?.group || '',
-    notes: selectedTask?.description || '',
-    startDate: new Date(selectedTask?.start || Date.now()),
-    startTime: new Date(selectedTask?.start || Date.now()),
-    endDate: new Date(selectedTask?.end || Date.now()),
-    endTime: new Date(selectedTask?.end || Date.now()),
-    color: selectedTask?.color || 'rgba(126, 126, 126, 1)',
-  };
-  const { state, actions } = useUpdateTask(task, selectedTask?.id || '');
-  const { deleteTask } = useDeleteTask();
+const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
+  const { state, actions } = useCreateTask();
 
   const activityRef = useRef<TextInput>(null);
   const notesRef = useRef<TextInput>(null);
@@ -76,29 +59,20 @@ const UpdateActivity: React.FC<Props> = ({
     const validationErrorFields = actions.validate(state).map(({ key }) => key);
     setValidationErrors(validationErrorFields);
     if (validationErrorFields.length > 0) return;
+
     const start = buildDateTime(state.startDate, state.startTime);
     const end = buildDateTime(state.endDate, state.endTime);
     if (!start || !end) return;
-    const variables: UpdateVariables = {
-      updateTask: {
-        id: selectedTask?.id || '',
-        title: state.title,
-        notes: state.notes,
-        start: `${start.valueOf()}`,
-        end: `${end.valueOf()}`,
-      },
-      updateColourAndGroup: {
-        title: state.title,
-        activity: state.activity,
-        colour: state.color,
-      },
+
+    const variables: CreateVariables = {
+      title: state.title,
+      activity: state.activity,
+      notes: state.notes,
+      colour: state.color,
+      start: `${start.valueOf()}`,
+      end: `${end.valueOf()}`,
     };
     await actions.submit(variables);
-    closeModal();
-  };
-
-  const handleDelete = async () => {
-    await deleteTask(selectedTask?.id);
     closeModal();
   };
 
@@ -121,7 +95,6 @@ const UpdateActivity: React.FC<Props> = ({
       'setStartDate' | 'setStartTime' | 'setEndDate' | 'setEndTime'
     >;
     actions[action](selectedDate);
-    setShow(false);
   };
 
   const showMode = (currentMode: DateTimePickerTypes['mode']) => {
@@ -194,7 +167,7 @@ const UpdateActivity: React.FC<Props> = ({
     <View style={styles.container}>
       <View style={styles.header}>
         <Text variant="h2" style={styles.headerText}>
-          Update Activity
+          New Activity
         </Text>
         <Text variant="sp">
           Statistics will group by &apos;Activity&apos;, and then by
@@ -268,12 +241,7 @@ const UpdateActivity: React.FC<Props> = ({
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
-              value={
-                (target.includes('start')
-                  ? buildDateTime(state.startDate, state.startTime)
-                  : buildDateTime(state.endDate, state.endTime)) ||
-                new Date(Date.now())
-              }
+              value={new Date(Date.now())}
               mode={mode}
               is24Hour={true}
               display="default"
@@ -289,24 +257,10 @@ const UpdateActivity: React.FC<Props> = ({
       />
       <View style={styles.buttonContainer}>
         <MainButton
-          label="Delete"
-          width="35%"
-          colorBG={colors.menuSecondary}
+          label="Create"
+          width="50%"
+          colorBG={colors.buttonPrimary}
           colorText={colors.buttonText}
-          ripple={colors.buttonPrimaryRipple}
-          marginTop={24}
-          onPress={handleDelete}
-        />
-        <View style={styles.spacer} />
-        <MainButton
-          label="Update"
-          width="35%"
-          colorBG={state.color}
-          colorText={
-            calcLuminance(state.color) < 0.5
-              ? colors.buttonText
-              : colors.textDark
-          }
           ripple={colors.buttonPrimaryRipple}
           marginTop={24}
           onPress={handleSubmit}
@@ -316,7 +270,7 @@ const UpdateActivity: React.FC<Props> = ({
   );
 };
 
-export default UpdateActivity;
+export default NewActivity;
 
 const styles = StyleSheet.create({
   container: {
@@ -360,13 +314,9 @@ const styles = StyleSheet.create({
     color: colors.headingSecondary,
   },
   buttonContainer: {
-    flexDirection: 'row',
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 0,
-  },
-  spacer: {
-    width: 15,
   },
 });

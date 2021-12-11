@@ -1,20 +1,35 @@
-import React from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Pressable, BackHandler } from 'react-native';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { StackNavProp, TabRouteProp } from '../../../Navigation';
-import { useCreateUpdateModalContext } from '../../../Providers';
-import { FAB } from '../FAB';
+import { useModalContext } from '../../../Providers';
 import { colors } from '../../../styles';
 
 const BottomNav: React.FC = () => {
-  const { actions } = useCreateUpdateModalContext();
+  const { actions } = useModalContext();
   // useNavigation hook works with react context in the background and provides the navigation object from the current screen
   const navigation = useNavigation<StackNavProp<'App'>>();
+  // useRoute provides route object from current screen
   const route = useRoute<TabRouteProp>();
 
-  // useRoute provides route object from current screen
+  useEffect(() => {
+    const handleHardwareBack = () => {
+      if (navigation.canGoBack()) {
+        navigation.goBack();
+        return true;
+      }
+      return false;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleHardwareBack
+    );
+    return () => {
+      backHandler.remove();
+    };
+  });
 
   return (
     <View style={styles.container}>
@@ -45,7 +60,9 @@ const BottomNav: React.FC = () => {
         />
       </Pressable>
       <View style={styles.fabContainer}>
-        <FAB onPress={actions.openCreateModal} />
+        <Pressable style={styles.fab} onPress={actions.openCreateModal}>
+          <Ionicons name="add" size={32} color="white" />
+        </Pressable>
       </View>
       <Pressable
         onPress={() => navigation.navigate('Statistics')}
@@ -70,7 +87,9 @@ const BottomNav: React.FC = () => {
         <Ionicons
           name="person"
           size={28}
-          color={route.name === 'Profile' ? 'white' : colors.accentPrimary}
+          color={
+            route.name === 'MainStatistics' ? 'white' : colors.accentPrimary
+          }
         />
       </Pressable>
     </View>
@@ -104,5 +123,18 @@ const styles = StyleSheet.create({
   },
   pressed: {
     backgroundColor: colors.buttonTextRipple,
+  },
+  fab: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: colors.buttonPrimary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#111',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 5,
   },
 });

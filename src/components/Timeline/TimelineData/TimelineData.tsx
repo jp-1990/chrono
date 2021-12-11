@@ -2,7 +2,7 @@ import moment from 'moment';
 import React from 'react';
 
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { DataChart, Title, ActivitiesKey } from '../../Common';
+import { DataChart, Title, ItemsKey } from '../../Common';
 import { useTimelineData } from './hooks';
 import { screenSize } from '../../../styles';
 
@@ -31,7 +31,7 @@ const TimelineData = () => {
             internalWidth={screenSize.width - 48}
           />
         </View>
-        <ActivitiesKey activities={summary.summary || []} />
+        <ItemsKey items={summary.summary || []} />
       </View>
     </ScrollView>
   );

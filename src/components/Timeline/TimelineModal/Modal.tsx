@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Modal as ModalLayout } from '../../Layouts';
-import { NewActivity, UpdateActivity } from '../../Common';
-import { useCreateUpdateModalContext } from '../../../Providers';
+import {
+  NewActivity,
+  UpdateActivity,
+  Modal as ModalLayout,
+} from '../../Common';
+import { useModalContext } from '../../../Providers';
 
 interface ModalContentSizeType {
   height: number;
@@ -13,7 +16,7 @@ interface ModalContentSizeType {
 const Modal: React.FC = () => {
   const [modalContentSize, setModalContentSize] =
     useState<ModalContentSizeType>({ height: 0, width: 0 });
-  const { state, actions } = useCreateUpdateModalContext();
+  const { state, actions } = useModalContext();
 
   return (
     <ModalLayout

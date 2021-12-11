@@ -1,11 +1,8 @@
-import { ApolloError, useQuery } from '@apollo/client';
-import moment from 'moment';
 import { useState } from 'react';
-import { TasksQuery, TasksRes, TasksArgs } from '../../../../graphql/queries';
-import {
-  GroupSummaryWithName,
-  TasksDataWithMarginAndWidth,
-} from '../../../../types';
+import moment from 'moment';
+import { TasksDataWithMarginAndWidth } from '../../../../types';
+import { useQuery } from '@apollo/client';
+import { TasksArgs, TasksQuery, TasksRes } from '../../../../graphql/queries';
 import {
   buildTasksDataStructure,
   convertDateToMidnightUnixString,
@@ -14,37 +11,25 @@ import {
   tasksSummary,
 } from '../../../../utils';
 
-interface UseTimelineDataReturn {
-  data: {
-    tasks: TasksDataWithMarginAndWidth | undefined;
-    loading: boolean;
-    error: ApolloError | undefined;
-    startDate: number;
-    endDate: number;
-  };
-  summary: {
-    summary: GroupSummaryWithName[] | undefined;
-    totalRecorded: {
-      hours: number;
-      minutes: number;
-    };
-    totalPossible: number;
-  };
-}
+const average = (taskTime: number, totalHours: number) =>
+  taskTime / (totalHours / 168);
+const percentage = (taskTime: number, totalHours: number) =>
+  (taskTime / totalHours) * 100;
 
-/**
- * @param {number} scope -
- * @returns {object} {@link UseTimelineDataReturn}
- *
- * @description Queries API or cache for tasks, formats them ready for display and returns the result as an object with 'data' and 'summary' properties.
- */
-const useTimelineData = (
-  scope?: number,
-  startDate?: Date | undefined,
-  endDate?: Date | undefined
-): UseTimelineDataReturn => {
+const initialQueryVariables: TasksArgs = {
+  scope: 30,
+  startDate: undefined,
+  endDate: undefined,
+  comparePrev: false,
+};
+
+const useStatisticsData = () => {
+  const [queryVariables, setQueryVariables] = useState<TasksArgs>(
+    initialQueryVariables
+  );
   const [tasks, setTasks] = useState<TasksDataWithMarginAndWidth | undefined>();
 
+  const { scope, startDate, endDate, comparePrev } = queryVariables;
   const { loading, error } = useQuery<TasksRes, TasksArgs>(TasksQuery, {
     variables: {
       scope: scope ? scope + 1 : undefined,
@@ -54,6 +39,7 @@ const useTimelineData = (
       endDate: endDate
         ? moment(endDate).add(1, 'days').toISOString()
         : undefined,
+      comparePrev,
     },
     fetchPolicy: 'cache-and-network',
     onCompleted: (res) => {
@@ -80,14 +66,13 @@ const useTimelineData = (
   const endDateToDisplay = convertDateToMidnightUnixString(endDateUnix);
 
   // get a summary of the tasks by group
-  const summary = tasksSummary(tasks, startDateToDisplay, endDateToDisplay);
+  const groups = tasksSummary(tasks, startDateToDisplay, endDateToDisplay);
 
   // calc total time of summarised tasks
-  const totalTime =
-    summary &&
-    [...summary].reduce((total, current) => {
-      return total + current.totalTime;
-    }, 0);
+  const groupsCopy = groups ? [...groups] : [];
+  const totalTime = groupsCopy.reduce((total, current) => {
+    return total + current.totalTime;
+  }, 0);
 
   // get total as hours and mins
   const totalRecorded = hoursToHoursAndMinutes(totalTime);
@@ -96,20 +81,30 @@ const useTimelineData = (
     moment(endDateToDisplay)
   );
 
+  groups?.sort((a, b) => a.totalTime - b.totalTime);
+  groups?.unshift({
+    color: '#f1f1f1',
+    group: 'Unused',
+    totalTime: totalPossible - totalTime,
+    totalAsPercentage: percentage(totalPossible, totalTime),
+    averagePerWeek: average(totalPossible, totalTime),
+    tasks: {},
+  });
+
   return {
-    data: {
-      tasks,
+    state: {
       loading,
       error,
+      groups,
+      totalRecorded,
+      totalPossible,
       startDate: startDateToDisplay,
       endDate: endDateToDisplay,
     },
-    summary: {
-      summary,
-      totalRecorded,
-      totalPossible,
+    actions: {
+      setQueryVariables,
     },
   };
 };
 
-export default useTimelineData;
+export default useStatisticsData;

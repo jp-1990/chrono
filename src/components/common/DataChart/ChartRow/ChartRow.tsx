@@ -4,14 +4,14 @@ import { View, StyleSheet } from 'react-native';
 import DataBar from './DataBar';
 
 import { TaskDataWithMarginAndWidth } from '../../../../types/data';
-import { useCreateUpdateModalContext } from '../../../../Providers';
+import { useModalContext } from '../../../../Providers';
 
 interface Props {
   data: TaskDataWithMarginAndWidth[] | undefined;
 }
 
 const ChartRow: React.FC<Props> = ({ data }) => {
-  const { actions } = useCreateUpdateModalContext();
+  const { actions } = useModalContext();
 
   // create array of databars to render in row
   const renderedBars = data?.map((el: TaskDataWithMarginAndWidth) => {

@@ -17,7 +17,7 @@ import {
   Comparison,
   VictoryPieChart,
 } from '../Components/Reports';
-import { CreateUpdateModalProvider } from '../Providers';
+import { ModalProvider } from '../Providers';
 
 import { base } from '../styles';
 const { screen } = base;
@@ -92,7 +92,7 @@ for (let i = 1; i <= 31; i++) {
 
 const Timeline = () => {
   return (
-    <CreateUpdateModalProvider>
+    <ModalProvider>
       <View style={screen}>
         <Header statusBar="light" />
         <ScrollView style={styles.scrollZindex} fadingEdgeLength={50}>
@@ -135,7 +135,7 @@ const Timeline = () => {
         </ScrollView>
         <BottomNav />
       </View>
-    </CreateUpdateModalProvider>
+    </ModalProvider>
   );
 };
 

@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { Title, DataChart } from '../../../Components/Common';
 import { TopActivities } from './TopActivities';
-import { TotalTime } from './TotalTime';
+import { TotalTime } from '../../Common/TotalTime';
 import { useDashboardData } from './hooks';
 
 import { screenSize } from '../../../styles';

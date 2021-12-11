@@ -10,7 +10,7 @@ export type BarChartTypes = {
 };
 
 export interface TaskAPIResponse {
-  __typename?: "Task";
+  __typename?: 'Task';
   id: string;
   title: string;
   group: string;
@@ -20,12 +20,12 @@ export interface TaskAPIResponse {
   end: string;
   createdAt: string;
   user: {
-    __typename?: "ReducedUser";
+    __typename?: 'ReducedUser';
     id: string;
     name: string;
   };
   percentageTimes: {
-    __typename?: "PercentageTimes";
+    __typename?: 'PercentageTimes';
     endPercentage: number;
     startPercentage: number;
   };
@@ -64,6 +64,7 @@ export type TaskSummary = {
   totalTime: number;
   totalAsPercentage: number;
   averagePerWeek: number;
+  color: string;
 };
 
 export type GroupSummary = TaskSummary & {

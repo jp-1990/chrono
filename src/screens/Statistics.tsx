@@ -1,25 +1,24 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { Header, BottomNav } from '../Components/Common';
-import { TimelineData, TimelineModal } from '../Components/Timeline';
+import { BottomNav, Header } from '../Components/Common';
+import { ModalProvider } from '../Providers';
+import { StatisticsData, StatisticsModal } from '../Components/Statistics';
 
 import { base } from '../styles/base';
-import { ModalProvider } from '../Providers';
-
 const { screen } = base;
 
-const Timeline = () => {
+const Statistics = () => {
   return (
     <View style={screen}>
       <Header statusBar="light" />
       <ModalProvider>
-        <TimelineData />
-        <TimelineModal />
+        <StatisticsData />
+        <StatisticsModal />
         <BottomNav />
       </ModalProvider>
     </View>
   );
 };
 
-export default Timeline;
+export default Statistics;
