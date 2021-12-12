@@ -69,11 +69,24 @@ const Modal: React.FC<Props> = ({
     if (active) {
       if (!modalActive) setModalActive(true);
       opacity.value = withTiming(1);
+
+      const shouldFillScreen =
+        contentSize.height > screenSize.height - autoCloseThreshold;
+
+      if (shouldFillScreen) {
+        contentHeight.value = withTiming(
+          screenSize.height - constants.statusBarHeight,
+          animationOptions
+        );
+        borderRadius.value = withTiming(0, animationOptions);
+        return;
+      }
       contentHeight.value = withTiming(
         contentSize.height + (contentSize.height > 0 ? 36 : 1),
         animationOptions
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, contentSize]);
 
   useEffect(() => {
@@ -82,21 +95,26 @@ const Modal: React.FC<Props> = ({
         handleBackgroundPressClose();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
   useEffect(() => {
     const onHardwareBack = () => {
-      handleBackgroundPressClose();
-      return true;
+      if (modalActive) {
+        handleBackgroundPressClose();
+        return true;
+      }
+      return false;
     };
     BackHandler.addEventListener('hardwareBackPress', onHardwareBack);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', onHardwareBack);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  });
 
   // variables
-  const autoCloseThreshold = 150;
+  const autoCloseThreshold = 140;
   const gestureModfier = 1.5;
   const animationOptions = {
     duration: 500,
@@ -142,7 +160,7 @@ const Modal: React.FC<Props> = ({
 
     const shouldClose = height - gestureY * gestureModfier < autoCloseThreshold;
     const shouldFillScreen =
-      height - gestureY * gestureModfier >
+      height - 36 - gestureY * gestureModfier >
       screenSize.height - autoCloseThreshold;
 
     if (shouldClose) {
@@ -168,7 +186,7 @@ const Modal: React.FC<Props> = ({
   };
 
   const gestureHandler = useAnimatedGestureHandler({
-    onStart: (_, ctx: { currentHeight: number }) => {
+    onStart: (event, ctx: { currentHeight: number }) => {
       ctx.currentHeight = contentHeight.value;
     },
     onActive: (event, ctx) => {

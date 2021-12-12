@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import Text from '../Text/Text';
-import { colors } from '../../../styles';
+import { colors, screenSize } from '../../../styles';
 
 interface Props {
   color: string;
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 3,
     alignItems: 'center',
+    maxWidth: screenSize.width / 2 - 16,
   },
   color: {
     width: 20,
@@ -55,9 +56,9 @@ const styles = StyleSheet.create({
   },
   title: {
     textTransform: 'capitalize',
-    width: 50,
     marginHorizontal: 10,
     color: colors.textPrimary,
+    maxWidth: 65,
   },
   total: {
     color: colors.headingPrimary,

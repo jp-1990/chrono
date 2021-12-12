@@ -20,7 +20,7 @@ const Modal: React.FC = () => {
       active={state.modalActive !== null}
       close={actions.closeModal}
       contentSize={modalContentSize}
-      accentColor={state.selectedTask?.color}
+      accentColor={state.selectedGroup?.color}
     >
       <View
         onLayout={(event) =>

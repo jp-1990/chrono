@@ -9,7 +9,7 @@ interface Props {
     hours: number;
     minutes: number;
   };
-  possible: number;
+  possible?: number;
   style?: ViewStyle;
 }
 
@@ -22,9 +22,11 @@ const TotalTime: React.FC<Props> = ({ recorded, possible, style }) => {
         [ {recorded.hours || '   '} hours{' '}
         {Math.round(recorded.minutes) || '   '} mins ] recorded
       </Text>
-      <Text variant="sp" style={styles.possible}>
-        of [ {possible || '   '} hours ] possible
-      </Text>
+      {possible ? (
+        <Text variant="sp" style={styles.possible}>
+          of [ {possible || '   '} hours ] possible
+        </Text>
+      ) : null}
     </View>
   );
 };

@@ -8,7 +8,7 @@ import { useModalContext } from '../../../Providers';
 import { colors } from '../../../styles';
 
 const BottomNav: React.FC = () => {
-  const { actions } = useModalContext();
+  const { actions, state } = useModalContext();
   // useNavigation hook works with react context in the background and provides the navigation object from the current screen
   const navigation = useNavigation<StackNavProp<'App'>>();
   // useRoute provides route object from current screen
@@ -16,7 +16,7 @@ const BottomNav: React.FC = () => {
 
   useEffect(() => {
     const handleHardwareBack = () => {
-      if (navigation.canGoBack()) {
+      if (navigation.canGoBack() && state.modalActive === null) {
         navigation.goBack();
         return true;
       }
@@ -87,9 +87,7 @@ const BottomNav: React.FC = () => {
         <Ionicons
           name="person"
           size={28}
-          color={
-            route.name === 'MainStatistics' ? 'white' : colors.accentPrimary
-          }
+          color={route.name === 'Profile' ? 'white' : colors.accentPrimary}
         />
       </Pressable>
     </View>
