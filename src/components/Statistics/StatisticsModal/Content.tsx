@@ -29,8 +29,8 @@ const Content: React.FC<Props> = ({ selectedGroup }) => {
       ...selectedGroup.tasks[key],
     });
     data.push({
-      x: `${Math.floor(
-        ((selectedGroup.tasks[key].totalTime || 1) / total) * 100
+      x: `${(((selectedGroup.tasks[key].totalTime || 1) / total) * 100).toFixed(
+        2
       )}%`,
       y: selectedGroup.tasks[key].totalTime || 1,
     });
@@ -46,19 +46,15 @@ const Content: React.FC<Props> = ({ selectedGroup }) => {
           <Text variant="sp">{selectedGroup?.dateRange}</Text>
         </View>
         <View style={styles.pieChartContainer}>
-          <Svg
-            width={300}
-            height={300}
-            style={{ width: '100%', height: 'auto' }}
-          >
+          <Svg width={330} height={300} style={styles.pieChart}>
             <VictoryPie
               standalone={false}
               height={300}
-              width={300}
+              width={330}
               colorScale={colorScale}
               data={data}
               labelRadius={120}
-              radius={110}
+              radius={105}
               padAngle={0}
               style={{
                 labels: {
@@ -113,5 +109,10 @@ const styles = StyleSheet.create({
   },
   spacer: {
     marginBottom: 19,
+  },
+  pieChart: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

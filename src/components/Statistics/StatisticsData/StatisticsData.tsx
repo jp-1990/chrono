@@ -40,7 +40,7 @@ const StatisticsData = () => {
       x:
         state.groups[i].group === 'Unused'
           ? ' '
-          : `${Math.floor((state.groups[i].totalTime / total) * 100)}%`,
+          : `${((state.groups[i].totalTime / total) * 100).toFixed(2)}%`,
       y: state.groups[i].totalTime,
       group: state.groups[i].group,
     });
@@ -60,18 +60,18 @@ const StatisticsData = () => {
         </View>
         <View style={styles.container}>
           <Svg
-            width={300}
+            width={330}
             height={300}
             style={{ width: '100%', height: 'auto' }}
           >
             <VictoryPie
               standalone={false}
               height={300}
-              width={300}
+              width={330}
               colorScale={colorScale}
               data={data}
               labelRadius={120}
-              radius={110}
+              radius={105}
               padAngle={1}
               innerRadius={({ datum }) => {
                 const percentage = (datum.y / total) * 100;
