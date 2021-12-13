@@ -9,8 +9,6 @@ import {
 import {
   buildTasksDataStructure,
   convertDateToMidnightUnixString,
-  durationInHours,
-  hoursToHoursAndMinutes,
   tasksSummary,
 } from '../../../../utils';
 
@@ -24,11 +22,6 @@ interface UseTimelineDataReturn {
   };
   summary: {
     summary: GroupSummaryWithName[] | undefined;
-    totalRecorded: {
-      hours: number;
-      minutes: number;
-    };
-    totalPossible: number;
   };
 }
 
@@ -39,20 +32,25 @@ interface UseTimelineDataReturn {
  * @description Queries API or cache for tasks, formats them ready for display and returns the result as an object with 'data' and 'summary' properties.
  */
 const useTimelineData = (
-  scope?: number,
-  startDate?: Date | undefined,
-  endDate?: Date | undefined
+  month: number,
+  year: number
 ): UseTimelineDataReturn => {
   const [tasks, setTasks] = useState<TasksDataWithMarginAndWidth | undefined>();
 
+  const startDate = moment({ year, month, date: 1 });
+  const endDate = moment({
+    year: month === 11 ? year + 1 : year,
+    month: month === 11 ? 0 : month + 1,
+    date: 1,
+  }).subtract(1, 'days');
+
   const { loading, error } = useQuery<TasksRes, TasksArgs>(TasksQuery, {
     variables: {
-      scope: scope ? scope + 1 : undefined,
       startDate: startDate
         ? moment(startDate).subtract(1, 'days').toISOString()
         : undefined,
       endDate: endDate
-        ? moment(endDate).add(1, 'days').toISOString()
+        ? moment(endDate).add(2, 'days').toISOString()
         : undefined,
     },
     fetchPolicy: 'cache-and-network',
@@ -66,35 +64,14 @@ const useTimelineData = (
     },
   });
 
-  const range =
-    startDate && endDate
-      ? moment.duration(moment(endDate).diff(moment(startDate))).asDays()
-      : undefined;
-
   // convert start and end date to display to unix for indexing task data structure
-  const startDateUnix = moment(endDate)
-    .subtract(range || (scope && scope - 1), 'days')
-    .format('x');
+  const startDateUnix = moment(startDate).format('x');
   const startDateToDisplay = convertDateToMidnightUnixString(startDateUnix);
   const endDateUnix = moment(endDate).add(1, 'days').format('x');
   const endDateToDisplay = convertDateToMidnightUnixString(endDateUnix);
 
   // get a summary of the tasks by group
   const summary = tasksSummary(tasks, startDateToDisplay, endDateToDisplay);
-
-  // calc total time of summarised tasks
-  const totalTime =
-    summary &&
-    [...summary].reduce((total, current) => {
-      return total + current.totalTime;
-    }, 0);
-
-  // get total as hours and mins
-  const totalRecorded = hoursToHoursAndMinutes(totalTime);
-  const totalPossible = durationInHours(
-    moment(startDateToDisplay),
-    moment(endDateToDisplay)
-  );
 
   return {
     data: {
@@ -106,8 +83,6 @@ const useTimelineData = (
     },
     summary: {
       summary,
-      totalRecorded,
-      totalPossible,
     },
   };
 };

@@ -1,13 +1,58 @@
+import React, { useState } from 'react';
 import moment from 'moment';
-import React from 'react';
-
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+
 import { DataChart, Title, ItemsKey } from '../../Common';
 import { useTimelineData } from './hooks';
-import { screenSize } from '../../../styles';
+import { screenSize, colors, text } from '../../../styles';
+
+const currentYear = new Date(Date.now()).getFullYear();
+const years: JSX.Element[] = [];
+for (let i = 1990, j = currentYear; i < j + 1; i++) {
+  years.unshift(
+    <Picker.Item
+      key={i}
+      label={`${i}`}
+      value={i}
+      color={colors.textPrimary}
+      style={{ ...text.main }}
+    />
+  );
+}
+const currentMonth = new Date(Date.now()).getMonth();
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+const months: JSX.Element[] = [];
+monthNames.forEach((el, i) => {
+  months.push(
+    <Picker.Item
+      key={el}
+      label={el}
+      value={i}
+      color={colors.textPrimary}
+      style={{ ...text.main }}
+    />
+  );
+});
 
 const TimelineData = () => {
-  const { data, summary } = useTimelineData(30);
+  const [month, setMonth] = useState<number>(currentMonth);
+  const [year, setYear] = useState<number>(currentYear);
+
+  const { data, summary } = useTimelineData(month, year);
 
   return (
     <ScrollView style={styles.scrollZindex}>
@@ -21,6 +66,26 @@ const TimelineData = () => {
               .subtract(1, 'days')
               .format('MMM Do')}`}
           />
+        </View>
+        <View style={styles.monthYearPickerContainer}>
+          <Picker
+            style={[styles.pickerStyle]}
+            selectedValue={month}
+            onValueChange={(value) => {
+              setMonth(value);
+            }}
+          >
+            {months}
+          </Picker>
+          <Picker
+            style={[styles.pickerStyle]}
+            selectedValue={year}
+            onValueChange={(value) => {
+              setYear(value);
+            }}
+          >
+            {years}
+          </Picker>
         </View>
         <View>
           <DataChart
@@ -51,11 +116,18 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     alignItems: 'center',
-    marginBottom: 6,
+    marginBottom: 8,
+  },
+  monthYearPickerContainer: {
+    alignItems: 'flex-end',
+  },
+  pickerStyle: {
+    width: 150,
+    marginVertical: 2,
   },
   dataChart: {
     width: screenSize.width - 24,
     marginBottom: 19,
-    marginTop: 12,
+    marginTop: 6,
   },
 });
