@@ -16,7 +16,7 @@ import {
   Dashboard,
   Timeline,
   Statistics,
-  Reports,
+  Profile,
   Loading,
 } from '../Screens';
 
@@ -64,7 +64,7 @@ const AppTabs = () => {
       <Tab.Screen name="Dashboard" component={Dashboard} />
       <Tab.Screen name="Timeline" component={Timeline} />
       <Tab.Screen name="Statistics" component={Statistics} />
-      <Tab.Screen name="Profile" component={Reports} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 };
