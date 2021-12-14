@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, Pressable, TextInput } from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import moment from 'moment';
 
 import { Text } from '../../Text';
-import ColorPicker from '../../ColorPicker/ColorPicker';
-import MainButton from '../../MainButton/MainButton';
+import { ColorPicker } from '../../ColorPicker';
+import { MainButton } from '../../MainButton';
+import { DateTimeInput } from '../../DateTimeInput';
 
 import { useCreateTask, CreateVariables } from '../../../../hooks';
 
@@ -85,8 +84,11 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
     actions.setActivity(activity);
   };
 
-  const onChange = (_: Event, selectedDate: Date | undefined) => {
-    if (!selectedDate) return;
+  const onDateTimeChange = (_: Event, selectedDate: Date | undefined) => {
+    if (!selectedDate) {
+      setShow(false);
+      return;
+    }
     setShow(false);
     const action = `set${target[0].toUpperCase()}${target.slice(
       1
@@ -97,70 +99,17 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
     actions[action](selectedDate);
   };
 
-  const showMode = (currentMode: DateTimePickerTypes['mode']) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = (target: DateTimePickerTypes['target']) => {
-    setTarget(target);
-    showMode('date');
-  };
-
-  const showTimepicker = (target: DateTimePickerTypes['target']) => {
-    setTarget(target);
-    showMode('time');
-  };
-
-  interface DateTimeInputProps {
-    label: DateTimePickerTypes['target'];
-    icon: keyof typeof MaterialCommunityIcons.glyphMap;
-    placeholder: string;
-  }
-  const DateTimeInput: React.FC<DateTimeInputProps> = ({
-    label,
-    icon,
-    placeholder,
-  }) => {
-    const onPress = () => {
-      setValidationErrors((prev) => prev.filter((el) => el !== label));
-      if (label.includes('Date')) showDatepicker(label);
-      if (label.includes('Time')) showTimepicker(label);
-    };
-
-    let text;
-    if (state[label]) {
-      if (label.includes('Date'))
-        text = moment(state[label]).format('DD/MM/YYYY');
-      if (label.includes('Time')) text = moment(state[label]).format('HH:mm');
+  const showPicker = (label: DateTimePickerTypes['target']) => {
+    if (label.includes('Date')) {
+      setTarget(label);
+      setMode('date');
+      setShow(true);
     }
-
-    return (
-      <Pressable onPress={onPress}>
-        <View
-          style={[
-            defaultInput,
-            styles.dateTime,
-            validationErrors.includes(label) ? styles.inputError : null,
-          ]}
-        >
-          {state[label] ? (
-            <Text variant="sp" style={styles.dateTimeText}>
-              {text}
-            </Text>
-          ) : (
-            <Text variant="sp" style={styles.placeholder}>
-              {placeholder}
-            </Text>
-          )}
-          <MaterialCommunityIcons
-            name={icon}
-            size={20}
-            color={colors.headingPrimary}
-          />
-        </View>
-      </Pressable>
-    );
+    if (label.includes('Time')) {
+      setTarget(label);
+      setMode('time');
+      setShow(true);
+    }
   };
 
   return (
@@ -219,11 +168,19 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
               label="startDate"
               icon="calendar-range"
               placeholder="Start date"
+              showPicker={showPicker}
+              currentValue={state.startDate}
+              validationErrors={validationErrors}
+              setValidationErrors={setValidationErrors}
             />
             <DateTimeInput
               label="endDate"
               icon="calendar-range"
               placeholder="End date"
+              showPicker={showPicker}
+              currentValue={state.endDate}
+              validationErrors={validationErrors}
+              setValidationErrors={setValidationErrors}
             />
           </View>
           <View>
@@ -231,11 +188,19 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
               label="startTime"
               icon="timer-outline"
               placeholder="Start time"
+              showPicker={showPicker}
+              currentValue={state.startTime}
+              validationErrors={validationErrors}
+              setValidationErrors={setValidationErrors}
             />
             <DateTimeInput
               label="endTime"
               icon="timer-off-outline"
               placeholder="End time"
+              showPicker={showPicker}
+              currentValue={state.endTime}
+              validationErrors={validationErrors}
+              setValidationErrors={setValidationErrors}
             />
           </View>
           {show && (
@@ -245,7 +210,7 @@ const NewActivity: React.FC<Props> = ({ modalActive, closeModal }) => {
               mode={mode}
               is24Hour={true}
               display="default"
-              onChange={onChange}
+              onChange={onDateTimeChange}
             />
           )}
         </View>
