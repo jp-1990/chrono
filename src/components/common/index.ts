@@ -2,6 +2,7 @@ export * from './ActivityTotal';
 export * from './BottomNav';
 export * from './ColorPicker';
 export * from './DataChart';
+export * from './DateTimeInput';
 export * from './FormInputs';
 export * from './Header';
 export * from './ItemsKey';
