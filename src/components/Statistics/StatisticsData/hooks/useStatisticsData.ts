@@ -24,14 +24,14 @@ const initialQueryVariables: TasksArgs = {
     month: now.getMonth(),
     date: now.getDate(),
   })
-    .subtract(10, 'days')
+    .subtract(6, 'days')
     .toISOString(),
   endDate: moment({
     year: now.getFullYear(),
     month: now.getMonth(),
     date: now.getDate(),
   }).toISOString(),
-  comparePrev: false,
+  comparePrev: true,
 };
 
 const useStatisticsData = () => {
@@ -50,7 +50,7 @@ const useStatisticsData = () => {
         ? moment(startDate).subtract(1, 'days').toISOString()
         : undefined,
       endDate: endDate
-        ? moment(endDate).add(1, 'days').toISOString()
+        ? moment(endDate).add(2, 'days').toISOString()
         : undefined,
       comparePrev,
     },
@@ -71,17 +71,36 @@ const useStatisticsData = () => {
       : undefined;
 
   // convert start and end date to display to unix for indexing task data structure
-  const startDateUnix = moment(endDate).subtract(range, 'days').format('x');
+  const startDateUnix = moment(startDate).format('x');
   const startDateToDisplay = convertDateToMidnightUnixString(startDateUnix);
   const endDateUnix = moment(endDate).add(1, 'days').format('x');
   const endDateToDisplay = convertDateToMidnightUnixString(endDateUnix);
 
+  // dates for prev N days
+  const prevStartDateUnix = moment(startDate)
+    .subtract((range || 0) + 1, 'days')
+    .format('x');
+  const prevStartDateToDisplay =
+    convertDateToMidnightUnixString(prevStartDateUnix);
+  const prevEndDateUnix = moment(startDate).format('x');
+  const prevEndDateToDisplay = convertDateToMidnightUnixString(prevEndDateUnix);
+
   // get a summary of the tasks by group
   const groups = tasksSummary(tasks, startDateToDisplay, endDateToDisplay);
+  const prevGroups = tasksSummary(
+    tasks,
+    prevStartDateToDisplay,
+    prevEndDateToDisplay
+  );
 
   // calc total time of summarised tasks
   const groupsCopy = groups ? [...groups] : [];
   const totalTime = groupsCopy.reduce((total, current) => {
+    return total + current.totalTime;
+  }, 0);
+  // calc total time of summarised tasks
+  const prevGroupsCopy = prevGroups ? [...prevGroups] : [];
+  const prevTotalTime = prevGroupsCopy.reduce((total, current) => {
     return total + current.totalTime;
   }, 0);
 
@@ -95,10 +114,20 @@ const useStatisticsData = () => {
   groups?.sort((a, b) => a.totalTime - b.totalTime);
   groups?.unshift({
     color: '#f1f1f1',
-    group: 'Unused',
+    group: 'unused',
     totalTime: totalPossible - totalTime,
-    totalAsPercentage: percentage(totalPossible, totalTime),
-    averagePerWeek: average(totalPossible, totalTime),
+    totalAsPercentage: percentage(totalPossible - totalTime, totalPossible),
+    averagePerWeek: average(totalPossible - totalTime, totalPossible),
+    tasks: {},
+  });
+
+  prevGroups?.sort((a, b) => a.totalTime - b.totalTime);
+  prevGroups?.unshift({
+    color: '#f1f1f1',
+    group: 'unused',
+    totalTime: totalPossible - prevTotalTime,
+    totalAsPercentage: percentage(totalPossible - prevTotalTime, totalPossible),
+    averagePerWeek: average(totalPossible - prevTotalTime, totalPossible),
     tasks: {},
   });
 
@@ -129,6 +158,8 @@ const useStatisticsData = () => {
       loading,
       error,
       groups,
+      prevGroups,
+      range,
       totalRecorded,
       totalPossible,
       queryVariables,

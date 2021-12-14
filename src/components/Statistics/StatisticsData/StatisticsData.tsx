@@ -6,7 +6,14 @@ import Svg from 'react-native-svg';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 
-import { ItemsKey, Title, TotalTime, DateTimeInput, Text } from '../../Common';
+import {
+  ItemsKey,
+  Title,
+  TotalTime,
+  DateTimeInput,
+  Text,
+  Comparison,
+} from '../../Common';
 
 import { useStatisticsData } from './hooks';
 import { useModalContext } from '../../../Providers';
@@ -162,6 +169,12 @@ const StatisticsData = () => {
           </Svg>
         </View>
         <ItemsKey items={state.groups || []} />
+        <View style={styles.spacer} />
+        <Comparison
+          range={state.range ? state.range + 1 : 0}
+          groups={state.groups || []}
+          prevGroups={state.prevGroups || []}
+        />
         <View style={styles.spacer} />
         <TotalTime
           recorded={state.totalRecorded}
