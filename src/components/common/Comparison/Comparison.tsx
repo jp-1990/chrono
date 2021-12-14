@@ -114,7 +114,9 @@ const Comparison: React.FC<Props> = ({ groups, prevGroups, range }) => {
     <>
       <Text variant="h3">{'COMPARISON'}</Text>
       <Text style={styles.heading} variant="sp">
-        {`Compared to previous ${range > 1 ? `${range} days` : `day`}`}
+        {`Compared to previous ${
+          range > 1 ? `${range.toFixed()} days` : `day`
+        }`}
       </Text>
       <View style={styles.container}>
         <View>{percentageChanges}</View>

@@ -38,7 +38,10 @@ const Content: React.FC<Props> = ({ selectedGroup }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollZindex}>
+      <ScrollView
+        style={styles.scrollZindex}
+        contentContainerStyle={styles.scrollViewContentContainer}
+      >
         <View style={styles.header}>
           <Text variant="h2" style={styles.headerText} ellipsizeMode="tail">
             {selectedGroup?.group}
@@ -69,7 +72,7 @@ const Content: React.FC<Props> = ({ selectedGroup }) => {
         </View>
 
         <ItemsKey items={tasks || []} />
-        {/* <View style={styles.spacer} /> */}
+        <View style={styles.spacer} />
         {/* <Comparison activities={groups || []} /> */}
         <View style={styles.spacer} />
         <TotalTime
@@ -86,11 +89,13 @@ const styles = StyleSheet.create({
   container: {
     height: screenSize.height - 36 - constants.statusBarHeight,
     paddingHorizontal: 12,
-    paddingBottom: 36,
   },
   scrollZindex: {
     position: 'relative',
     zIndex: -100,
+  },
+  scrollViewContentContainer: {
+    paddingBottom: 19,
   },
   header: {
     position: 'relative',

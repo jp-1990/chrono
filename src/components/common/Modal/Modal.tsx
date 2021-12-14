@@ -220,7 +220,10 @@ const Modal: React.FC<Props> = ({
           ]}
         ></Animated.View>
       </Pressable>
-      <PanGestureHandler onGestureEvent={gestureHandler}>
+      <PanGestureHandler
+        onGestureEvent={gestureHandler}
+        activeOffsetX={[-10, 10]}
+      >
         <Animated.View style={[animatedContentHeight, styles.container]}>
           <Animated.View style={[animatedBorderRadius, styles.headerContainer]}>
             <View style={styles.whiteBar}></View>
