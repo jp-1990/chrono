@@ -28,8 +28,8 @@ interface DateTimeInputProps {
   placeholder: string;
   currentValue: Date | undefined;
   showPicker: (label: DateTimePickerTypes['target']) => void;
-  validationErrors: string[];
-  setValidationErrors: React.Dispatch<React.SetStateAction<string[]>>;
+  validationErrors?: string[];
+  setValidationErrors?: React.Dispatch<React.SetStateAction<string[]>>;
 }
 const DateTimeInput: React.FC<DateTimeInputProps> = ({
   label,
@@ -41,7 +41,9 @@ const DateTimeInput: React.FC<DateTimeInputProps> = ({
   setValidationErrors,
 }) => {
   const onPress = () => {
-    setValidationErrors((prev) => prev.filter((el) => el !== label));
+    if (setValidationErrors) {
+      setValidationErrors((prev) => prev.filter((el) => el !== label));
+    }
     showPicker(label);
   };
 
@@ -58,7 +60,7 @@ const DateTimeInput: React.FC<DateTimeInputProps> = ({
         style={[
           defaultInput,
           styles.dateTime,
-          validationErrors.includes(label) ? styles.inputError : null,
+          validationErrors?.includes(label) ? styles.inputError : null,
         ]}
       >
         {currentValue ? (

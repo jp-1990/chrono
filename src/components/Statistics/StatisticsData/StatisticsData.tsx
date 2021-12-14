@@ -1,16 +1,17 @@
 /* eslint-disable react/prop-types */
-import moment from 'moment';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { VictoryPie } from 'victory-native';
+import Svg from 'react-native-svg';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 
-import { ItemsKey, Title, TotalTime } from '../../Common';
+import { ItemsKey, Title, TotalTime, DateTimeInput, Text } from '../../Common';
 
 import { useStatisticsData } from './hooks';
 import { useModalContext } from '../../../Providers';
-import { VictoryPie } from 'victory-native';
-import Svg from 'react-native-svg';
-import { colors } from '../../../styles';
 import { GroupSummaryWithName } from '../../../types';
+import { colors } from '../../../styles';
 
 const handleSelectGroup = (
   groups: GroupSummaryWithName[],
@@ -25,7 +26,7 @@ const handleSelectGroup = (
 };
 
 const StatisticsData = () => {
-  const { state } = useStatisticsData();
+  const { state, actions } = useStatisticsData();
   const { actions: modalActions } = useModalContext();
 
   const total =
@@ -52,13 +53,59 @@ const StatisticsData = () => {
   )
     .subtract(1, 'days')
     .format('MMM Do')}`;
+
   return (
     <ScrollView style={styles.scrollZindex}>
       <View style={styles.container}>
         <View style={styles.titleContainer}>
           <Title title="statistics" subtitle={dateRange} />
         </View>
-        <View style={styles.container}>
+        <View style={styles.dateTimeContainer}>
+          <View>
+            <DateTimeInput
+              label="startDate"
+              icon="calendar-range"
+              placeholder="Start date"
+              showPicker={actions.showPicker}
+              currentValue={new Date(state.queryVariables.startDate || '')}
+            />
+          </View>
+          <Text variant="sp">{`  to  `}</Text>
+          <View>
+            <DateTimeInput
+              label="endDate"
+              icon="calendar-range"
+              placeholder="End date"
+              showPicker={actions.showPicker}
+              currentValue={new Date(state.queryVariables.endDate || '')}
+            />
+          </View>
+          {state.pickerVisible && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={
+                state.pickerTarget === 'startDate'
+                  ? new Date(state.queryVariables.startDate || '')
+                  : new Date(state.queryVariables.endDate || '')
+              }
+              mode={'date'}
+              is24Hour={true}
+              display="default"
+              onChange={actions.onDateTimeChange}
+              minimumDate={
+                state.pickerTarget === 'endDate'
+                  ? new Date(state.queryVariables.startDate || '')
+                  : undefined
+              }
+              maximumDate={
+                state.pickerTarget === 'startDate'
+                  ? new Date(state.queryVariables.endDate || '')
+                  : undefined
+              }
+            />
+          )}
+        </View>
+        <View style={styles.pieChartContainer}>
           <Svg
             width={330}
             height={300}
@@ -139,7 +186,16 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     alignItems: 'center',
-    marginBottom: 6,
+    marginBottom: 12,
+  },
+  dateTimeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pieChartContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   spacer: {
     marginBottom: 19,

@@ -114,7 +114,7 @@ const UpdateActivity: React.FC<Props> = ({
     actions.setActivity(activity);
   };
 
-  const onChange = (_: Event, selectedDate: Date | undefined) => {
+  const onDateTimeChange = (_: Event, selectedDate: Date | undefined) => {
     if (!selectedDate) {
       setShow(false);
       return;
@@ -245,7 +245,7 @@ const UpdateActivity: React.FC<Props> = ({
               mode={mode}
               is24Hour={true}
               display="default"
-              onChange={onChange}
+              onChange={onDateTimeChange}
             />
           )}
         </View>

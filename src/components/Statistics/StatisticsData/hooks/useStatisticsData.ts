@@ -10,16 +10,27 @@ import {
   hoursToHoursAndMinutes,
   tasksSummary,
 } from '../../../../utils';
+import { DateTimePickerTypes } from '../../../Common';
 
 const average = (taskTime: number, totalHours: number) =>
   taskTime / (totalHours / 168);
 const percentage = (taskTime: number, totalHours: number) =>
   (taskTime / totalHours) * 100;
 
+const now = new Date(Date.now());
 const initialQueryVariables: TasksArgs = {
-  scope: 30,
-  startDate: undefined,
-  endDate: undefined,
+  startDate: moment({
+    year: now.getFullYear(),
+    month: now.getMonth(),
+    date: now.getDate(),
+  })
+    .subtract(10, 'days')
+    .toISOString(),
+  endDate: moment({
+    year: now.getFullYear(),
+    month: now.getMonth(),
+    date: now.getDate(),
+  }).toISOString(),
   comparePrev: false,
 };
 
@@ -28,11 +39,13 @@ const useStatisticsData = () => {
     initialQueryVariables
   );
   const [tasks, setTasks] = useState<TasksDataWithMarginAndWidth | undefined>();
+  const [show, setShow] = useState(false);
+  const [target, setTarget] =
+    useState<DateTimePickerTypes['target']>('startTime');
 
-  const { scope, startDate, endDate, comparePrev } = queryVariables;
+  const { startDate, endDate, comparePrev } = queryVariables;
   const { loading, error } = useQuery<TasksRes, TasksArgs>(TasksQuery, {
     variables: {
-      scope: scope ? scope + 1 : undefined,
       startDate: startDate
         ? moment(startDate).subtract(1, 'days').toISOString()
         : undefined,
@@ -58,9 +71,7 @@ const useStatisticsData = () => {
       : undefined;
 
   // convert start and end date to display to unix for indexing task data structure
-  const startDateUnix = moment(endDate)
-    .subtract(range || (scope && scope - 1), 'days')
-    .format('x');
+  const startDateUnix = moment(endDate).subtract(range, 'days').format('x');
   const startDateToDisplay = convertDateToMidnightUnixString(startDateUnix);
   const endDateUnix = moment(endDate).add(1, 'days').format('x');
   const endDateToDisplay = convertDateToMidnightUnixString(endDateUnix);
@@ -91,6 +102,28 @@ const useStatisticsData = () => {
     tasks: {},
   });
 
+  // dateTime picker handlers
+  const onDateTimeChange = (_: Event, selectedDate: Date | undefined) => {
+    if (!selectedDate) {
+      setShow(false);
+      return;
+    }
+    setShow(false);
+    setQueryVariables((prev) => {
+      return {
+        ...prev,
+        startDate:
+          target === 'startDate' ? selectedDate.toISOString() : prev.startDate,
+        endDate:
+          target === 'endDate' ? selectedDate.toISOString() : prev.endDate,
+      };
+    });
+  };
+  const showPicker = (label: DateTimePickerTypes['target']) => {
+    setTarget(label);
+    setShow(true);
+  };
+
   return {
     state: {
       loading,
@@ -98,11 +131,16 @@ const useStatisticsData = () => {
       groups,
       totalRecorded,
       totalPossible,
+      queryVariables,
       startDate: startDateToDisplay,
       endDate: endDateToDisplay,
+      pickerVisible: show,
+      pickerTarget: target,
     },
     actions: {
       setQueryVariables,
+      onDateTimeChange,
+      showPicker,
     },
   };
 };
