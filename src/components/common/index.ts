@@ -1,6 +1,7 @@
 export * from './ActivityTotal';
 export * from './BottomNav';
 export * from './ColorPicker';
+export * from './Comparison';
 export * from './DataChart';
 export * from './DateTimeInput';
 export * from './FormInputs';
@@ -8,7 +9,6 @@ export * from './Header';
 export * from './ItemsKey';
 export * from './MainButton';
 export * from './Modal';
-export * from './TasksKey';
 export * from './Text';
 export * from './TextButton';
 export * from './Title';
