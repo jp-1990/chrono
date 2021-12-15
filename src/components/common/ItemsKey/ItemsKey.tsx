@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 
 import { ActivityTotal } from '../ActivityTotal';
 import { hoursToHoursAndMinutes } from '../../../utils';
@@ -14,10 +14,11 @@ interface Items {
 }
 interface Props {
   items: Items[];
+  selectItem?: (target: string) => void;
   title?: string;
 }
 
-const ItemsKey: React.FC<Props> = ({ items, title }) => {
+const ItemsKey: React.FC<Props> = ({ items, title, selectItem }) => {
   const itemsCopy = [...items];
   // build arrays to be rendered
   const leftCol = [];
@@ -27,23 +28,29 @@ const ItemsKey: React.FC<Props> = ({ items, title }) => {
 
   for (let i = 0, j = itemsCopy.length || 0; i < j; i++) {
     const itemTitle = itemsCopy[i]?.group || itemsCopy[i]?.title || '';
+    const handleSelectItem =
+      itemsCopy[i]?.group && selectItem
+        ? () => selectItem(itemsCopy[i].group || '')
+        : () => null;
     if (i % 2 === 0)
       leftCol.push(
-        <ActivityTotal
-          key={i}
-          color={itemsCopy[i].color}
-          title={itemTitle}
-          total={hoursToHoursAndMinutes(itemsCopy[i].totalTime)}
-        />
+        <Pressable key={i} onPress={handleSelectItem}>
+          <ActivityTotal
+            color={itemsCopy[i].color}
+            title={itemTitle}
+            total={hoursToHoursAndMinutes(itemsCopy[i].totalTime)}
+          />
+        </Pressable>
       );
     if (i % 2 !== 0)
       rightCol.push(
-        <ActivityTotal
-          key={i}
-          color={itemsCopy[i].color}
-          title={itemTitle}
-          total={hoursToHoursAndMinutes(itemsCopy[i].totalTime)}
-        />
+        <Pressable key={i} onPress={handleSelectItem}>
+          <ActivityTotal
+            color={itemsCopy[i].color}
+            title={itemTitle}
+            total={hoursToHoursAndMinutes(itemsCopy[i].totalTime)}
+          />
+        </Pressable>
       );
   }
 
