@@ -73,11 +73,17 @@ const Comparison: React.FC<Props> = ({ groups, prevGroups, range }) => {
   if (groups.length >= prevGroups.length) {
     for (const group of groups) {
       const prevTotalTime =
-        prevGroups.find((el) => group.group === el.group)?.totalTime || 0;
+        Number(
+          prevGroups
+            .find((el) => group.group === el.group)
+            ?.totalTime?.toFixed(2)
+        ) || 0;
+      const currentTotalTime = Number(group.totalTime.toFixed(2));
       const percentage =
-        ((group.totalTime - prevTotalTime) /
+        ((currentTotalTime - prevTotalTime) /
           (prevTotalTime > 0 ? prevTotalTime : 1)) *
         100;
+
       percentageChanges.push(
         <View key={group.group} style={styles.percentageChangeRow}>
           <GroupPercentageChange
@@ -85,17 +91,22 @@ const Comparison: React.FC<Props> = ({ groups, prevGroups, range }) => {
             title={group.group}
             percentageChange={percentage}
           />
-          <GroupTimeChange timeChange={group.totalTime - prevTotalTime} />
+          <GroupTimeChange timeChange={currentTotalTime - prevTotalTime} />
         </View>
       );
     }
   } else {
     for (const prevGroup of prevGroups) {
-      const totalTime =
-        groups.find((el) => prevGroup.group === el.group)?.totalTime || 0;
+      const currentTotalTime =
+        Number(
+          groups
+            .find((el) => prevGroup.group === el.group)
+            ?.totalTime?.toFixed(2)
+        ) || 0;
+      const prevTotalTime = Number(prevGroup.totalTime.toFixed(2));
       const percentage =
-        ((totalTime - prevGroup.totalTime) /
-          (prevGroup.totalTime > 0 ? prevGroup.totalTime : 1)) *
+        ((currentTotalTime - prevTotalTime) /
+          (prevTotalTime > 0 ? prevTotalTime : 1)) *
         100;
       percentageChanges.push(
         <View key={prevGroup.group} style={styles.percentageChangeRow}>
@@ -104,7 +115,7 @@ const Comparison: React.FC<Props> = ({ groups, prevGroups, range }) => {
             title={prevGroup.group}
             percentageChange={percentage}
           />
-          <GroupTimeChange timeChange={totalTime - prevGroup.totalTime} />
+          <GroupTimeChange timeChange={currentTotalTime - prevTotalTime} />
         </View>
       );
     }
