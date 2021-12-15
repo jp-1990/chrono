@@ -5,34 +5,35 @@ import { VictoryPie } from 'victory-native';
 import constants from 'expo-constants';
 
 import { colors, screenSize } from '../../../styles';
-import { GroupSummaryWithName } from '../../../types';
-import { ItemsKey, Text, TotalTime } from '../../Common';
+import { ItemsKey, Text, TotalTime, Comparison } from '../../Common';
 import { hoursToHoursAndMinutes } from '../../../utils';
+import { SelectedGroupState } from '../../../Providers';
 
 interface Props {
   closeModal(): void;
   modalActive: boolean;
-  selectedGroup: (GroupSummaryWithName & { dateRange: string }) | null;
+  selectedGroup: SelectedGroupState | null;
 }
 const Content: React.FC<Props> = ({ selectedGroup }) => {
-  const total = selectedGroup?.totalTime || 1;
+  const total = selectedGroup?.group.totalTime || 1;
   const colorScale: string[] = [];
   const tasks = [];
   const data = [];
 
-  const keys = Object.keys(selectedGroup?.tasks || {});
+  const keys = Object.keys(selectedGroup?.group.tasks || {});
   for (const key of keys) {
-    if (!selectedGroup) break;
-    colorScale.push(selectedGroup.tasks[key].color || 'grey');
+    if (!selectedGroup?.group) break;
+    colorScale.push(selectedGroup.group.tasks[key].color || 'grey');
     tasks.push({
       title: key,
-      ...selectedGroup.tasks[key],
+      ...selectedGroup.group.tasks[key],
     });
     data.push({
-      x: `${(((selectedGroup.tasks[key].totalTime || 1) / total) * 100).toFixed(
-        2
-      )}%`,
-      y: selectedGroup.tasks[key].totalTime || 1,
+      x: `${(
+        ((selectedGroup.group.tasks[key].totalTime || 1) / total) *
+        100
+      ).toFixed(2)}%`,
+      y: selectedGroup.group.tasks[key].totalTime || 1,
     });
   }
 
@@ -44,10 +45,11 @@ const Content: React.FC<Props> = ({ selectedGroup }) => {
       >
         <View style={styles.header}>
           <Text variant="h2" style={styles.headerText} ellipsizeMode="tail">
-            {selectedGroup?.group}
+            {selectedGroup?.group.group}
           </Text>
-          <Text variant="sp">{selectedGroup?.dateRange}</Text>
+          <Text variant="sp">{selectedGroup?.group.dateRange}</Text>
         </View>
+
         <View style={styles.pieChartContainer}>
           <Svg width={330} height={300} style={styles.pieChart}>
             <VictoryPie
@@ -70,13 +72,23 @@ const Content: React.FC<Props> = ({ selectedGroup }) => {
             />
           </Svg>
         </View>
-
         <ItemsKey items={tasks || []} />
+
         <View style={styles.spacer} />
-        {/* <Comparison activities={groups || []} /> */}
+        <Comparison
+          range={
+            selectedGroup?.prevGroup.dateRange
+              ? +selectedGroup?.prevGroup.dateRange + 1
+              : 0
+          }
+          groups={selectedGroup?.group ? [selectedGroup?.group] : []}
+          prevGroups={
+            selectedGroup?.prevGroup ? [selectedGroup?.prevGroup] : []
+          }
+        />
         <View style={styles.spacer} />
         <TotalTime
-          recorded={hoursToHoursAndMinutes(selectedGroup?.totalTime)}
+          recorded={hoursToHoursAndMinutes(selectedGroup?.group.totalTime)}
         />
       </ScrollView>
     </View>

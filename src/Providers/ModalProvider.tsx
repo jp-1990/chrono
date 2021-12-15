@@ -1,18 +1,21 @@
 import React, { createContext, useContext, useState } from 'react';
 import { GroupSummaryWithName, TaskDataWithMarginAndWidth } from '../types';
 
+export interface SelectedGroupState {
+  group: GroupSummaryWithName & { dateRange: string };
+  prevGroup: GroupSummaryWithName & { dateRange: string };
+}
+
 interface ProviderValue {
   state: {
-    selectedGroup: (GroupSummaryWithName & { dateRange: string }) | null;
+    selectedGroup: SelectedGroupState | null;
     selectedTask: TaskDataWithMarginAndWidth | null;
     modalActive: ModalActiveType;
   };
   actions: {
     closeModal: () => void;
     openCreateModal: () => void;
-    openStatisticsModal: (
-      group: GroupSummaryWithName & { dateRange: string }
-    ) => void;
+    openStatisticsModal: ({ group, prevGroup }: SelectedGroupState) => void;
     openUpdateModal: (task: TaskDataWithMarginAndWidth) => void;
   };
 }
@@ -47,9 +50,9 @@ type ModalActiveType = ModalActiveEnum | null;
 export const ModalProvider: React.FC = ({ children }) => {
   const [selectedTask, setSelectedTask] =
     useState<TaskDataWithMarginAndWidth | null>(null);
-  const [selectedGroup, setSelectedGroup] = useState<
-    (GroupSummaryWithName & { dateRange: string }) | null
-  >(null);
+  const [selectedGroup, setSelectedGroup] = useState<SelectedGroupState | null>(
+    null
+  );
   const [modalActive, setModalActive] = useState<ModalActiveType>(null);
 
   const openUpdateModal = (task: TaskDataWithMarginAndWidth) => {
@@ -59,10 +62,8 @@ export const ModalProvider: React.FC = ({ children }) => {
   const openCreateModal = () => {
     setModalActive(ModalActiveEnum.CREATE);
   };
-  const openStatisticsModal = (
-    group: GroupSummaryWithName & { dateRange: string }
-  ) => {
-    setSelectedGroup(group);
+  const openStatisticsModal = ({ group, prevGroup }: SelectedGroupState) => {
+    setSelectedGroup({ group, prevGroup });
     setModalActive(ModalActiveEnum.STATISTICS);
   };
   const closeModal = () => {

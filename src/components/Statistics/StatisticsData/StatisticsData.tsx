@@ -20,16 +20,28 @@ import { useModalContext } from '../../../Providers';
 import { GroupSummaryWithName } from '../../../types';
 import { colors } from '../../../styles';
 
-const handleSelectGroup = (
+const selectGroup = (
   groups: GroupSummaryWithName[],
+  prevGroups: GroupSummaryWithName[],
   dateRange: string,
+  range: number,
   target: string,
-  setSelectedGroup: (
-    group: GroupSummaryWithName & { dateRange: string }
-  ) => void
+  setSelectedGroup: ({
+    group,
+    prevGroup,
+  }: {
+    group: GroupSummaryWithName & { dateRange: string };
+    prevGroup: GroupSummaryWithName & { dateRange: string };
+  }) => void
 ) => {
-  const output = groups.find((el) => el.group === target) || null;
-  if (output) setSelectedGroup({ ...output, dateRange });
+  const group = groups.find((el) => el.group === target) || null;
+  const prevGroup = prevGroups.find((el) => el.group === target) || null;
+
+  if (group && prevGroup)
+    setSelectedGroup({
+      group: { ...group, dateRange },
+      prevGroup: { ...prevGroup, dateRange: `${range}` },
+    });
 };
 
 const StatisticsData = () => {
@@ -60,6 +72,17 @@ const StatisticsData = () => {
   )
     .subtract(1, 'days')
     .format('MMM Do')}`;
+
+  const handleSelectGroup = (target: string) => {
+    selectGroup(
+      state.groups || [],
+      state.prevGroups || [],
+      dateRange,
+      state.range || 0,
+      target,
+      modalActions.openStatisticsModal
+    );
+  };
 
   return (
     <ScrollView style={styles.scrollZindex}>
@@ -152,12 +175,7 @@ const StatisticsData = () => {
                         {
                           target: 'data',
                           mutation: (props) => {
-                            handleSelectGroup(
-                              state.groups || [],
-                              dateRange,
-                              props.slice.data.group,
-                              modalActions.openStatisticsModal
-                            );
+                            handleSelectGroup(props.slice.data.group);
                           },
                         },
                       ];
@@ -168,7 +186,7 @@ const StatisticsData = () => {
             />
           </Svg>
         </View>
-        <ItemsKey items={state.groups || []} />
+        <ItemsKey items={state.groups || []} selectItem={handleSelectGroup} />
         <View style={styles.spacer} />
         <Comparison
           range={state.range ? state.range + 1 : 0}

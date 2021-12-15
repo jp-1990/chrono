@@ -118,7 +118,14 @@ const useStatisticsData = () => {
     totalTime: totalPossible - totalTime,
     totalAsPercentage: percentage(totalPossible - totalTime, totalPossible),
     averagePerWeek: average(totalPossible - totalTime, totalPossible),
-    tasks: {},
+    tasks: {
+      unused: {
+        totalTime: totalPossible - totalTime,
+        totalAsPercentage: 100,
+        averagePerWeek: average(totalPossible - totalTime, totalPossible),
+        color: '#f1f1f1',
+      },
+    },
   });
 
   prevGroups?.sort((a, b) => a.totalTime - b.totalTime);
@@ -128,7 +135,14 @@ const useStatisticsData = () => {
     totalTime: totalPossible - prevTotalTime,
     totalAsPercentage: percentage(totalPossible - prevTotalTime, totalPossible),
     averagePerWeek: average(totalPossible - prevTotalTime, totalPossible),
-    tasks: {},
+    tasks: {
+      unused: {
+        totalTime: totalPossible - prevTotalTime,
+        totalAsPercentage: 100,
+        averagePerWeek: average(totalPossible - prevTotalTime, totalPossible),
+        color: '#f1f1f1',
+      },
+    },
   });
 
   // dateTime picker handlers
