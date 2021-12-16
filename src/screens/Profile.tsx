@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { BottomNav, Header, Title } from '../Components/Common';
+import { View } from 'react-native';
+import { BottomNav, Header } from '../Components/Common';
 import { ModalProvider } from '../Providers';
+import { ProfileData, ProfileModal } from '../Components/Profile';
 
 import { base } from '../styles';
 const { screen } = base;
@@ -11,12 +12,8 @@ const Profile = () => {
     <View style={screen}>
       <Header statusBar="light" />
       <ModalProvider>
-        <View style={styles.container}>
-          <View style={styles.titleContainer}>
-            <Title title={'profile'} subtitle="Coming soon..." />
-          </View>
-        </View>
-        <View style={styles.flex} />
+        <ProfileData />
+        <ProfileModal />
         <BottomNav />
       </ModalProvider>
     </View>
@@ -24,18 +21,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 12,
-    paddingTop: 24,
-    paddingBottom: 36,
-  },
-  titleContainer: {
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  flex: {
-    flex: 1,
-  },
-});
