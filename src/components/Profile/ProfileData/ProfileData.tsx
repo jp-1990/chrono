@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image, Pressable } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import * as MediaLibrary from 'expo-media-library';
 
 import { colors } from '../../../styles';
 import { FormInputs, MainButton, Title } from '../../Common';
@@ -14,6 +15,18 @@ const ProfileData = () => {
     Username: '',
     Email: '',
   });
+
+  const onEditImage = async () => {
+    console.log('pressed');
+    try {
+      const permissions = await MediaLibrary.getPermissionsAsync();
+      if (!permissions.granted) await MediaLibrary.requestPermissionsAsync();
+      const assets = await MediaLibrary.getAssetsAsync();
+      console.log(assets.assets.length);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const onSubmit = () => {
     console.log(formInputs);
@@ -30,6 +43,7 @@ const ProfileData = () => {
             source={require('../../../assets/blank-profile-picture.jpg')}
           />
           <Pressable
+            onPress={onEditImage}
             style={({ pressed }) => ({
               ...styles.editImageButton,
               opacity: pressed ? 0.8 : 1,
