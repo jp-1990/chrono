@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image, Pressable } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import * as MediaLibrary from 'expo-media-library';
+import * as ImagePicker from 'expo-image-picker';
 
 import { colors } from '../../../styles';
 import { FormInputs, MainButton, Title } from '../../Common';
@@ -15,16 +15,21 @@ const ProfileData = () => {
     Username: '',
     Email: '',
   });
+  const [image, setImage] = useState<string | undefined>();
 
   const onEditImage = async () => {
-    console.log('pressed');
     try {
-      const permissions = await MediaLibrary.getPermissionsAsync();
-      if (!permissions.granted) await MediaLibrary.requestPermissionsAsync();
-      const assets = await MediaLibrary.getAssetsAsync();
-      console.log(assets.assets.length);
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        setImage(result.uri);
+      }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -35,12 +40,16 @@ const ProfileData = () => {
     <View style={styles.flex}>
       <View style={styles.container}>
         <View style={styles.titleContainer}>
-          <Title title={'profile'} subtitle="Coming soon..." />
+          <Title title={'profile'} subtitle="Username" />
         </View>
         <View style={styles.imageContainer}>
           <Image
             style={styles.image}
-            source={require('../../../assets/blank-profile-picture.jpg')}
+            source={
+              image
+                ? { uri: image }
+                : require('../../../assets/blank-profile-picture.jpg')
+            }
           />
           <Pressable
             onPress={onEditImage}

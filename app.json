@@ -29,10 +29,9 @@
     },
     "plugins": [
       [
-        "expo-media-library",
+        "expo-image-picker",
         {
-          "photosPermission": "Allow Chrono to access your photos.",
-          "isAccessMediaLocationEnabled": true
+          "photosPermission": "The app accesses your photos to allow you to select a profile picture."
         }
       ]
     ]
