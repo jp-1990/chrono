@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Image, Pressable } from 'react-native';
+import { View, StyleSheet, Image, Pressable, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
 import { colors } from '../../../styles';
-import { FormInputs, MainButton, Title } from '../../Common';
+import { FormInputs, MainButton, Text, Title } from '../../Common';
 
 type FormInputState = {
   [key: string]: string;
@@ -36,8 +36,13 @@ const ProfileData = () => {
   const onSubmit = () => {
     console.log(formInputs);
   };
+
+  const onSignOut = () => {
+    console.log('signout pressed');
+  };
+
   return (
-    <View style={styles.flex}>
+    <ScrollView style={styles.scrollZindex}>
       <View style={styles.container}>
         <View style={styles.titleContainer}>
           <Title title={'profile'} subtitle="Username" />
@@ -68,20 +73,37 @@ const ProfileData = () => {
         />
         <MainButton
           label={'Update'}
-          width="50%"
+          width={250}
+          marginTop={4}
           colorBG={colors.buttonPrimary}
           colorText={colors.buttonText}
           ripple={colors.buttonPrimaryRipple}
           onPress={onSubmit}
         />
+        <Pressable
+          onPress={onSignOut}
+          style={({ pressed }) => ({
+            ...styles.signOutButton,
+            backgroundColor: pressed ? colors.buttonText : undefined,
+          })}
+        >
+          <MaterialIcons name="logout" size={20} color={colors.negative} />
+          <Text variant={'h4'} style={styles.signOutButtonText}>
+            Sign Out
+          </Text>
+        </Pressable>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 export default ProfileData;
 
 const styles = StyleSheet.create({
+  scrollZindex: {
+    position: 'relative',
+    zIndex: -100,
+  },
   container: {
     paddingHorizontal: 12,
     paddingTop: 24,
@@ -117,7 +139,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  flex: {
-    flex: 1,
+  signOutButton: {
+    flexDirection: 'row',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 5,
+    marginTop: 19,
+  },
+  signOutButtonText: {
+    color: colors.negative,
+    fontFamily: 'lato-regular',
+    marginLeft: 5,
   },
 });
