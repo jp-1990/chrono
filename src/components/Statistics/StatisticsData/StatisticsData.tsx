@@ -37,10 +37,21 @@ const selectGroup = (
   const group = groups.find((el) => el.group === target) || null;
   const prevGroup = prevGroups.find((el) => el.group === target) || null;
 
-  if (group && prevGroup)
+  console.log({ group, prevGroup });
+
+  if (group)
     setSelectedGroup({
       group: { ...group, dateRange },
-      prevGroup: { ...prevGroup, dateRange: `${range}` },
+      prevGroup: {
+        averagePerWeek: 0,
+        color: group.color,
+        group: group.group,
+        tasks: {},
+        totalAsPercentage: 0,
+        totalTime: 0,
+        dateRange: `${range}`,
+        ...prevGroup,
+      },
     });
 };
 
